@@ -31,7 +31,7 @@ version of what you need to do to get that awesome SQ badge.
 
 ## How to Play
 
-Before we can get you questing, we need to make sure you are actually *ready* to
+Before we can get you questing, we need to make sure you are actually _ready_ to
 quest! So, do this before you move on to anything else!
 
 **Note:** You will be required to follow this basic procedure for each of the
@@ -64,7 +64,8 @@ worked really hard for!
 
 ### Pull in New Quests
 
-When the countdown reaches 0 for each quest release, you can pull in the newly published quest by running the following command:
+When the countdown reaches 0 for each quest release, you can pull in the newly
+published quest by running the following command:
 
 ```bash
 cd /workspace/<the-workspace-name> # `sq pull` must be run from inside the workspace root
@@ -74,7 +75,7 @@ sq pull
 You can also do this manually, if you're a `git` veteran. Find the specifics
 over in our [Pioneer Quest][pq-new-quests].
 
-One that's complete you'll see the new quests delivered to your
+Once that's complete you'll see the new quests delivered to your
 `/workspace/<the-workspace-name>/quests/` directory.
 
 ### Retrieve your Quest Account
@@ -117,8 +118,7 @@ sq check -i 1 # use whichever quest number you are trying to verify
 
 If you still haven't completed KYC and/or tax submission, you'll be reminded one
 more time that you can't claim XLM rewards without them. If you still have more
-work to do, you'll be given a clue as to what might be missing from your Quest
-Account.
+work to do, you'll be given a clue as to what you might be missing.
 
 ### Claim your Badge
 
@@ -131,7 +131,7 @@ and thus allowing you to claim your badge and any prize XLM you may have earned.
 
 If you choose "Raw XDR," the transaction will be output to the terminal window,
 and you will need to sign it using Stellar Laboratory (or your preferred
-method). Then you must submit the signed transaction XDR using the `sq CLI`.
+method). Then you must submit the signed transaction XDR using the `sq` CLI.
 That will look something like this:
 
 ```bash
@@ -145,7 +145,7 @@ Stellar Quest badge!
 
 This first quest is a pretty simple one, and it comes almost directly from the
 Soroban examples, too! All we're doing here is getting our feet wet, so you
-won't need to worry about *writing* any Rust contracts, or anything like that.
+won't need to worry about _writing_ any Rust contracts, or anything like that.
 Here's what you need to know to complete this quest.
 
 ### Explore the Contract Code
@@ -153,19 +153,19 @@ Here's what you need to know to complete this quest.
 If you open up the [`lib.rs` file](src/lib.rs), you'll be able to see some
 helpful comments that briefly describe what each portion of the code is doing.
 
-*This contract accepts an argument and responds with a greeting containing that
-argument that was supplied.*
+_This contract accepts an argument and responds with a greeting containing that
+argument that was supplied._
 
 A more in-depth dissection of this example smart contract can be found in our
 [Pioneer Quest][pq-lib].
 
 ### Build the Contract
 
-We can now move on to actually *build* our contract! I know you didn't think you
+We can now move on to actually _build_ our contract! I know you didn't think you
 would make it this far. Give yourself a pat on the back!
 
-*The build process compiles our Rust code that is purpose-built for the
-WebAssembly environment that Soroban will provide for it.*
+_The build process compiles our Rust code into a binary that is purpose-built
+for the WebAssembly environment that Soroban will provide for it._
 
 If you need some instructions to help you along with this step, you can check
 out the [build tutorial][docs-build] in the Soroban documentation.
@@ -182,7 +182,7 @@ cargo build \
     --release
 ```
 
-> *Note*: We used to ship a `Makefile` with this repository which could run this
+> _Note_: We used to ship a `Makefile` with this repository which could run this
 > build command for each quest. This introduced certain bugs with unfinished
 > quests, and presented users with errors related to irrelevant quests. We no
 > longer ship that `Makefile`, and encourage users to manually build each
@@ -190,18 +190,18 @@ cargo build \
 
 ### Run a Test
 
-You can also look at the [`test.rs` file](src/test.rs), and see it also has some
-helpful comments, too.
+You can also look at the [`test.rs` file](src/test.rs), and you'll see we've
+included some helpful comments there, too.
 
-*This test invokes the contract's `hello()` function, and checks to make sure
-the contract gives the expected response.*
+_This test invokes the contract's `hello()` function, and checks to make sure
+the contract gives the expected response._
 
 Once you've got an understanding of what's happening in the test scenario, go
 ahead and run the test, ensuring that our contract is behaving properly.
 
-Just like before file, the [Pioneer Quest][pq-test] contains a much more
-elaborate explanation of this file, and what is happening along each step of the
-way
+Just like before (with the `lib.rs` file), the [Pioneer Quest][pq-test] contains
+a much more elaborate explanation of this file, and what is happening along each
+step of the way.
 
 To actually run the test in your quest Gitpod workspace, run these commands from
 within your Futurenet terminal:
@@ -213,7 +213,7 @@ cd quests/1-hello-world
 cargo test
 ```
 
-> *Note*: We used to ship a `Makefile` with this repository which could run this
+> _Note_: We used to ship a `Makefile` with this repository which could run this
 > test command for each quest. This introduced certain bugs with unfinished
 > quests, and presented users with errors related to irrelevant quests. We no
 > longer ship that `Makefile`, and encourage users to manually test each
@@ -224,9 +224,9 @@ cargo test
 The Stellar Futurenet is a safe playground where your contract code can live and
 work while it is still in development and (potentially) unstable.
 
-*Deploying the contract will upload the build binary file to the Futurenet,
+_Deploying the contract will upload the compiled binary file to the Futurenet,
 making it readily available for invocation and use in the network's Soroban
-environment.*
+environment._
 
 You can find some guidance on deploying your contract to the Futurenet in the
 [deploy tutorial][docs-deploy] from the Soroban documentation.
@@ -237,8 +237,8 @@ Now comes the exciting part! Your job is to **invoke** the smart contract that
 you just uploaded to the Futurenet. Doesn't it just make you want to shout with
 excitement!?
 
-*Invoking your contract will use the Stellar network to call up the contract you
-just uploaded and execute the `hello()` function.*
+_Invoking your contract will use the Stellar network to call up the contract you
+just uploaded and execute the `hello()` function._
 
 The [deploy tutorial][docs-deploy] can also give you some guidance on the finer
 points of invoking a Futurenet contract, if you need.
@@ -257,14 +257,14 @@ Now that you've completed your quest, you might have your interest piqued, and
 be curious about all sorts of things. Here's a collection of some related
 resources that might be of interest to you:
 
-- The official [Soroban Site][soroban] contains announcements, even more
-  resources, exciting learning opportunities, and more!
+- The official [Soroban Site][soroban] contains announcements, resources,
+  exciting learning opportunities, and more!
 - The [Soroban CAP][cap] (and the related ones) outline the design choices and
-  implementations of the Soroban smart contract platform. (Warning: these
+  implementations of the Soroban smart contract platform. (Heads-up: these
   documents can be quite technical.)
-- The Soroban documentation contains a number of [example contracts][examples]
-  that can help you wrap your mind around even more of the concepts and ideas
-  Soroban is built on.
+- The Soroban documentation contains a number of [how-to-guides][guides] that
+  can help you wrap your mind around even more of the concepts and ideas Soroban
+  is built on.
 - You can learn more about the [contract lifecycle][contract-lifecycle] in the
   "Learn" section of the Soroban documentation. There are tons of great articles
   here, and you should read through as many of them as you can!
@@ -275,13 +275,13 @@ If you're hitting a brick wall, and you're not sure what your next move is,
 check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
-[pq-lib]: https://github.com/tyvdh/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/lib.rs
-[pq-test]: https://github.com/tyvdh/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
-[pq-new-quests]: https://github.com/tyvdh/soroban-quest--pioneer#getting-new-quests
-[docs-build]: https://soroban.stellar.org/docs/tutorials/build
-[docs-deploy]: https://soroban.stellar.org/docs/tutorials/deploy-to-futurenet
+[pq-lib]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/lib.rs
+[pq-test]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
+[pq-new-quests]: https://github.com/stellar/soroban-quest--pioneer#getting-new-quests
+[docs-build]: https://soroban.stellar.org/docs/getting-started/hello-world#build
+[docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-futurenet
 [soroban]: https://soroban.stellar.org
 [cap]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md
-[examples]: https://soroban.stellar.org/docs/category/examples
+[guides]: https://soroban.stellar.org/docs/category/how-to-guides
 [contract-lifecycle]: https://soroban.stellar.org/docs/learn/contract-lifecycle
 [sq-site]: https://quest.stellar.org/
