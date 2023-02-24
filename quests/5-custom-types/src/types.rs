@@ -3,7 +3,7 @@
 /// `Bytes` and `BytesN`. This won't affect today's quest, just good to know.
 /// - `Bytes` is a *growable* array of `u8` values
 /// - `BytesN` is a *fixed-size* array of `u8` values
-use soroban_sdk::{contracttype, AccountId, Bytes, BytesN};
+use soroban_sdk::{contracttype, Address, Bytes, BytesN};
 
 /**
 BEGIN EXAMPLES
@@ -36,7 +36,7 @@ pub enum Car {
     Mercedes,
     Porsche,
     Honda,
-    Toyota
+    Toyota,
 }
 
 /**

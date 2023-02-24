@@ -4,7 +4,7 @@ use super::{TypesContract, TypesContractClient};
 
 use super::types::*;
 
-use soroban_sdk::{bytes, testutils::Accounts, Env};
+use soroban_sdk::{bytes, testutils::Address as _, Address, Env};
 
 #[test]
 fn test_types() {
@@ -43,9 +43,9 @@ fn test_types() {
     let color: Color = Color::RGB(RGB(0, 0, 0));
     client.c_color(&color);
 
-    // We generate a test user `u1` to use when we create a `Participant` from
+    // We create a random user `u1` to use when we create a `Participant` from
     // our custom type, and then we invoke `c_part`
-    let u1 = env.accounts().generate();
+    let u1 = Address::random(&env);
     let participant = Participant::Account(u1);
     client.c_part(&participant);
 
