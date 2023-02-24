@@ -6,8 +6,7 @@
 /// We're using the `soroban_auth` crate today to verify and authenticate users
 /// and some invocations in our contract. It's a really powerful SDK to get
 /// familiar with. https://soroban.stellar.org/docs/sdks/rust-auth
-use soroban_auth::{Identifier, Signature};
-use soroban_sdk::{contracterror, contractimpl, contracttype, AccountId, Address, BytesN, Env};
+use soroban_sdk::{contracterror, contractimpl, contracttype, Address, BytesN, Env};
 
 /// The `contractimport` macro will bring in the contents of the built-in
 /// soroban token contract and generate a module we can use with it.
@@ -35,8 +34,8 @@ pub enum Error {
 #[contracttype]
 #[derive(Clone)]
 pub enum StorageKey {
-    Parent,  // AccountId
-    Child,   // AccountId
+    Parent,  // Address
+    Child,   // Address
     TokenId, // BytesN<32>
     Amount,  // i128
     Step,    // u64
@@ -63,25 +62,16 @@ pub trait AllowanceTrait {
     // contract. It also makes the Soroban CLI usage a bit cleaner and easier.
     fn init(
         e: Env,
-        child: AccountId,     // the child account receiving the allowance
+        parent: Address,      // the parent account giving the allowance
+        child: Address,       // the child account receiving the allowance
         token_id: BytesN<32>, // the id of the token being transferred as an allowance
         amount: i128,         // the total allowance amount given for the year
         step: u64,            // how frequently (in seconds) a withdrawal can be made
     ) -> Result<(), Error>;
 
     // When `withdraw` is invoked, a transfer is made from the `Parent` asset
-    // balance to the `Child` asset balance. No signature required!
-    fn withdraw(e: Env) -> Result<(), Error>;
-}
-
-/// When a contract uses "Invoker" authentication, `env.invoker()` returns the
-/// `Address` type. Since we're storing an `AccountId` as the `Parent`, we use
-/// a helper function to convert from one to the other.
-fn to_account(address: Address) -> Result<AccountId, Error> {
-    match address {
-        Address::Account(id) => Ok(id),
-        _ => Err(Error::InvalidInvoker),
-    }
+    // balance to the `Child` asset balance.
+    fn withdraw(e: Env, invoker: Address) -> Result<(), Error>;
 }
 
 #[contractimpl]
@@ -89,7 +79,8 @@ impl AllowanceTrait for AllowanceContract {
     // Remember, before you can invoke `withdraw`, you must invoke `init`
     fn init(
         e: Env,
-        child: AccountId,
+        parent: Address,
+        child: Address,
         token_id: BytesN<32>,
         amount: i128,
         step: u64,
@@ -98,9 +89,11 @@ impl AllowanceTrait for AllowanceContract {
         // been invoked. Although a few different `StorageKey`s are set during
         // init, it's enough to only check for one.
         let token_key = StorageKey::TokenId;
-        if e.storage().has(token_key.clone()) {
+        if e.storage().has(&token_key) {
             return Err(Error::ContractAlreadyInitialized);
         }
+
+        parent.require_auth();
 
         // You can't have a withdraw every 0 seconds. Obviously. Also, you can't
         // divide by 0. So say the calculators, at least.
@@ -116,18 +109,17 @@ impl AllowanceTrait for AllowanceContract {
 
         // We are setting up all the data that this contract will store on the
         // ledger here. Nothing fancy here, just the same thing a few times.
-        e.storage().set(token_key, token_id);
-        e.storage()
-            .set(StorageKey::Parent, to_account(e.invoker()).unwrap()); // the invoker of `init` becomes the `Parent`
-        e.storage().set(StorageKey::Child, child);
-        e.storage().set(StorageKey::Amount, amount);
-        e.storage().set(StorageKey::Step, step);
+        e.storage().set(&token_key, &token_id);
+        e.storage().set(&StorageKey::Parent, &parent);
+        e.storage().set(&StorageKey::Child, &child);
+        e.storage().set(&StorageKey::Amount, &amount);
+        e.storage().set(&StorageKey::Step, &step);
 
         // As an act of goodwill, we set the `Latest` withdraw to be in the past
         // and allow the `Child` to immediately make the first withdrawal. Just
         // to get them started, ya know.
         let current_ts = e.ledger().timestamp();
-        e.storage().set(StorageKey::Latest, current_ts - step);
+        e.storage().set(&StorageKey::Latest, &(current_ts - step));
         // This is the first time we've used `Env.ledger()` in these contracts.
         // The Soroban environment, by design, doesn't have a tremendous amount
         // of context about the current state of the Stellar network. One of the
@@ -138,67 +130,66 @@ impl AllowanceTrait for AllowanceContract {
         Ok(())
     }
 
-    fn withdraw(e: Env) -> Result<(), Error> {
+    fn withdraw(e: Env, invoker: Address) -> Result<(), Error> {
         // Conversely from `init`, we want to make sure the contract *has* been
         // initialized before a withdraw can be made.
         let key = StorageKey::TokenId;
-        if !e.storage().has(key.clone()) {
+        if !e.storage().has(&key) {
             return Err(Error::ContractNotInitialized);
         }
 
+        let child: Address = e.storage().get(&StorageKey::Child).unwrap().unwrap();
+        let parent: Address = e.storage().get(&StorageKey::Parent).unwrap().unwrap();
+
+        // This part is one of the contract's really nifty tricks. We are using
+        // `require_auth()` in this contract *only* to make quest verification
+        // simpler and more straight-forward. However, the `withdraw` function
+        // doesn't *need* to be authenticated at all. By storing the `Child` in
+        // our contract data, we can ensure they are *always* the beneficiary of
+        // the withdrawal. No matter who actually makes the call to the
+        // contract, the child is always taken care of.
+
+        // In that case, technically speaking, *anybody* could invoke the
+        // `withdraw` function in the contract (yes, even your cousin Josh). In
+        // practice, for today's quest, the function *must* be invoked by either
+        // the `Parent` or the `Child` address.
+        if invoker != child && invoker != parent {
+            return Err(Error::InvalidAuth);
+        }
+
+        invoker.require_auth();
+
         // We create a client to the token contract that we'll be able to use to
         // make the transfer later on. This should look familiar to Quest 4.
-        let token_id: BytesN<32> = e.storage().get(key).unwrap().unwrap();
-        let client = token::Client::new(&e, token_id);
-
-        // This is a simple check to ensure the `withdraw` function has not been
-        // invoked by a contract. For our purposes, it *must* be invoked by a
-        // user account.
-        match e.invoker() {
-            Address::Account(id) => id,
-            _ => return Err(Error::InvalidInvoker),
-        };
-
-        // This part is one of the contract's really nifty tricks. You may have
-        // noticed we haven't authenticated the invocation of `withdraw` at all.
-        // That's on purpose! By storing the `Child` in our contract data, we
-        // can ensure they are *always* the beneficiary of the withdrawal. No
-        // matter who actually makes the call to the contract, the child is
-        // always taken care of.
-        let child = e.storage().get(StorageKey::Child).unwrap().unwrap();
-        // Note: Technically speaking, *anybody* could invoke the `withdraw`
-        // function in the contract (yes, even your cousin Josh). In practice,
-        // for today's quest, the function **must** be invoked by either the
-        // `Parent` or the `Child`.
+        let token_id: BytesN<32> = e.storage().get(&key).unwrap().unwrap();
+        let client = token::Client::new(&e, &token_id);
 
         // We do some really quick math to figure out a couple things:
         // - `iterations` - the number of withdraws that can be made in a year
-        // - `amount` - the withdrawn for every iteration
-
-        let step: u64 = e.storage().get(StorageKey::Step).unwrap().unwrap();
+        // - `withdraw_amount` - the amount withdrawn for every iteration
+        let step: u64 = e.storage().get(&StorageKey::Step).unwrap().unwrap();
         let iterations = SECONDS_IN_YEAR / step;
-        let amount: i128 = e.storage().get(StorageKey::Amount).unwrap().unwrap();
+        let amount: i128 = e.storage().get(&StorageKey::Amount).unwrap().unwrap();
         let withdraw_amount = amount / iterations as i128;
 
         // Some more quick math to make sure the `Latest` withdraw occurred *at
         // least* `step` seconds ago. We don't want them draining the piggy bank
         // all at once, after all.
-        let latest: u64 = e.storage().get(StorageKey::Latest).unwrap().unwrap();
+        let latest: u64 = e.storage().get(&StorageKey::Latest).unwrap().unwrap();
         if latest + step > e.ledger().timestamp() {
             return Err(Error::ChildAlreadyWithdrawn);
         }
 
         // This is where the magic happens! We use the client we set up for our
         // token contract earlier to invoke the `xfer_from` function. We're
-        // using *this contract's* approval to spend the asset balance of the
+        // using *this contract's* allowance to spend the asset balance of the
         // `Parent` account to transfer funds *directly* from the `Parent` to
         // the `Child`. That's amazing! Think of the implications and
         // possibilities! They're (and I mean this quite literally) endless!
         client.xfer_from(
-            &Signature::Invoker,
-            &(0 as i128),
-            &Identifier::Account(e.storage().get(StorageKey::Parent).unwrap().unwrap()),
-            &Identifier::Account(child),
+            &e.current_contract_address(),
+            &parent,
+            &child,
             &withdraw_amount,
         );
 
@@ -208,7 +199,7 @@ impl AllowanceTrait for AllowanceContract {
         // latest withdraw. This allows the child to "catch up" on any missed
         // withdrawals. Very kind of you. You're such a good parent!
         let new_latest = latest + step;
-        e.storage().set(StorageKey::Latest, new_latest);
+        e.storage().set(&StorageKey::Latest, &new_latest);
 
         Ok(())
     }
