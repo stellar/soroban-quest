@@ -12,14 +12,5 @@ Enjoy!
 pip install git+https://github.com/StellarCN/py-stellar-base.git@soroban
 ```
 
-The most recent preview release of Soroban has introduced some breaking changes
-that have not yet been fixed in the Python sdk. In some cases, using the
-`soroban-auth-next` branch could resolve errors. Soroban compatibility with any
-SDK is still a bit hit-or-miss, and they remain works-in-progress.
-
-```bash
-pip install git+https://github.com/StellarCN/py-stellar-base.git@soroban-auth-next
-```
-
 Massive props to [Jun Luo (@overcat)](https://github.com/overcat) for his
 incredible work on the Python SDK.
