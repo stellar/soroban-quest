@@ -16,7 +16,7 @@ fn test() {
 
     // Next, we call `client.hello()`, supplying "Dev" as our `to` argument.
     let words = client.hello(&symbol!("Dev"));
-    
+
     // We assert the contract must return a Vec that matches what we would
     // expect to receive from our contract: [Symbol("Hello"), Symbol("Dev")]
     assert_eq!(words, vec![&env, symbol!("Hello"), symbol!("Dev"),]);

@@ -1,27 +1,24 @@
 #![no_std]
 use error::ContractError;
-use soroban_sdk::{bytes, contractimpl, panic_with_error, AccountId, Address, Bytes, Env};
+use soroban_sdk::{bytes, contractimpl, panic_with_error, Address, Bytes, Env};
 
 pub struct DataStoreContract;
 
-/// The `DataStoreContract` contains all the functions our contract can run when
-/// it is invoked: `put()`, `get()`, and `get_self()`
+/// The `DataStoreContract` contains both functions our contract can run when it
+/// is invoked: `put()` and `get()`
 #[contractimpl]
 impl DataStoreContract {
-    /// The `put()` function takes a `value` parameter, accepting a Bytes object
-    /// for it. This argument can be supplied an array of u8 values, an integer,
-    /// or a hex-encoded string.
-    pub fn put(env: Env, value: Bytes) -> Result<(), ContractError> {
-        // We are using the `panic!` macro to ensure that this function cannot
-        // be cross-called from another contract. Only an invoker of the
-        // `AccountId` type, which is the identifier of a Stellar account
-        // (ed25519 public key), can invoke this function.
-        let key = match env.invoker() {
-            Address::Account(account_id) => account_id,
-            Address::Contract(_) => {
-                panic_with_error!(&env, ContractError::CrossContractCallProhibited)
-            }
-        };
+    /// The `put()` function takes two parameters:
+    /// `user` - accepts an `Address` object that will "own" the data being
+    /// stored. The `Address` type serves as an opaque identifier for both
+    /// accounts and contracts.
+    /// `value` - accepts a `Bytes` object to store, which can be supplied as an
+    /// array of `u8` values, an integer, or a hex-encoded string.
+    pub fn put(env: Env, user: Address, value: Bytes) -> Result<(), ContractError> {
+        // By calling `user.require_auth()`, we are ensuring the owner-to-be of
+        // the stored data has given appropriate authorization to associate with
+        // this data.
+        user.require_auth();
 
         // We are ensuring the provided Bytes value length is at least 11 since
         // we want users to perform the String to Bytes conversion on their own,
@@ -33,48 +30,22 @@ impl DataStoreContract {
         }
 
         // We then use `env.storage().set()` to store the value that was passed,
-        // associating it with the contract invoker's AccountId.
-        env.storage().set(key, value);
+        // associating it with the `user` Address.
+        env.storage().set(&user, &value);
 
         Ok(()) // return ok if function call succeeded
     }
 
-    /// The `get()` function takes an `owner` parameter, accepting an AccountId
+    /// The `get()` function takes an `owner` parameter, accepting an Address
     /// object for it. We then use `env.storage().get()` to retrieve the value
-    /// which has been associated with the supplied AccountId. If there is no
+    /// which has been associated with the supplied Address. If there is no
     /// data associated, return Bytes of length 0.
-    pub fn get(env: Env, owner: AccountId) -> Bytes {
-        // Hmm. Interesting. This function doesn't enforce an `AccountId` type
-        // of invoker. I guess this function *could* be invoked by another
-        // contract. I wonder if that will be useful at some point? ;-)
+    pub fn get(env: Env, owner: Address) -> Bytes {
         env.storage()
-            .get(owner)
+            .get(&owner)
             .unwrap_or_else(|| Ok(bytes!(&env))) // This uses `unwrap_or_else` and closure which only evaluates Bytes(0) when necessary.
             .unwrap()
     }
-
-    // !!!
-    // TODO Let's make sure someone uncomments this 👇 function before Q2 goes live or everyone will Nesho it
-    // !!!
-
-    // /// The `get_self()` function works similarly to `get()`, except `owner` is
-    // /// omitted. The AccountId to retrieve associated data for is supplied using
-    // /// a call to `env.invoker()`. Again we don't allow cross-contract
-    // /// invokations of this function. If there is no data associated, return
-    // /// Bytes of length 0.
-    // pub fn get_self(env: Env) -> Result<Bytes, ContractError> {
-    //     let key = match env.invoker() {
-    //         Address::Account(account_id) => account_id,
-    //         Address::Contract(_) => {
-    //             panic_with_error!(&env, ContractError::CrossContractCallProhibited)
-    //         }
-    //     };
-    //     Ok(env
-    //         .storage()
-    //         .get(key)
-    //         .unwrap_or_else(|| Ok(bytes!(&env)))
-    //         .unwrap())
-    // }
 }
 
 mod error;

@@ -12,7 +12,7 @@ from stellar_sdk.soroban.soroban_rpc import TransactionStatus
 secret = <FUNDED_ACCOUNT_SECRET> # any existing account will be able to do this op
 rpc_server_url = "<futurenet-horizon-url/soroban/rpc>"
 network_passphrase = "Test SDF Future Network ; October 2022"
-hello_asset = Asset.native() # Asset("HELLO", "GBCXQUEPSEGIKXLYODHKMZD7YMTZ4IUY3BYPRZL4D5MSJZHHE7HG6RWR")
+hello_asset = Asset.native() # Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
 
 kp = Keypair.from_secret(secret)
 soroban_server = SorobanServer(rpc_server_url)

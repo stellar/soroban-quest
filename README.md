@@ -15,7 +15,8 @@
 ## Welcome
 
 Welcome to our Soroban Quest! We are beyond excited you've joined us. We've
-worked hard to make this a productive, interesting, and above all fun learning experience for you!
+worked hard to make this a productive, interesting, and above all fun learning
+experience for you!
 
 So let's have some fun!
 
@@ -73,11 +74,13 @@ Adoption Fund, which SDF created to support the growth and development of the
 Soroban ecosystem. We'll be sharing more about additional programs on the
 Stellar Dev Discord in the not-too-distant future, so make sure to join today to
 be the among the first to hear those announcements. This is yet another way for
-you to **Tinker and Earn** XLM with Soroban! Many of the people who are *creating*
-the Soroban platform are there, and willing to answer questions, too! Talk about
-"straight from the horse's mouth"!!
+you to **Tinker and Earn** XLM with Soroban! Many of the people who are
+*creating* the Soroban platform are there, and willing to answer questions, too!
+Talk about "straight from the horse's mouth"!!
 
-[gitpod]: https://gitpod.io/#ENV=prod/https://github.com/tyvdh/soroban-quest
-[pioneer]: https://github.com/tyvdh/soroban-quest--pioneer
-[discord]: https://discord.gg/8FhvuKb
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)][gitpod]
+
+[gitpod]: https://gitpod.io/#ENV=prod/https://github.com/stellar/soroban-quest
+[pioneer]: https://github.com/stellar/soroban-quest--pioneer
+[discord]: https://quest.stellar.org/join
 [dev-discord]: https://discord.gg/stellardev

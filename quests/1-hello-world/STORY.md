@@ -15,7 +15,7 @@ ancient alien species, so what we encounter may not even be from this world."
 Roscoe frowned. "Oh, wonderful, an ancient alien species. What have I gotten
 myself into?"
 
-"The adventure of a lifetime, Roscoe, " Bee said as she placed her hands against
+"The adventure of a lifetime, Roscoe," Bee said as she placed her hands against
 the door and pushed. It didn't budge. "Help me out here."
 
 Roscoe set his shoulder against the stone and shoved. The door stayed stubbornly

@@ -18,5 +18,5 @@ def get_asset_contract_id(asset: Asset, network_passphrase: str) -> str:
 
 if __name__ == '__main__':
     network_passphrase = "Test SDF Future Network ; October 2022"
-    asset = Asset.native() # Asset("HELLO", "GBCXQUEPSEGIKXLYODHKMZD7YMTZ4IUY3BYPRZL4D5MSJZHHE7HG6RWR")
+    asset = Asset.native() # Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
     print(f"Contract ID: {get_asset_contract_id(asset, network_passphrase)}")
