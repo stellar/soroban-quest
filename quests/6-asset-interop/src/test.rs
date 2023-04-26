@@ -163,13 +163,7 @@ fn test_invalid_auth() {
         500000000
     );
 
-    client.init(
-        &u1,
-        &u2,
-        &token_id,
-        &500000000,
-        &(7 * 24 * 60 * 60),
-    );
+    client.init(&u1, &u2, &token_id, &500000000, &(7 * 24 * 60 * 60));
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726146,
@@ -225,13 +219,7 @@ fn test_invalid_sequence() {
         500000000
     );
 
-    client.init(
-        &u1,
-        &u2,
-        &token_id,
-        &500000000,
-        &(7 * 24 * 60 * 60),
-    );
+    client.init(&u1, &u2, &token_id, &500000000, &(7 * 24 * 60 * 60));
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726146,

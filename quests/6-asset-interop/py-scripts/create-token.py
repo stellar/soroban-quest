@@ -9,9 +9,9 @@ from stellar_sdk.soroban import SorobanServer
 from stellar_sdk.soroban.soroban_rpc import TransactionStatus
 
 # TODO: You need to replace the following parameters according to the actual situation
-secret = <FUNDED_ACCOUNT_SECRET> # any existing account will be able to do this op
+secret = "<FUNDED_ACCOUNT_SECRET>" # any existing account will be able to do this op
 rpc_server_url = "<futurenet-horizon-url/soroban/rpc>"
-network_passphrase = "Test SDF Future Network ; October 2022"
+network_passphrase = Network.FUTURENET_NETWORK_PASSPHRASE
 hello_asset = Asset.native() # Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
 
 kp = Keypair.from_secret(secret)
