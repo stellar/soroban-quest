@@ -7,5 +7,13 @@
   "markdown.preview.doubleClickToSwitchToEditor": false,
   "rust-analyzer.cargo.useRustcWrapperForBuildScripts": false,
   "deno.enable": true,
-  "deno.unstable": true
+  "deno.unstable": true,
+  "markdown.extension.toc.omittedFromToc": {
+    "README.md": ["## Table of Contents"]
+  },
+  "markdown.preview.typographer": true,
+  "markdownlint.run": "onType",
+  "markdownlint.config": {
+    "MD033": { "allowed_elements": ["details", "summary"]}
+  }
 }
