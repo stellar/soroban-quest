@@ -182,7 +182,7 @@ soroban contract invoke \
     --address CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ
 ```
 
-> *Note:* At the time of writing this type of "contract key" does not work when
+> _Note:_ At the time of writing this type of "contract key" does not work when
 > supplied as the `--id` of a contract you're trying to invoke.
 
 ## Further Reading
