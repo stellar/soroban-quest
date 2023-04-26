@@ -1,7 +1,7 @@
 // We don't include the standard library to minimize compiled size.
 // We also import a few macros and types we need from the `soroban_sdk`.
 #![no_std]
-use soroban_sdk::{contractimpl, symbol, vec, Env, Symbol, Vec};
+use soroban_sdk::{contractimpl, vec, Env, Symbol, Vec};
 
 pub struct HelloContract;
 
@@ -11,7 +11,9 @@ pub struct HelloContract;
 #[contractimpl]
 impl HelloContract {
     pub fn hello(env: Env, to: Symbol) -> Vec<Symbol> {
-        vec![&env, symbol!("Hello"), to]
+        // We use `Symbol::short` here, since our supplied string is fewer than
+        // 10 characters. For strings up to 32 characters, use `Symbol::new`.
+        vec![&env, Symbol::short("Hello"), to]
     }
 }
 
