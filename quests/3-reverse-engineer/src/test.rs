@@ -17,9 +17,9 @@ fn test_q3() {
 
     // We invoke the ReverseEngineer contract's `submit()` function, providing a
     // value of "wrong" and we expect the contract to return `false`.
-    assert_eq!(client.submit(&symbol!("wrong")), false);
+    assert!(!client.submit(&Symbol::short("wrong")));
 
     // We invoke the the function this time, with the correct secret word, and
     // we expect the contract to return `true` this time.
-    assert_eq!(client.submit(&SECRET), true);
+    assert!(client.submit(&Symbol::new(&env, SECRET)));
 }
