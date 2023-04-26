@@ -15,7 +15,7 @@ today you're going to be _writing_ some actual Rust in your contract!
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`dcc02a65c6904c285aca78c456ac30fd66ceb2236c65972177ea60ef9cde3569` so we can
+`4ab5832a42949921d489e3598ec62043da78cb84717f9d0308317368651390ad` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -100,7 +100,7 @@ homework. For example:
 
 ```rust
 struct Homework {
-    class: String, // remember soroban does not include `String` - it's only here as an example
+    class: String,
     subject: String,
     studentId: u32,
     complete: bool,
@@ -173,8 +173,8 @@ Invoke the `c_rect` function to create a `Rectangle` using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_rect \
     -- \
+    c_rect \
     --_rect '{"height":<a-u32-integer>,"width":<a-u32-integer>}'
 ```
 
@@ -188,8 +188,8 @@ Invoke the `c_animal` function to create an `Animal` using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_animal \
     -- \
+    c_animal \
     --_animal <an animal-variant>
 ```
 
@@ -203,8 +203,8 @@ Invoke the `c_user` function to create a `User` using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_user \
     -- \
+    c_user \
     --_user '{"name":"<a-hex-encoded-string>","age":<a-u32-integer>,"pet":<an-animal-variant>}'
 ```
 
@@ -218,9 +218,9 @@ Invoke the `c_rgb` function to create a `RGB` value using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_rgb \
     -- \
-    --_rgb '[<a-u32-integer>,<a-u32-integer>,<a-u32-integer>]'
+    c_rgb \
+    --_rgb [<a-u32-integer>,<a-u32-integer>,<a-u32-integer>]
 ```
 
 #### Color
@@ -235,8 +235,8 @@ Invoke the `c_color` function to create a `Color` using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_color \
     -- \
+    c_color \
     --_val '{"RGB":<a-rgb-object>}'
 ```
 
@@ -254,8 +254,8 @@ like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_part \
     -- \
+    c_part \
     --_participant '{"Account":"<stellar-public-g-address>"}'
 ```
 
@@ -265,9 +265,9 @@ something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_part \
     -- \
-    --_participant '{"Contract":"<contract-id>"}'
+    c_part \
+    --_participant '{"Contract":"<contract-id-hex>"}'
 ```
 
 #### RoyalCard
@@ -284,8 +284,8 @@ Invoke the `c_card` function using something like:
 ```bash
 soroban contract invoke \
     --id <contract-id> \
-    --fn c_card \
     -- \
+    c_card \
     --_card <a-u32-integer>
 ```
 
@@ -320,7 +320,7 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `dcc02a65c6904c285aca78c456ac30fd66ceb2236c65972177ea60ef9cde3569`,
+with the ID `4ab5832a42949921d489e3598ec62043da78cb84717f9d0308317368651390ad`,
 supplying your own contract ID as the `--contract_id` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
