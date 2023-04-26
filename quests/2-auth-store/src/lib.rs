@@ -24,7 +24,7 @@ impl DataStoreContract {
         // we want users to perform the String to Bytes conversion on their own,
         // without passing simple values like Bytes(7). We also want to
         // highlight some differences between Bytes and symbols (which must be
-        // 10 or fewer characters).
+        // fewer than 10 characters, in many cases).
         if value.len() <= 10 {
             panic_with_error!(&env, ContractError::InputValueTooShort)
         }

@@ -14,3 +14,7 @@ pip install git+https://github.com/StellarCN/py-stellar-base.git@soroban
 
 Massive props to [Jun Luo (@overcat)](https://github.com/overcat) for his
 incredible work on the Python SDK.
+
+We've set up this directory with the necessary scaffolding to get the scripts
+running as quickly as possible. You can use `pipx` and `poetry` to install the
+required dependencies and create a virtualenv for the downloaded packages.

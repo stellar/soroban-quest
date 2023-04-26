@@ -138,11 +138,11 @@ authenticate and increment a counter, taken from the [Auth guide][auth].
 
 ```bash
 soroban contract invoke \
-    --account GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
+    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
     --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     --id 1 \
-    --fn increment \
     -- \
+    increment \
     --user GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
     --value 2
 ```
@@ -155,17 +155,35 @@ a contract's function, but you want to use a contract id address, instead of a
 
 ```bash
 soroban contract invoke \
-    --account GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
+    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
     --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     --id 1 \
-    --fn foo \
     -- \
-    --address '{"object":{"address":{"contract":"<contract_id_hex>"}}}'
+    foo \
+    --address '{"address":{"contract":"<contract_id_hex>"}}'
 ```
 
 You can see that it's very much like a JSON object. Often the `soroban` cli is
 smart enough to figure out what kind of argument you're _trying_ to supply, and
 doing the JSON for you. It will definitely let you know when it can't, though.
+
+Additionally, for the `Address` type, there's an exciting development in the
+works in the `StrKey` implementation in the Soroban SDKs. Both the JavaScript
+and Python SDKs implement a "contract key" type of key, allowing you to turn
+your contract id hex string into a familiar-looking key like this:
+
+```bash
+soroban contract invoke \
+    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
+    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --id 1 \
+    -- \
+    foo \
+    --address CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ
+```
+
+> _Note:_ At the time of writing this type of "contract key" does not work when
+> supplied as the `--id` of a contract you're trying to invoke.
 
 ## Further Reading
 

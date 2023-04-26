@@ -30,8 +30,8 @@ fn test_store() {
     // For our `u1` address, we store the `Bytes` represetation of "Hello
     // Soroban!" using the contract's `put()` function. We then use the
     // contracts `get()` function to ensure we receive back the expected value.
-    client.put(&u1, &bytes!(&env, 0x48656c6c6f20536f726f62616e21)); // hex value for "Hello Soroban!"
-    // We then use the contracts `get()` function to ensure we receive back the
+    client.put(&u1, &bytes!(&env, 0x48656c6c6f20536f726f62616e21)); // This is the hex value for "Hello Soroban!"
+    // We then use the contract's `get()` function to ensure we receive back the
     // expected value.
     assert_eq!(
         client.get(&u1),
@@ -43,7 +43,7 @@ fn test_store() {
     assert_eq!(client.get(&u2).len(), 0);
     // Now, as `u2`, we invoke the `put()` function, storing the `Bytes`
     // represetation of "Soroban Quest 2".
-    client.put(&u2, &bytes![&env, 0x536f726f62616e2051756573742032]); // hex value for "Soroban Quest 2"
+    client.put(&u2, &bytes![&env, 0x536f726f62616e2051756573742032]); // This is the hex value for "Soroban Quest 2"
     // We now assert that `get()` should return the same value back to us.
     assert_eq!(
         client.get(&u2),
@@ -133,7 +133,7 @@ fn test_contract_store() {
         &contract_id_data_store,
         // The address to be associated with the stored data
         &caller_address,
-        // Hex value for "Hello Soroban!"
+        // This is the hex value for "Hello Soroban!"
         &bytes![&env, 0x48656c6c6f20536f726f62616e21],
     );
 
@@ -165,7 +165,7 @@ fn test_contract_get() {
     // We create an Address, `u1`, so we can invoke the `put()` function, and
     // test against the value we store, when called from our contract later.
     let u1 = Address::random(&env);
-    client_data_store.put(&u1, &bytes!(&env, 0x48656c6c6f20536f726f62616e21)); // hex value for "Hello Soroban!"
+    client_data_store.put(&u1, &bytes!(&env, 0x48656c6c6f20536f726f62616e21)); // This is the hex value for "Hello Soroban!"
 
     // We are invoking the the DataStore contract's `get()` function by using
     // the `try_get()` function in the Caller contract. We expect our returned

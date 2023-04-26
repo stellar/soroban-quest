@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-I know you're in a hurry. There are Lumens on the line! Here's the quick-n-dirty
+I know you're in a hurry. There are badges on the line! Here's the quick-n-dirty
 version of what you need to do to get that awesome SQ badge.
 
 **In this quest, you will use your Quest Account to deploy and invoke the quest
@@ -13,7 +13,6 @@ version of what you need to do to get that awesome SQ badge.
 - [TL;DR](#tldr)
 - [How to Play](#how-to-play)
   - [Authenticate with Discord](#authenticate-with-discord)
-  - [Pull in New Quests](#pull-in-new-quests)
   - [Retrieve your Quest Account](#retrieve-your-quest-account)
   - [Fund that Account](#fund-that-account)
   - [Quest Your Heart Out](#quest-your-heart-out)
@@ -62,22 +61,6 @@ or submit tax information, if either are required of you.
 affected by that. Complete those steps so we can give you the rewards you've
 worked really hard for!
 
-### Pull in New Quests
-
-When the countdown reaches 0 for each quest release, you can pull in the newly
-published quest by running the following command:
-
-```bash
-cd /workspace/<the-workspace-name> # `sq pull` must be run from inside the workspace root
-sq pull
-```
-
-You can also do this manually, if you're a `git` veteran. Find the specifics
-over in our [Pioneer Quest][pq-new-quests].
-
-Once that's complete you'll see the new quests delivered to your
-`/workspace/<the-workspace-name>/quests/` directory.
-
 ### Retrieve your Quest Account
 
 Before you can play, you must retrieve the `Quest Keypair` for the quest you
@@ -98,6 +81,10 @@ like so:
 ```bash
 sq fund --key GDGYB5FZUKAVPYGCLJTCYYOJPEHHVOCZS7I6SBWF233OQSIROZ7JXLGO
 ```
+
+> _Note:_ Running `sq play` will automatically detect and offer to fund
+> un-funded accounts. If you opted to do so at that time, you don't need to run
+> this command now.
 
 ### Quest Your Heart Out
 
@@ -277,7 +264,6 @@ got a couple of suggestions for where you might go from here.
 
 [pq-lib]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/lib.rs
 [pq-test]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
-[pq-new-quests]: https://github.com/stellar/soroban-quest--pioneer#getting-new-quests
 [docs-build]: https://soroban.stellar.org/docs/getting-started/hello-world#build
 [docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-futurenet
 [soroban]: https://soroban.stellar.org
