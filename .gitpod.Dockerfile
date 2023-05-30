@@ -1,5 +1,5 @@
 FROM gitpod/workspace-full:2023-01-16-03-31-28
-LABEL version="1.1.19"
+LABEL version="1.1.20"
 
 RUN mkdir -p ~/.local/bin
 RUN curl -L -o ~/.local/bin/soroban https://github.com/stellar/soroban-tools/releases/download/v0.7.1/soroban-cli-0.7.1-x86_64-unknown-linux-gnu
