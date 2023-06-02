@@ -11,8 +11,8 @@ fn test() {
     // we register the contract in a Soroban environment, and build a client we
     // can use to invoke the contract
     let env = Env::default();
-    let contract_id = env.register_contract(None, HelloContract);
-    let client = HelloContractClient::new(&env, &contract_id);
+    let contract_address = env.register_contract(None, HelloContract);
+    let client = HelloContractClient::new(&env, &contract_address);
 
     // Next, we call `client.hello()`, supplying "Dev" as our `to` argument.
     let words = client.hello(&Symbol::short("Dev"));

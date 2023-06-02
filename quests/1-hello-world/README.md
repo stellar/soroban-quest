@@ -67,7 +67,7 @@ Before you can play, you must retrieve the `Quest Keypair` for the quest you
 want to play. You get that information by running the following:
 
 ```bash
-sq play -i 1 # use whichever quest number you are trying to play
+sq play 1 # use whichever quest number you are trying to play
 ```
 
 Save this information, because (trust me) you'll need it later!
@@ -100,7 +100,7 @@ You've done the hard work, and you're ready to see if it has paid off! Run the
 following command to verify your work:
 
 ```bash
-sq check -i 1 # use whichever quest number you are trying to verify
+sq check 1 # use whichever quest number you are trying to verify
 ```
 
 If you still haven't completed KYC and/or tax submission, you'll be reminded one
@@ -169,12 +169,6 @@ cargo build \
     --release
 ```
 
-> _Note_: We used to ship a `Makefile` with this repository which could run this
-> build command for each quest. This introduced certain bugs with unfinished
-> quests, and presented users with errors related to irrelevant quests. We no
-> longer ship that `Makefile`, and encourage users to manually build each
-> contract.
-
 ### Run a Test
 
 You can also look at the [`test.rs` file](src/test.rs), and you'll see we've
@@ -199,12 +193,6 @@ cd quests/1-hello-world
 # run the tests in that directory
 cargo test
 ```
-
-> _Note_: We used to ship a `Makefile` with this repository which could run this
-> test command for each quest. This introduced certain bugs with unfinished
-> quests, and presented users with errors related to irrelevant quests. We no
-> longer ship that `Makefile`, and encourage users to manually test each
-> contract.
 
 ### Deploy to Futurenet
 
