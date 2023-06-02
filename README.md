@@ -68,5 +68,3 @@ Talk about "straight from the horse's mouth"!!
 [pioneer]: https://github.com/stellar/soroban-quest--pioneer
 [discord]: https://quest.stellar.org/join
 [dev-discord]: https://discord.gg/stellardev
-
-  > _Note:_ If you encounter console errors while using Soroban-CLI, it may be due to a parsing issue with the response type. However, this issue does not impact the tool's functionality. Users can resolve this issue by installing the alpha version of the tool, which is available on the [Soroban-CLI GitHub](https://github.com/stellar/soroban-tools/tree/main/cmd/soroban-cli) repository. To install the alpha version, pull the latest commit from the main branch and build it from source. The parsing issue is expected to be resolved in the next Soroban release, which will be live in a week or two.
