@@ -3,10 +3,10 @@ use soroban_sdk::{contractimpl, Env, Symbol};
 
 pub struct ReverseEngineerContract;
 
-/// A constant is an *always immutable* value that is valid for the entire time
-/// the program runs. When declaring a `const` in Rust, you must explicitly type
-/// them at that time. Here the `SECRET` constant is typed using `&str` and we
-/// define what that secret is.
+/// A constant is an **always immutable** value that is valid for the entire
+/// time the program runs. When declaring a `const` in Rust, you must explicitly
+/// type them at that time. Here the `SECRET` constant is typed using `&str` and
+/// we define what that secret is.
 const SECRET: &str = "dancinRaph";
 
 /// The `ReverseEngineerContract` contains only one function: `submit()`.

@@ -5,8 +5,8 @@
 Big day, huh!? Final Quest in our inaugural series of Soroban Quest! This has
 been so awesome! And there's only more greatness to come, so stay tuned!
 
-Today's Quest is a banger! It will not only challenge you, but will also
-show you some of the **amazing** stuff that's possible in this brave new
+Today's Quest is a banger! It will not only challenge you, but will also show
+you some of the **amazing** stuff that's possible in this brave new
 Soroban-ified world! Now, it's a doozy so you're going to _really want_ to read
 through this document. But, here's the short-n-sweet instructions, if you want
 to jump ahead and muck things up.
@@ -15,14 +15,14 @@ There are two relevant accounts today:
 
 - `Parent_Account` will be your Quest Account, (what you are given when you run
   `sq play {n}`) and will be used to deploy an `AllowanceContract`.
-- `Child_Account` will be a secondary account which will interact with
-  your contract. Create and fund this Futurenet account on your own.
+- `Child_Account` will be a secondary account which will interact with your
+  contract. Create and fund this Futurenet account on your own.
 
 **For our finale quest, you must build and deploy the `AllowanceContract` using
-your Quest Account (`Parent_Account`). Next approve your deployed contract to
-act as a proxy enabling it to transfer XLM from the parent to the child. Then,
-using either account, you must withdraw an allowance to the `Child_Account`
-using the contract deployed by the `Parent_Account`.**
+your Quest Account (`Parent_Account`). Next grant your deployed contract an
+allowance enabling it to transfer XLM from the parent to the child. Then, using
+either account, you must withdraw an allowance to the `Child_Account` using the
+contract deployed by the `Parent_Account`.**
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -61,7 +61,7 @@ gives us two very powerful wins: _they_ can't withdraw everything at once, but
 _you_ don't have to remember to make transfers all the time!
 
 Back in reality, we're ready to talk assets! But, first, we _have_ to say it one
-last time, **read the code!** This contract is relatively complex. We won't make
+last time: **Read the code!** This contract is relatively complex. We won't make
 you fiddle with it today, but there's no better way to understand what's
 happening than to actually _read_ it. Seriously.
 
@@ -71,17 +71,19 @@ happening than to actually _read_ it. Seriously.
 > design, and discussion. Significant changes can happen and should even be
 > expected. The area of asset interoperability between "Classic" Stellar and
 > Soroban is one such area that is under active consideration. We have designed
-> this quest to be as up-to-date as possible, but the conventions, steps,
-> terminology, architecture, etc. used in today's quest are subject to change in
-> the future.
+> this quest to be as up-to-date as possible at the time of writing, but the
+> conventions, steps, terminology, architecture, etc. used in today's quest are
+> subject to change in the future.
+>
+> _Revision Date: 2023-06-01_
 
 One of the defining characteristics of the "Classic" Stellar network is that
-assets are a first-class citizen. They are easy to create, cheap to
+assets are first-class citizens. They are easy to create, cheap to
 use/transfer/trade, and have many incredible use-cases. There also exists an
 extensive set of authorization tools that asset issuers can use to control who
 can acquire, use, or retain those assets. We won't spend _too_ much time here,
-because you are may already be up-to-speed here (and if you aren't, you can
-still make it through today's quest). If you need a refresher the [developer
+because you may already be up-to-speed here (and if you aren't, you can still
+make it through today's quest). If you need a refresher the [developer
 documentation][docs-assets] and our own [Stellar Quest][sq-learn] course both
 have **loads** of information about assets. For now, just remember that the
 `native` asset on Stellar is the [Lumen][lumens]. It's identified using the
@@ -90,12 +92,12 @@ asset code `XLM`.
 As Soroban development continues, one of the _key_ requirements is that assets
 issued on "Classic" Stellar can be used and incorporated into Soroban. It's even
 [one of the FAQs][assets-faq]! This interoperability is facilitated by using the
-interface provided by [the Stellar asset contract](#the-stellar-asset-contract).
+interface provided by [the Stellar Asset Contract](#the-stellar-asset-contract).
 (Note assets minted in Soroban cannot be exported to a "Classic" Stellar asset.)
 
 ### The Stellar Asset Contract
 
-Soroban development regarding Assets involves an effort to decide what a
+Soroban development regarding assets involves an effort to decide what a
 "Standardized Asset" looks like in a smart contract context. These decisions,
 and related discussions, are recorded in [CAP-0046-06][cap-46-6]. If you're
 familiar with Ethereum, this proposal tries to follow an ERC-20 model, where
@@ -103,21 +105,21 @@ applicable.
 
 The [Stellar Asset Contract][asset-contract] is an implementation of the
 CAP-46-6 proposal. It can be used to to create a new token on Soroban, or to
-interact with a "Classic" asset that has been deployed in Soroban. For today,
-we'll be using it with Lumens that exist in our "Classic" Stellar accounts. This
-asset contract implements a [token interface][token-interface] that is quite
+interact with a "Classic" asset that has been "wrapped" for use in Soroban. For
+today, we'll be using it with native Lumens that have been wrapped. This Stellar
+Asset Contract implements a [token interface][token-interface] that is quite
 feature-full. The most notable function you'll need from it today is
-`incr_allow`, which will increase the amount of some asset that one address can
-spend _from_ another address. It's like spending money from your parent's bank
-account.
+`increase_allowance`, which will increase the amount of some token that one
+address can spend _from_ another address. It's like spending money from your
+parent's bank account.
 
 ### Yeah, but How do I Use That Asset Contract?
 
 > It should be noted that a Soroban token developer can choose to implement any
 > token interface they choose. There is no _requirement_ to implement everything
-> from CAP-46-6, but doing so does allow a token to interoperate with other
-> tokens which _are_ compliant with CAP-46-6. You can learn more about the
-> [suggested token interface][sac-interface] in the Soroban docs.
+> from CAP-46-6, but doing so does allows a token to interoperate more easily
+> with other tokens which _are_ compliant with CAP-46-6. You can learn more
+> about the [suggested token interface][sac-interface] in the Soroban docs.
 
 So, how do we actually make one of them tokens, then? There are a few methods
 available to us. Let's (briefly) look at them.
@@ -138,8 +140,6 @@ available to us. Let's (briefly) look at them.
 
 ```bash
 soroban lab token wrap --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
-# output:
-# success
 # 36d479817b7c64e765f084c121640ee8de62db22a2b37e0b40c5b08e09b63f59
 
 # It even works with the `native` asset!
@@ -149,7 +149,7 @@ soroban lab token wrap --asset native
 It should be noted that wrapping an asset will work exactly one time per asset
 (per network). The `native` asset contract is already deployed to the Futurenet,
 and trying to wrap that again (on the Futurenet) will return an error rather
-than a `contractId`.
+than a `contract_id`.
 
 > It should _also_ be noted you don't need to deploy or wrap any tokens or
 > assets for this quest. We just put this here for fun!
@@ -158,7 +158,7 @@ than a `contractId`.
 
 Speaking of the `native` asset: One of the cool things about the Stellar Asset
 Contract is that even the native XLM token utilizes it! To use it, we just need
-to figure out the `contractId` we should invoke. That can be done easily enough
+to figure out the `contract_id` we should invoke. That can be done easily enough
 with one of the Stellar SDKs (below, we're using Python):
 
 ```python
@@ -183,10 +183,10 @@ print(f"Contract ID: {contract_id}")
 You can find an expanded version of the above script, as well as some other
 _very_ handy Python scripts (big shoutout to [Jun Luo (@overcat)][overcat]) in
 the `py-scripts/` directory. They deal with all kinds of Soroban tasks: creating
-tokens, finding asset contract IDs, deploying contracts, etc.
+tokens, pyaments, finding asset contract IDs, deploying contracts, etc.
 
 As per our [tl;dr](#tldr) at the top, this native asset contract will _need_ to
-be invoked only once: The `Parent_Account` will need to `incr_allow` to
+be invoked only once: The `Parent_Account` will need to `increase_allowance` to
 establish the `AllowanceContract` as a proxy spender. You could also make use of
 the `balance` and `allowance` functions of the contract to check your work along
 the way.
@@ -211,28 +211,28 @@ If you forgot what your task is, here it is again:
 
 - [ ] Deploy the `AllowanceContract` as the `Parent_Account`
 - [ ] Invoke the `init` function of the `AllowanceContract`
-- [ ] Use the `incr_allow` function of the native token contract to allow your
-  `AllowanceContract` to make proxy transfers from the `Parent_Account` to the
-  `Child_Account`
+- [ ] Use the `increase_allowance` function of the native token contract to
+  allow your `AllowanceContract` to make proxy transfers from the
+  `Parent_Account` to the `Child_Account`
 - [ ] Invoke the `withdraw` function of the `AllowanceContract` using either the
   `Child_Account` or `Parent_Account`
 
 While performing the above steps, you'll want to consider the amount of XLM
 you're using along the way. In Soroban, most assets are quantified using
 [Stroop][stroop]s (that is, one ten-millionth of the asset). For example, if you
-want to `xfer` 1 XLM, you'll need to supply `10000000`, `10_000_000` or `1 *
-10**7` Stroops as an argument in your invocation.
+want to `transfer` 1 XLM, you'll need to supply `10000000`, `10_000_000` or `1 *
+10**7` stroops as an argument in your invocation.
 
 Additionally, the astute observer might notice an interesting separation between
 the Parent's asset balance and the approved allowance the contract has access to
 at any given time. For example you could have a balance of  100,000 XLM in the
-Parent account, but only `incr_allow` a "first tranche" to the contract of
-10,000 XLM. Then the contract - depending on the `init` arguments passed - might
-`withdraw` 5,000 XLM during each successful invocation. The contract will only
-ever be able to proxy from the parent to the child as determined by the contract
-arithmetic, but this flexibility allows the parent to more safely and sensibly
-control the flow of funds. All the levers! You **are** the man behind the
-curtain!
+Parent account, but only `increase_allowance` a "first tranche" to the contract
+of 10,000 XLM. Then the contract - depending on the `init` arguments passed -
+might `withdraw` 5,000 XLM during each successful invocation. The contract will
+only ever be able to proxy _from_ the parent _to_ the child as determined by the
+contract arithmetic, but this flexibility allows the parent to more safely and
+sensibly control the flow of funds. All the levers! You **are** the man behind
+the curtain!
 
 Finally, given this flexibility, great care should be taken when calling the
 various invocations, as you don't want to enable a `withdraw` to take place that

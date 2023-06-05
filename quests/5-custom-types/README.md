@@ -15,7 +15,7 @@ today you're going to be _writing_ some actual Rust in your contract!
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`4ab5832a42949921d489e3598ec62043da78cb84717f9d0308317368651390ad` so we can
+`11a13ca5d9a103689e68f612cc6748c68a5681abe11adb5e9242b30cb9e0ed99` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -58,7 +58,7 @@ But, again, please: **Read the code!!** There is important stuff that you need
 to know inside of there. (Plus, we worked really hard on it, and you should
 totally use it to the fullest extent!)
 
-_Bonus_: You've heard us say you should "read `lib.rs`" like a hundred times by
+_Bonus:_ You've heard us say you should "read `lib.rs`" like a hundred times by
 now. But today there's a fancy new `types.rs` file you should take a gander at.
 
 ### Custom Types in Rust
@@ -133,10 +133,10 @@ of `struct` types and `enum` types, though there are a few different conventions
 used to define those types. The broad categories of custom types you can create
 are:
 
-- [Struct with Named Fields][struct-named]
-- [Struct with Unnamed Fields][struct-unnamed]
-- [Enum with Unit and Tuple Variants][enum-unit-tuple]
-- [Enum with Integer Variants][enum-integer]
+- [`Struct` with Named Fields][struct-named]
+- [`Struct` with Unnamed Fields][struct-unnamed]
+- [`Enum` with Unit and Tuple Variants][enum-unit-tuple]
+- [`Enum` with Integer Variants][enum-integer]
 
 [struct-named]: https://soroban.stellar.org/docs/learn/custom-types#structs-with-named-fields
 [struct-unnamed]: https://soroban.stellar.org/docs/learn/custom-types#structs-with-unnamed-fields
@@ -160,8 +160,8 @@ what error you were receiving (and why) during a previous quest.
 ### Create Your Custom Types
 
 Ok, that was some **great** educational content, but we're back on track! For
-this quest, you must create and then invoke the following custom types in your
-contract:
+this quest, you must create and then use in an invocation from the soroban-cli
+the following custom types in your contract:
 
 #### Rectangle
 
@@ -195,8 +195,8 @@ soroban contract invoke \
 
 #### User
 
-The `User` type must be a `struct` with `name`, `age`, and `pet` fields,
-corresponding to `Bytes`, `u32`, and `Animal` values, respectively.
+The `User` type must be a `struct` with `name`, `age`, `pet`, and `food` fields,
+corresponding to `Bytes`, `u32`, `Animal`, and `String` values, respectively.
 
 Invoke the `c_user` function to create a `User` using something like:
 
@@ -205,7 +205,18 @@ soroban contract invoke \
     --id <contract-id> \
     -- \
     c_user \
-    --_user '{"name":"<a-hex-encoded-string>","age":<a-u32-integer>,"pet":<an-animal-variant>}'
+    --_user '{"name":"<a-hex-encoded-string>","age":<a-u32-integer>,"pet":<an-animal-variant>,"food":"<a-string-can-be-as-long-as-you-want-it-to-be-yay-strings>"}'
+```
+
+The `String` type is a relatively new type to be implemented in Soroban, and it
+has proven to be a very valuable addition. On the rust side of things, a Soroban `String`
+is stored as a growable array of `u8`s. They're still quite easy to create, however:
+
+```rust
+use soroban_sdk::{Env, String};
+let env = Env::default();
+let msg = "a message";
+let s = String::from_slice(&env, msg);
 ```
 
 #### RGB
@@ -246,7 +257,30 @@ The `Participant` type must be an `enum` with single-value tuple variants as
 follows:
 
 - An "Account" variant with an `Address` type
-- A "Contract" variant with a `BytesN<32>` type
+- A "Contract" variant with an `Address` type
+
+The `Address` type is a universal opaque identifier that can be useful for input
+arguments, authentication, data keys, and more. It is _opaque_ in the sense that
+while it might represent a Stellar account, or a Stellar contract, you can treat
+it the same no matter what type of `Address` you're dealing with.
+
+For each quest so far, you've been invoking contracts, and passing a hex string
+for the contract's `--id` argument. The `contract_id` and the `contract_address`
+both represent the same underlying data, and you can think of them as though
+they are interchangeably. Converting between the two representations can be done
+using [this very simple endpoint][strkey-hex]. Use it like this:
+
+- `https://rpciege.com/convert/<hex-encoded-contract-id>` will return to you the
+  corresponding `contract_address`
+- `https://rpciege.com/convert/<strkey-contract-address>` will return to you the
+  corresponding `contract_id`
+
+To make sure we're on the same page, here's those two values for native Lumens
+on Futurenet:
+
+- Contract
+  ID: `d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813`
+- Contract Address: `CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ`
 
 Invoke the `c_part` function to create an account `Participant` using something
 like:
@@ -267,7 +301,7 @@ soroban contract invoke \
     --id <contract-id> \
     -- \
     c_part \
-    --_participant '{"Contract":"<contract-id-hex>"}'
+    --_participant '{"Contract":"<stellar-contract-c-address>"}'
 ```
 
 #### RoyalCard
@@ -320,8 +354,8 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `4ab5832a42949921d489e3598ec62043da78cb84717f9d0308317368651390ad`,
-supplying your own contract ID as the `--contract_id` argument. We'll
+with the ID `11a13ca5d9a103689e68f612cc6748c68a5681abe11adb5e9242b30cb9e0ed99`,
+supplying your own contract ID as the `--contract_address` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
 
@@ -353,3 +387,4 @@ got a couple of suggestions for where you might go from here.
 [rust-enums]: https://doc.rust-lang.org/book/ch06-00-enums.html
 [error-enums]: https://soroban.stellar.org/docs/learn/errors#error-enums
 [soroban-dialect]: https://soroban.stellar.org/docs/learn/rust-dialect
+[strkey-hex]: https://rpciege.com/convert/

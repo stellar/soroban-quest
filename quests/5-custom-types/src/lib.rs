@@ -16,6 +16,8 @@ pub struct TypesContract;
 /// can submit a valid argument for your custom type.
 #[contractimpl]
 impl TypesContract {
+    // The `_` preceding the arguments in these functions is just how we tell
+    // rust that it's expected for those arguments to be unused in the function.
     pub fn c_rect(_env: Env, _rect: Rectangle) {}
     pub fn c_animal(_env: Env, _animal: Animal) {}
     pub fn c_user(_env: Env, _user: User) {}

@@ -4,15 +4,15 @@ use super::{TypesContract, TypesContractClient};
 
 use super::types::*;
 
-use soroban_sdk::{bytes, testutils::Address as _, Address, Env};
+use soroban_sdk::{bytes, testutils::Address as _, Address, Env, String};
 
 #[test]
 fn test_types() {
     // We register the TypesContract contract in a default Soroban environment,
     // and build a client that can be used to invoke the contract.
     let env = Env::default();
-    let contract_id = env.register_contract(None, TypesContract);
-    let client = TypesContractClient::new(&env, &contract_id);
+    let contract_address = env.register_contract(None, TypesContract);
+    let client = TypesContractClient::new(&env, &contract_address);
 
     // We create a Rectangle `rect` using our custom type and invoke `c_rect`
     let rect = Rectangle {
@@ -32,6 +32,7 @@ fn test_types() {
         name: bytes!(&env, 0x7374656c6c6172),
         age: 8,
         pet: Animal::Dog,
+        food: String::from_slice(&env, "I really like to eat pizza! I think it's my favorite food in all the world."),
     };
     client.c_user(&user);
 
@@ -50,7 +51,7 @@ fn test_types() {
     client.c_part(&participant);
 
     // We also invoke `c_part` using our existing `contract_id`
-    let contract_participant = Participant::Contract(contract_id);
+    let contract_participant = Participant::Contract(contract_address);
     client.c_part(&contract_participant);
 
     // We create a RoyalCard `jack` using our custom type and invoke `c_card`
