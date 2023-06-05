@@ -20,6 +20,7 @@ the `get` function from your `DataStore` contract.**
   - [Importing Contracts](#importing-contracts)
   - [Using a Contract Client](#using-a-contract-client)
   - [Passing Arguments to Soroban CLI](#passing-arguments-to-soroban-cli)
+  - [Contract Identification: StrKey `Address` vs. Hex `ID`](#contract-identification-strkey-address-vs-hex-id)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
 
@@ -86,10 +87,10 @@ mod contract_a {
 }
 ```
 
-**Note**: When importing a contract file into another contract, it's a good time
-to think about whether or not you want to optimize your build process. You can
-read more about [Optimizing Builds][optimizing] in the Soroban docs, or you
-could come experiment with us in [fca00c][fca00c].
+> _Note:_ When importing a contract file into another contract, it's a good time
+> to think about whether or not you want to optimize your build process. You can
+> read more about [Optimizing Builds][optimizing] in the Soroban docs, or you
+> could come experiment with us in [fca00c][fca00c].
 
 #### **Caveat on Contract Compilation Order** <!-- omit in toc -->
 
@@ -149,9 +150,9 @@ soroban contract invoke \
 
 In the above example, the values are specified simply as strings. There are
 other situations where that may not be possible, and you'll have to use
-something a bit _fancier_. Suppose you wish to supply an `--address` argument to
-a contract's function, but you want to use a contract id address, instead of a
-"regular" account address:
+something a bit _fancier_. Suppose you wish to supply an `Address` argument to a
+contract's function, but you want to use some other contract's address, instead
+of a "regular" account address:
 
 ```bash
 soroban contract invoke \
@@ -165,12 +166,40 @@ soroban contract invoke \
 
 You can see that it's very much like a JSON object. Often the `soroban` cli is
 smart enough to figure out what kind of argument you're _trying_ to supply, and
-doing the JSON for you. It will definitely let you know when it can't, though.
+doing the JSON for you. It will let you know when it can't, though.
 
-Additionally, for the `Address` type, there's an exciting development in the
-works in the `StrKey` implementation in the Soroban SDKs. Both the JavaScript
-and Python SDKs implement a "contract key" type of key, allowing you to turn
-your contract id hex string into a familiar-looking key like this:
+### Contract Identification: StrKey `Address` vs. Hex `ID`
+
+When invoking a contract from the command line, you'll need to use the
+hex-encoded `contract_id` to tell the soroban-cli which contract you're
+invoking. Another, friendlier-to-read representation of this same contract
+identifying data is becoming increasingly common: the StrKey Address
+representation.
+
+This will look familiar if you've used Stellar's public/secret keys before. A
+contract's Address uses the same length and character set as the other types of
+keys, but starts with a `C`. Both the `contract_id` and `contract_address`
+represent the _same underlying data_, and can be thought of as interchangeable.
+(_Most_ places in soroban-cli can accept either representation when an `Address`
+type is specified.)
+
+Converting between the two representations can be done using [this very simple
+endpoint][strkey-hex]. Use it like this:
+
+- `https://rpciege.com/convert/<hex-encoded-contract-id>` will return to you the
+  corresponding `contract_address`
+- `https://rpciege.com/convert/<strkey-contract-address>` will return to you the
+  corresponding `contract_id`
+
+To make sure we're on the same page, here's those two values for native Lumens
+on Futurenet:
+
+- Contract
+  ID: `d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813`
+- Contract Address: `CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ`
+
+Using this kind of contract address, the above example invocation could look
+like this:
 
 ```bash
 soroban contract invoke \
@@ -179,11 +208,10 @@ soroban contract invoke \
     --id 1 \
     -- \
     foo \
-    --address CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ
+    --address <strkey-contract-address>
 ```
 
-> _Note:_ At the time of writing this type of "contract key" does not work when
-> supplied as the `--id` of a contract you're trying to invoke.
+Much better, right!?
 
 ## Further Reading
 
@@ -215,3 +243,4 @@ got a couple of suggestions for where you might go from here.
 [persisting-data]: https://soroban.stellar.org/docs/learn/persisting-data
 [gs-hello-world]: https://soroban.stellar.org/docs/getting-started/hello-world#run-on-sandbox
 [fca00c]: https://fastcheapandoutofcontrol.com
+[strkey-hex]: https://rpciege.com/convert/
