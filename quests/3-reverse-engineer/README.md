@@ -7,7 +7,7 @@ think you're really ready for it. Good luck!
 
 **For this quest, we have already deployed the `ReverseEngineerContract` using
 the account `GB5AM4XMNNFVPTAANNKMYSUIYTAYFXVLEFB7EQ46GM2T23YTJFLV6SFY`. You must
-_find_ the `contractId` for this contract. Then you must invoke the correct
+_find_ the `contract_id` for this contract. Then you must invoke the correct
 function in that contract, while providing the correct argument.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -17,10 +17,10 @@ function in that contract, while providing the correct argument.**
 - [The Task at Hand](#the-task-at-hand)
   - [Explore the Contract Code](#explore-the-contract-code)
   - [Using `soroban` CLI to Decode XDR](#using-soroban-cli-to-decode-xdr)
-  - [How do I find a `contractId`?](#how-do-i-find-a-contractid)
-    - [Find an Operation](#find-an-operation)
-    - [View the Transaction Result](#view-the-transaction-result)
-    - [Sidenote About Reading Deployed WASM Binaries](#sidenote-about-reading-deployed-wasm-binaries)
+  - [How do I find a `contract_id`?](#how-do-i-find-a-contract_id)
+    - [**Find an Operation**](#find-an-operation)
+    - [**View the Transaction Result**](#view-the-transaction-result)
+    - [**Sidenote About Reading Deployed WASM Binaries**](#sidenote-about-reading-deployed-wasm-binaries)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
 
@@ -62,16 +62,18 @@ format: transactions, ledger data, history, operation results, and the list goes
 on. XDR is a compact, network-efficient, binary format. While it's great for
 many things, it's not human readable, so it can be pretty confusing.
 
-Thankfully, the [`soroban` CLI][soroban-cli] makes it pretty easy to get decoded,
-useful, and understandable output from supplied XDR. For example, when a
-transaction is submitted to the Network, it's submitted in XDR format. Here is
+Thankfully, the [`soroban` CLI][soroban-cli] makes it pretty easy to get
+decoded, useful, and understandable output from supplied XDR. For example, when
+a transaction is submitted to the Network, it's submitted in XDR format. Here is
 how you could use the `soroban lab xdr dec` command to decode a Friendbot
 transaction XDR into a more human-readable format.
 
 ```bash
 soroban lab xdr dec \
     --type TransactionEnvelope \
-    --xdr AAAAAgAAAAAg/Urwj5sX3lcErGxOJSjAofo1SGkACmoQB/KNAwY2tgAPQkAABSftAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAACiKgMVCPVFvbaPFkkWIphKwMOdzHS3HElevmATRdtPTAAAABdIdugAAAAAAAAAAAIDBja2AAAAQG46xy/IZFJbVxktZ8Wish182qmfF7oyE1F5BSZgkwkak/UnW9M+PsEiammvQk9wFZzPs4kcUmv7M2UesbygpQ2GVuCcAAAAQH3c394fGfh7Wu9TS2+ngWsKFypVRX9uU1+NHa/CJ8/GVxFfekkZA3qCkaJFrtOFgcNJvHKukVk/6idM7qxQxQc=
+    --xdr AAAAAgAAAAB/+rzugobS5qPnSeG0CVkULwRl5Cc9kcg/XUHIdb4yCQAPQkAAAAHHAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAADUMzT2qToPBg3PknXD1EvFboyl8UexTQeoQmbHCGOYgwAAABdIdugAAAAAAAAAAAJ1vjIJAAAAQPR0KSBc+o4+MepdKaLIJxVHFrpal/ZDuVptfmz59KDleWyvavj/TUMOIwdB1supznkZPBvs56BEgMMsQqlyPwGGVuCcAAAAQEu+jREyXoJNXjyUqkHPeqL6uu+bHd0u69Ezvl++PcDnTiIqS2PGy9Ub4wFDsKGP1K6CE89fXDp3VXlwVrcBNgQ=
+# There is currently a bug that may give you an error when using soroban-cli to
+# decode XDR values. More info: https://github.com/stellar/soroban-tools/issues/670
 ```
 
 I'll omit the output here, in an attempt to keep this README un-cluttered. But,
@@ -83,19 +85,19 @@ There are many different "types" you could use the `soroban` cli to decode. If
 you run `soroban lab xdr dec --help` in your terminal, you'll see all the
 different options that are available to you.
 
-### How do I find a `contractId`?
+### How do I find a `contract_id`?
 
 Have you ever heard the expression "There is more than one way to skin a cat"? I
 know, it's nasty and gross! I don't know who wants to have even _one_ way to
 skin a cat!! Anyway, I'm getting sidetracked...
 
-There are a few different ways you could find a `contractId` for an already
+There are a few different ways you could find a `contract_id` for an already
 deployed contract. Currently, all of them involve decoding XDR. Decoding can be
 done using the `soroban` cli, or the Stellar Laboratory, or RunKit, or you could
 come up with your own way to decode/encode the base64 as needed. But they all
 start with finding the correct XDR to decode.
 
-The following sensible approach to finding a `contractId` will start by finding
+The following sensible approach to finding a `contract_id` will start by finding
 a relevant `operation` for the account in question, and then the corresponding
 `transaction`. This definitely isn't the only way it could be done (it's not
 even the quickest or easiest), but it _is_ straight-forward, and easy to follow.
@@ -116,14 +118,14 @@ that [here][ops].)
 
 </details>
 
-**Reminder**: For the _actual_ quest, you are looking for a contract that was
+**Reminder:** For the _actual_ quest, you are looking for a contract that was
 deployed by this address:
 `GB5AM4XMNNFVPTAANNKMYSUIYTAYFXVLEFB7EQ46GM2T23YTJFLV6SFY`.
 
 When the results appear, we're going to look for an operation where `type` is
-`ContractIdTypeContractIdFromSourceAccount`, **and** where `function` is
-`HostFunctionTypeHostFunctionTypeCreateContract` (i.e., this operation is an
-account deploying a smart contract). Our example operation:
+`invoke_host_function`, **and** where the `host_functions` array contains a
+`create_contract` entry (i.e., this operation is an account deploying a smart
+contract). Our example operation:
 
 ```json5
 {
@@ -131,32 +133,46 @@ account deploying a smart contract). Our example operation:
     "self": {...},
     // This is the link to the transaction you want to use (again, this is only an example)
     "transaction": {
-      "href": "https://horizon-futurenet.stellar.org/transactions/c9dadf94f40298246517fed4b7e99fec8a9a80acb6fd370f3adb0675f0e11df5"
+      "href": "https://horizon-futurenet.stellar.org/transactions/dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761"
     },
     "effects": {...},
     "succeeds": {...},
     "precedes": {...}
   },
-  "id": "1478194599301121",
-  "paging_token": "1478194599301121",
+  "id": "491408683175937",
+  "paging_token": "491408683175937",
   "transaction_successful": true,
-  "source_account": "GBFRF5JNEDHAJZACKOHXR7DCWUKZHPHSRYMJB27DYBG2XZV2IFVPZWPM",
-  // We want to find an operation where (type === "ContractIdTypeContractIdFromSourceAccount")
-  "type": "ContractIdTypeContractIdFromSourceAccount",
+  "source_account": "GBVYFLZUNE5WXU3LNRMBGF3Q64L7FJPFHNU5COWNL2UFLB7VXIOBJA3C",
+  // We want to find an operation where (type === "invoke_host_function")
+  "type": "invoke_host_function",
   "type_i": 24,
-  "created_at": "2023-04-25T20:49:03Z",
-  "transaction_hash": "c9dadf94f40298246517fed4b7e99fec8a9a80acb6fd370f3adb0675f0e11df5",
-  "parameters": null,
-  // AND this operation should be where (function === "HostFunctionTypeHostFunctionTypeCreateContract")
-  "function": "HostFunctionTypeHostFunctionTypeCreateContract",
-  "footprint": "AAAAAQAAAAe9E1Lv+HbDsXQJ6liSwwlXX+cs6ZyvZUE/xMlNfrrGYAAAAAEAAAAGDe7RV6/7W06acqH0ByGvdJTc2FoK77/7ZrpR71xdmYEAAAAU"
+  "created_at": "2023-05-31T16:21:39Z",
+  "transaction_hash": "dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761",
+  // AND the array of host_functions should include one where (type === "create_contract")
+  "host_functions": [
+    {
+      "type": "create_contract",
+      "parameters": [
+        {
+          "from": "source_account",
+          "type": "string"
+        },
+        {
+          "salt": "61272459947224228775199236495899323097085701657772794745589727615095339805129",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "asset_balance_changes": []
 }
 ```
 
 **Note**: You could also use this same technique to find some pretty useful
-information from `HostFunctionTypeHostFunctionTypeInvokeContract` operations.
-You could use those operations to see exactly what a given account used to
-invoke a given contract. Check out [this video][twitch] to learn a bit more!
+information from operations where `invoke_contract` is in the array of host
+functions. You could use those operations to see exactly what a given account
+used to invoke a given contract. Check out [this video][twitch] to learn a bit
+more!
 
 #### **View the Transaction Result**
 
@@ -170,14 +186,14 @@ into your browser, or you can [click here][tx].)
 In the transaction information, you're looking for the `result_meta_xdr` field.
 This contains the result from the transaction, as well as what has changed on
 the network as a result of the transaction. Most pertinent to this quest, it
-will contain the `contractId` of the deployed contract. In the Lab, if you click
-on that XDR string, it will take you to the XDR viewer, where you can find the
-`contractId` (don't forget to [decode the base64][twitch-clip] somehow).
+will contain the `contractId` of the deployed contract. In the Lab, if you
+click on that XDR string, it will take you to the XDR viewer, where you can find
+the `contractId` (don't forget to [decode the base64][twitch-clip] somehow).
 
 <details>
 <summary>View screenshot</summary>
 
-![Transaction Result Meta XDR](https://user-images.githubusercontent.com/2024293/220414961-059c14cb-d12e-415a-8fe3-96127ed2ac14.png)
+![Transaction Result Meta XDR](https://user-images.githubusercontent.com/2024293/242346996-7ae90c42-0fb0-40b7-b15f-dd37df344da1.png)
 
 </details>
 
@@ -193,16 +209,16 @@ useful nonetheless.
 <summary>Are you curious? Go ahead. Read on...</summary>
 
 The reason we've taken you to see the full transaction meta is to point out that
-included in this XDR is also the `contractCode.wasmId`! Yeah, that's right. The
-ID of the installed WASM binary!
+included in this XDR is also the `wasmId`! Yeah, that's right. The ID of the
+installed WASM executable!
 
 In short, when you `deploy` a soroban contract, two things happen: first the
 code is "installed" (the wasm byte-code is uploaded, identified by its hash),
-then it is "deployed" (a `contractId` is created that points to the installed
+then it is "deployed" (a `contract_id` is created that points to the installed
 code's hash).
 
 It's a bit of a journey from there, and I highly suggest you take a trip to
-[this part][get-wasm-code] of the [`getLedgerEntry` method][gle] on the
+[this part][get-wasm-code] of the [`getLedgerEntries` method][gle] on the
 Soroban-RPC docs. You could ultimately retrieve the binary byte-code, decode it
 from base64 into hex, and then store it as a binary `.wasm` file locally.
 
@@ -238,14 +254,14 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [xdr]: https://developers.stellar.org/docs/encyclopedia/xdr
-[soroban-cli]: https://soroban.stellar.org/docs/reference/command-line
+[soroban-cli]: https://soroban.stellar.org/docs/reference/soroban-cli
 [lab]: https://laboratory.stellar.org/#?network=futurenet
-[ops]: https://horizon-futurenet.stellar.org/accounts/GBFRF5JNEDHAJZACKOHXR7DCWUKZHPHSRYMJB27DYBG2XZV2IFVPZWPM/operations?order=desc
-[tx]: https://horizon-futurenet.stellar.org/transactions/c9dadf94f40298246517fed4b7e99fec8a9a80acb6fd370f3adb0675f0e11df5
+[ops]: https://horizon-futurenet.stellar.org/accounts/GBVYFLZUNE5WXU3LNRMBGF3Q64L7FJPFHNU5COWNL2UFLB7VXIOBJA3C/operations?order=desc
+[tx]: https://horizon-futurenet.stellar.org/transactions/dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761
 [twitch]: https://www.twitch.tv/videos/1642865389?t=00h23m14s
 [twitch-clip]: https://clips.twitch.tv/FragileSneakyOstrichGivePLZ-DK9h3VVmUjqVDDZG
 [twitch-full]: https://www.twitch.tv/videos/1642865389
 [soroban-rpc]: https://soroban.stellar.org/api
 [install-soroban]: https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
-[gle]: https://soroban.stellar.org/api/methods/getLedgerEntry
-[get-wasm-code]: https://soroban.stellar.org/api/methods/getLedgerEntry#requesting-a-contracts-wasm-code
+[gle]: https://soroban.stellar.org/api/methods/getLedgerEntries
+[get-wasm-code]: https://soroban.stellar.org/api/methods/getLedgerEntries#requesting-a-contracts-wasm-code

@@ -12,8 +12,8 @@ fn test_q3() {
     // Here we register the ReverseEngineer contract in a default Soroban
     // environment, and build a client that can be used to invoke the contract.
     let env = Env::default();
-    let contract_id = env.register_contract(None, ReverseEngineerContract);
-    let client = ReverseEngineerContractClient::new(&env, &contract_id);
+    let contract_address = env.register_contract(None, ReverseEngineerContract);
+    let client = ReverseEngineerContractClient::new(&env, &contract_address);
 
     // We invoke the ReverseEngineer contract's `submit()` function, providing a
     // value of "wrong" and we expect the contract to return `false`.
