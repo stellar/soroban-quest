@@ -31,7 +31,7 @@ tasks:
       cargo build --package soroban-hello-world-contract --target wasm32-unknown-unknown --release
       cargo test --package soroban-hello-world-contract
     command: |
-      if [ -z ${QUEST+x} ]; then cd quests/${QUEST}*; fi
+      if [[ ${QUEST} ]]; then cd quests/${QUEST}*; fi
       gp open README.md
       clear
 
