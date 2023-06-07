@@ -31,7 +31,12 @@ tasks:
       cargo build --package soroban-hello-world-contract --target wasm32-unknown-unknown --release
       cargo test --package soroban-hello-world-contract
     command: |
-      gp open README.md
+      if [[ ${QUEST} ]]
+      then
+        gp open quests/${QUEST}*/README.md
+      else
+        gp open README.md
+      fi
       clear
 
 vscode:
