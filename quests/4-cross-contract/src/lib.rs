@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contractimpl, Address, Bytes, Env};
+use soroban_sdk::{contractimpl, Address, Bytes, Env, contract};
 
 /// We import the compiled binary from our auth store contract in Quest 2,
 /// allowing us to use that contract's types and client in this contract.
@@ -18,6 +18,7 @@ pub trait StorageCallTrait {
     fn inv_get(env: Env, store_address: Address, owner: Address) -> Bytes;
 }
 
+#[contract]
 pub struct CrossContractCallContract;
 
 /// The `CrossContractCall` contract implements the trait we defined earlier,

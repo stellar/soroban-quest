@@ -1,7 +1,8 @@
 #![no_std]
 use error::ContractError;
-use soroban_sdk::{bytes, contractimpl, panic_with_error, Address, Bytes, Env};
+use soroban_sdk::{bytes, contractimpl, panic_with_error, Address, Bytes, Env, contract};
 
+#[contract]
 pub struct DataStoreContract;
 
 /// The `DataStoreContract` contains both functions our contract can run when it
@@ -31,7 +32,7 @@ impl DataStoreContract {
 
         // We then use `env.storage().set()` to store the value that was passed,
         // associating it with the `user` Address.
-        env.storage().set(&user, &value);
+        env.storage().persistent().set(&user, &value);
 
         Ok(()) // return ok if function call succeeded
     }
@@ -42,9 +43,9 @@ impl DataStoreContract {
     /// data associated, return Bytes of length 0.
     pub fn get(env: Env, owner: Address) -> Bytes {
         env.storage()
+            .persistent()
             .get(&owner)
-            .unwrap_or_else(|| Ok(bytes!(&env))) // This uses `unwrap_or_else` and closure which only evaluates Bytes(0) when necessary.
-            .unwrap()
+            .unwrap_or_else(|| bytes!(&env)) // This uses `unwrap_or_else` and closure which only evaluates Bytes(0) when necessary.
     }
 }
 

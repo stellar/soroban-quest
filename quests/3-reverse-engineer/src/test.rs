@@ -2,7 +2,7 @@
 
 use super::*;
 
-use soroban_sdk::Env;
+use soroban_sdk::{Env, symbol_short};
 
 /// We only have one test this time around. There is a single function in our
 /// contract, and it only takes a single argument. So, we are only testing that
@@ -17,7 +17,7 @@ fn test_q3() {
 
     // We invoke the ReverseEngineer contract's `submit()` function, providing a
     // value of "wrong" and we expect the contract to return `false`.
-    assert!(!client.submit(&Symbol::short("wrong")));
+    assert!(!client.submit(&symbol_short!("wrong")));
 
     // We invoke the the function this time, with the correct secret word, and
     // we expect the contract to return `true` this time.

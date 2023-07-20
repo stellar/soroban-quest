@@ -6,7 +6,7 @@
 /// As of `soroban_sdk` v0.8.x, the `token` spec is included within the SDK
 /// itself! No more keeping track of and importing the Stellar Asset Contract's
 /// wasm file. Just `use` it directly from the SDK! How cool!?
-use soroban_sdk::{contracterror, contractimpl, contracttype, token, Address, Env};
+use soroban_sdk::{contract, contracterror, contractimpl, contracttype, token, Address, Env};
 
 /// An `Error` enum is used to meaningfully and concisely share error
 /// information with a contract user.
@@ -43,6 +43,7 @@ pub enum StorageKey {
 /// out of the way.
 const SECONDS_IN_YEAR: u64 = 365 * 24 * 60 * 60; // = 31,536,000 seconds (fyi)
 
+#[contract]
 pub struct AllowanceContract;
 
 /// Seeing a `trait` may feel familiar. We used one in Quest 4, as well. When
@@ -84,7 +85,7 @@ impl AllowanceTrait for AllowanceContract {
         // been invoked. Even though a few different `StorageKey`s are set
         // during init, it's enough to only check for one.
         let token_key = StorageKey::TokenAddress;
-        if e.storage().has(&token_key) {
+        if e.storage().persistent().has(&token_key) {
             return Err(Error::ContractAlreadyInitialized);
         }
 
@@ -104,17 +105,17 @@ impl AllowanceTrait for AllowanceContract {
 
         // We are setting up all the data that this contract will store on the
         // ledger here. Nothing fancy here, just the same thing a few times.
-        e.storage().set(&token_key, &token_address);
-        e.storage().set(&StorageKey::Parent, &parent);
-        e.storage().set(&StorageKey::Child, &child);
-        e.storage().set(&StorageKey::Amount, &amount);
-        e.storage().set(&StorageKey::Step, &step);
+        e.storage().persistent().set(&token_key, &token_address);
+        e.storage().persistent().set(&StorageKey::Parent, &parent);
+        e.storage().persistent().set(&StorageKey::Child, &child);
+        e.storage().persistent().set(&StorageKey::Amount, &amount);
+        e.storage().persistent().set(&StorageKey::Step, &step);
 
         // As an act of goodwill, we set the `Latest` withdraw to be in the past
         // and allow the `Child` to immediately make the first withdrawal. Just
         // to get them started, ya know.
         let current_ts = e.ledger().timestamp();
-        e.storage().set(&StorageKey::Latest, &(current_ts - step));
+        e.storage().persistent().set(&StorageKey::Latest, &(current_ts - step));
         // This is the first time we've used `Env.ledger()` in these contracts.
         // The Soroban environment, by design, doesn't have a tremendous amount
         // of context about the current state of the Stellar network. One of the
@@ -129,12 +130,20 @@ impl AllowanceTrait for AllowanceContract {
         // Conversely from `init`, we want to make sure the contract _has_ been
         // initialized before a withdraw can be made.
         let token_key = StorageKey::TokenAddress;
-        if !e.storage().has(&token_key) {
+        if !e.storage().persistent().has(&token_key) {
             return Err(Error::ContractNotInitialized);
         }
 
-        let child: Address = e.storage().get(&StorageKey::Child).unwrap().unwrap();
-        let parent: Address = e.storage().get(&StorageKey::Parent).unwrap().unwrap();
+        let child: Address = e
+            .storage()
+            .persistent()
+            .get(&StorageKey::Child)
+            .unwrap();
+        let parent: Address = e
+            .storage()
+            .persistent()
+            .get(&StorageKey::Parent)
+            .unwrap();
 
         // This part is one of the contract's really nifty tricks. We are using
         // `require_auth()` in this contract _only_ to make quest verification
@@ -155,21 +164,33 @@ impl AllowanceTrait for AllowanceContract {
 
         // We create a client to the token contract that we'll be able to use to
         // make the transfer later on. This should look familiar to Quest 4.
-        let token_address: Address = e.storage().get(&token_key).unwrap().unwrap();
+        let token_address: Address = e.storage().persistent().get(&token_key).unwrap();
         let client = token::Client::new(&e, &token_address);
 
         // We do some really quick maths to figure out a couple things:
         // - `iterations` - the number of withdraws that can be made in a year
         // - `withdraw_amount` - the amount withdrawn for every iteration
-        let step: u64 = e.storage().get(&StorageKey::Step).unwrap().unwrap();
+        let step: u64 = e
+            .storage()
+            .persistent()
+            .get(&StorageKey::Step)
+            .unwrap();
         let iterations = SECONDS_IN_YEAR / step;
-        let amount: i128 = e.storage().get(&StorageKey::Amount).unwrap().unwrap();
+        let amount: i128 = e
+            .storage()
+            .persistent()
+            .get(&StorageKey::Amount)
+            .unwrap();
         let withdraw_amount = amount / iterations as i128;
 
         // Some more quick maths to make sure the `Latest` withdraw occurred _at
         // least_ `step` seconds ago. We don't want them draining the piggy bank
         // all at once, after all.
-        let latest: u64 = e.storage().get(&StorageKey::Latest).unwrap().unwrap();
+        let latest: u64 = e
+            .storage()
+            .persistent()
+            .get(&StorageKey::Latest)
+            .unwrap();
         if latest + step > e.ledger().timestamp() {
             return Err(Error::ChildAlreadyWithdrawn);
         }
@@ -193,7 +214,9 @@ impl AllowanceTrait for AllowanceContract {
         // This allows the child to "catch up" on any missed withdrawals. Very
         // kind of you. You're such a good parent!
         let new_latest = latest + step;
-        e.storage().set(&StorageKey::Latest, &new_latest);
+        e.storage()
+            .persistent()
+            .set(&StorageKey::Latest, &new_latest);
 
         Ok(())
     }
