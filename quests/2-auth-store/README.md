@@ -17,8 +17,13 @@ retrieve that same data.**
 - [How to Play](#how-to-play)
 - [The Task at Hand](#the-task-at-hand)
   - [Explore the Contract Code](#explore-the-contract-code)
+  - [Expiration and Storage Types](#expiration-and-storage-types)
+    - [Temporary Storage](#temporary-storage)
+    - [Persistent Storage](#persistent-storage)
+    - [Instance Storage](#instance-storage)
   - [Storing Data](#storing-data)
   - [Retrieving Data](#retrieving-data)
+  - [Bumping Lifetimes](#bumping-lifetimes)
   - [Simple Authentication](#simple-authentication)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
@@ -52,20 +57,98 @@ what the contract is up to.
 your understanding of Soroban, if you read through those files, and take the
 time to understand what's happening.
 
+### Expiration and Storage Types
+
+> **Note**: Preview 10 saw significant development and breaking changes due to
+> the initial implementations of state expiration and a tiered set of storage
+> types. We've updated this quest to include those changes. Although changes may
+> occur in future releases, this document is current at the time of writing.
+
+Do you know what is _incredibly unique_ and _amazingly powerful_ about Soroban?
+The answer might surprise you: [**State expiration**][state-expiration]. A
+real-world problem within the blockchain space is that of "ledger bloat" (i.e.,
+the indefinite storage of enormous amounts of data that are supposed to live on
+the blockchain "forever.") Simply put, there is no reasonable way for users or
+developers to make a **one-time** payment, and have their data live on the
+blockchain until the sun burns out. Whether you think about it from an economic
+standpoint, through a sustainability lens, or just are concerned about making
+the network operate in a healthy manner: there _has_ to be some mechanism to
+"prune" stale entries on the blockchain.
+
+Soroban is tackling this problem head-on with it's novel system of "rent" for
+ledger entries. Each ledger entry gets to live on the blockchain as long as it
+has a sufficient rent balance. Even if it does run out of rent, the persistent
+data entry can be restored! This means the ledger data acts _as if_ it is stored
+in the ledger forever, without requiring nearly as much long-term overhead to
+keep the network operating. Of course, if you don't want your ledger entries to
+expire, you can "bump" them at any time to keep the rent paid up.
+
+Soroban has three types of Storage: `Temporary`, `Persistent`, and `Instance`.
+
+#### Temporary Storage
+
+- This is the cheapest of all storage types.
+- An unlimited amount of temporary storage is available to each contract.
+- It's designed for data that may only need to exist for a limited time. (e.g.,
+  price oracles, signatures, etc.)
+- The default "lifetime" for temporary storage is **16 ledgers** (with an
+  estimated 5 seconds per ledger, that lifetime is roughly 80 seconds).
+- The entry will expire once the lifetime ends (unless a `bump` has been invoked
+  on it). Once expired, the the ledger entry is **permanently** deleted.
+- Later on, the entry _can_ be re-created, but it _cannot_ be restored.
+
+#### Persistent Storage
+
+- This is the most expensive storage type (same price as `Instance`).
+- An unlimited amount of persistent storage is available to each contract.
+- It's designed for data that is unique among each contract user, and is not
+  suitable to store temporarily. (e.g., user balances)
+- The default "lifetime" for persistent storage is **86400 ledgers** (with an
+  estimated 5 seconds per ledger, that lifetime is roughly 5 days)
+- The entry will expire once the lifetime ends (unless a `bump` has been invoked
+  on it). Once expired (which can happen without the contract instance
+  expiring), the ledger entry becomes inaccessible to the network.
+- Later on, the entry _cannot_ be re-created, but it _can_ be restored (this
+  prevents over-writing a restorable ledger entry with different data).
+
+#### Instance Storage
+
+- This is the most expensive storage type (same price as `Persistent`).
+- A limited amount of instance storage is available to each contract.
+- It's designed for "global" data that is common and shared across all
+  invocations of the contract. (e.g., admin accounts, contract metadata, etc.)
+- Shares the "lifetime" of the contract instance. If the contract instance has
+  not yet expired, the instance storage data is guaranteed to be not expired.
+  (Contract instances use the same default "lifetime" as `Persistent`).
+- The entry will expire only if the contract instance expires (unless a `bump`
+  has been invoked on the contract instance itself.) Once the contract instance
+  expires, the instance storage expires alongside it, and both become
+  inaccessible to the network.
+- Later on, the contract instance _cannot_ be re-created, but it _can_ be
+  restored (this prevents over-writing a restorable contract with different
+  data). If a contract is restored, its instance storage is restored as well.
+
 ### Storing Data
 
-Soroban uses the `Env.storage().set()` function to store data in a contract's
-ledger entries. You can think of these ledger entries as key-value storage that
-can only be accessed through the contract that owns it. You can construct a
-contract's ledger entries in many different ways. They could be made up of very
-simple elements like a symbol or number. Or, they can also be made from very
-complex vectors or maps.
+Soroban uses the `Env.storage().storage_type().set()` function (where
+`storage_type` is one of `temporary`, `persistent`, or `instance`) to store data
+in a contract's ledger entries. As a general rule, `Temporary` storage should
+only be used for data that can be easily recreated or is only valid for a period
+of time, where `Persistent` or `Instance` storage should be used for data that
+can not be recreated and should kept permanently, such as a user's token
+balance.
 
-The ledger entries for this quest will store a supplied `value` alongside an
-`Address`. Using Soroban's `Address::require_auth()` function gives us a simple
-method of authenticating a user. Only someone who could successfully sign for an
-address (and, thus, invoke the contract from the address) is permitted to store
-data in this contract as that address.
+You can think of these ledger entries as key-value storage that can only be
+accessed through the contract that owns it. You can construct a contract's
+ledger entries in many different ways. They could be made up of very simple
+elements like a symbol or number. Or, they can also be made from very complex
+vectors or maps.
+
+The `persistent` ledger entries for this quest will store a supplied `value`
+alongside an `Address`. Using Soroban's `Address::require_auth()` function gives
+us a simple method of authenticating a user. Only someone who could successfully
+sign for an address (and, thus, invoke the contract from the address) is
+permitted to store data in this contract as that address.
 
 _Invoke the contract's `put()` function to store some data into the contract's
 ledger entry for your quest account._
@@ -73,9 +156,10 @@ ledger entry for your quest account._
 ### Retrieving Data
 
 To retrieve data from within a contract's ledger entries, the
-`Env.storage().get()` function is available to us. When called with a `key` that
-corresponds to data the contract has previously stored, we get the `value`
-stored alongside it in return.
+`Env.storage().storage_type().set()` function (where `storage_type` is one of
+`temporary`, `persistent`, or `instance`) is available to us. When called with a
+`key` that corresponds to data the contract has previously stored, we get the
+`value` stored alongside it in return.
 
 The contract's `get()` function will retrieve stored data associated with any
 address. When supplied with an `Address` as an argument, this function will
@@ -83,6 +167,43 @@ search for stored data corresponding to that address.
 
 _Invoke the contract's `get()` function to retrieve contract data associated
 with your quest account._
+
+### Bumping Lifetimes
+
+For every storage entry, there is the potential to `bump()` the entry's lifetime
+to expire at some time further in the future. The Stellar network has lifetime
+values for storage types that are configurable (by means of a validator vote).
+The current set of values for these lifetime settings are listed in the
+following table. The values are listed in "number of ledgers" and a typical
+ledger will settle in an estimated 5 seconds.
+
+| Storage Type | Minimum Lifetime | Maximum Lifetime    | Default Lifetime |
+| ------------ | ---------------- | ------------------- | ---------------- |
+| Temporary    | 16 (~80 seconds) | 6,312,000 (~1 year) | 16 (~80 seconds) |
+| Persistent   | 4,096 (~5 hours) | 6,312,000 (~1 year) | 86,400 (~5 days) |
+| Instance     | 4,096 (~5 hours) | 6,312,000 (~1 year) | 86,400 (~5 days) |
+
+Because the `temporary` storage type has such a short default lifetime, our
+contract code immediately `bump()`s the storage entry to the maximum lifetime
+when it is created. This is one technique to bump ledger entries, but certainly
+not the only method. You can also utilize a [`BumpFootprintExpirationOp`][bump]
+operation inside a Stellar transaction to accomplish the same thing. The
+`soroban` CLI also has a command to help facilitate these bump transactions:
+
+```bash
+soroban contract bump \
+    --id  CARCWZOD26AJQ42VRJ3UYC3MJNGJV5UHO4VFHV5FWLVIKDCJ4CZOJXII \
+    --key KeySymbol \
+    --durability temporary \
+    --ledgers-to-expire 100
+```
+
+When you specify a new lifetime when bumping a ledger entry, it ensures that the
+expiration is _at least_ that many ledgers in the future (from the time of
+invocation). For example, if a ledger entry is bumped by 100 ledgers and the
+current lifetime is 50, the lifetime will be extended to 100. If a ledger entry
+is bumped by 100 ledgers and the current lifetime is 150, the lifetime will not
+be extended.
 
 ### Simple Authentication
 
@@ -113,5 +234,7 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [data-example]: https://soroban.stellar.org/docs/getting-started/storing-data
-[auth-example]: https://soroban.stellar.org/docs/how-to-guides/auth
-[persist-data]: https://soroban.stellar.org/docs/learn/persisting-data
+[auth-example]: https://soroban.stellar.org/docs/basic-tutorials/auth
+[persist-data]: https://soroban.stellar.org/docs/fundamentals-and-concepts/persisting-data
+[state-expiration]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-expiration
+[bump]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-expiration#BumpFootprintExpirationOp

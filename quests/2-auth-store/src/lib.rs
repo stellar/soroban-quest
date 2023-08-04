@@ -1,7 +1,13 @@
 #![no_std]
 use error::ContractError;
-use soroban_sdk::{bytes, contractimpl, panic_with_error, Address, Bytes, Env};
+use soroban_sdk::{bytes, contract, contractimpl, panic_with_error, Address, Bytes, Env};
 
+// We will use this `MAX` constant to bump our contract's storage entry
+// immediately after we create the ledger entry. We are using the maximum
+// lifetime allowed in Soroban, measured in the number of ledgers.
+const MAX: u32 = 6_312_000; // This equates to roughly one year (5 seconds per ledger)
+
+#[contract]
 pub struct DataStoreContract;
 
 /// The `DataStoreContract` contains both functions our contract can run when it
@@ -29,22 +35,28 @@ impl DataStoreContract {
             panic_with_error!(&env, ContractError::InputValueTooShort)
         }
 
-        // We then use `env.storage().set()` to store the value that was passed,
-        // associating it with the `user` Address.
-        env.storage().set(&user, &value);
+        // We then use `env.storage().temporary().set()` to store the value that
+        // was passed, associating it with the `user` Address. This storage
+        // entry is subject to expiration if it is not bumped. Following that,
+        // it will need to be re-created before it is available to the contract.
+        // We've chosen the `temporary` storage because these entries can be
+        // re-created after expiration without needing to get into the weeds of
+        // ledger entry restore operations.
+        env.storage().temporary().set(&user, &value);
+        env.storage().temporary().bump(&user, MAX); // We are bumping the entry by `MAX`.
 
         Ok(()) // return ok if function call succeeded
     }
 
     /// The `get()` function takes an `owner` parameter, accepting an Address
-    /// object for it. We then use `env.storage().get()` to retrieve the value
-    /// which has been associated with the supplied Address. If there is no
-    /// data associated, return Bytes of length 0.
+    /// object for it. We then use `env.storage().temporary().get()` to
+    /// retrieve the value which has been associated with the supplied Address.
+    /// If there is no data associated, return Bytes of length 0.
     pub fn get(env: Env, owner: Address) -> Bytes {
         env.storage()
+            .temporary()
             .get(&owner)
-            .unwrap_or_else(|| Ok(bytes!(&env))) // This uses `unwrap_or_else` and closure which only evaluates Bytes(0) when necessary.
-            .unwrap()
+            .unwrap_or_else(|| bytes!(&env)) // This uses `unwrap_or_else` and closure which only evaluates Bytes(0) when necessary.
     }
 }
 
