@@ -9,15 +9,18 @@ from stellar_sdk import xdr as stellar_xdr
 
 def get_asset_contract_id(asset: Asset, network_passphrase: str) -> str:
     """Get the contract id of the wrapped token contract."""
-    network_id_hash = stellar_xdr.Hash(Network(network_passphrase).network_id())
-    data = stellar_xdr.HashIDPreimage(
-        stellar_xdr.EnvelopeType.ENVELOPE_TYPE_CONTRACT_ID_FROM_ASSET,
-        from_asset=stellar_xdr.HashIDPreimageFromAsset(
-            network_id=network_id_hash, asset=asset.to_xdr_object()
+    network_id = stellar_xdr.Hash(hashlib.sha256(network_passphrase.encode()).digest())
+    preimage = stellar_xdr.HashIDPreimage(
+        type=stellar_xdr.EnvelopeType.ENVELOPE_TYPE_CONTRACT_ID,
+        contract_id=stellar_xdr.HashIDPreimageContractID(
+            network_id=network_id,
+            contract_id_preimage=stellar_xdr.ContractIDPreimage(
+                type=stellar_xdr.ContractIDPreimageType.CONTRACT_ID_PREIMAGE_FROM_ASSET,
+                from_asset=asset.to_xdr_object(),
+            ),
         ),
     )
-    contract_id = hashlib.sha256(data.to_xdr_bytes()).hexdigest()
-    return contract_id
+    return stellar_xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
 
 def get_asset_contract_address(token_id: str) -> str:
     """Get the contract address of a wrapped token contract."""

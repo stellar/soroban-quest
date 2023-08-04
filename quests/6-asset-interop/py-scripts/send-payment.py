@@ -6,7 +6,7 @@ import time
 
 from stellar_sdk import Network, Keypair, TransactionBuilder
 from stellar_sdk import xdr as stellar_xdr
-from stellar_sdk.soroban import AuthorizedInvocation, ContractAuth, SorobanServer
+from stellar_sdk.soroban import SorobanServer
 from stellar_sdk.soroban.soroban_rpc import GetTransactionStatus
 from stellar_sdk.soroban.types import Address, Int128
 
@@ -20,9 +20,7 @@ alice_kp = Keypair.from_secret(
 bob_kp = Keypair.from_secret(
     "SAEZSI6DY7AXJFIYA4PM6SIBNEYYXIEM2MSOTHFGKHDW32MBQ7KVO6EN"
 )  # GBMLPRFCZDZJPKUPHUSHCKA737GOZL7ERZLGGMJ6YGHBFJZ6ZKMKCZTM
-native_token_contract_id = (
-    "d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813"
-)
+native_token_contract_id = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT"
 
 alice_source = soroban_server.load_account(alice_kp.public_key)
 
@@ -32,39 +30,19 @@ args = [
     Int128(100 * 10**7),  # amount, 100 XLM
 ]
 
-alice_root_invocation = AuthorizedInvocation(
-    contract_id=native_token_contract_id,
-    function_name="xfer",
-    args=args,
-    sub_invocations=[],
-)
-
-alice_contract_auth = ContractAuth(
-    address=None,
-    nonce=None,
-    root_invocation=alice_root_invocation,
-)
-
 tx = (
-    TransactionBuilder(alice_source, network_passphrase)
+    TransactionBuilder(alice_source, network_passphrase, base_fee=100)
     .add_time_bounds(0, 0)
     .append_invoke_contract_function_op(
         contract_id=native_token_contract_id,
-        function_name="xfer",
+        function_name="transfer",
         parameters=args,
-        auth=[alice_contract_auth],
     )
     .build()
 )
 
-simulate_transaction_data = soroban_server.simulate_transaction(tx)
-print(f"simulated transaction: {simulate_transaction_data}")
-
-print(f"setting footprint and signing transaction...")
-assert simulate_transaction_data.results is not None
-tx.set_footpoint(simulate_transaction_data.results[0].footprint)
+tx = soroban_server.prepare_transaction(tx)
 tx.sign(alice_kp)
-
 print(f"Signed XDR:\n{tx.to_xdr()}")
 
 send_transaction_data = soroban_server.send_transaction(tx)
@@ -84,5 +62,5 @@ if get_transaction_data.status == GetTransactionStatus.SUCCESS:
     transaction_meta = stellar_xdr.TransactionMeta.from_xdr(
         get_transaction_data.result_meta_xdr
     )
-    result = transaction_meta.v3.tx_result.result.results[0].tr.invoke_host_function_result.success  # type: ignore
-    print(f"Function result: {result}")
+    if transaction_meta.v3.soroban_meta.return_value.type == stellar_xdr.SCValType.SCV_VOID:  # type: ignore[union-attr]
+        print("swap success")
