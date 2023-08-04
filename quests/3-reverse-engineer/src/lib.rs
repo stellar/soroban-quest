@@ -1,6 +1,7 @@
 #![no_std]
-use soroban_sdk::{contractimpl, Env, Symbol};
+use soroban_sdk::{contractimpl, Env, Symbol, contract};
 
+#[contract]
 pub struct ReverseEngineerContract;
 
 /// A constant is an **always immutable** value that is valid for the entire
