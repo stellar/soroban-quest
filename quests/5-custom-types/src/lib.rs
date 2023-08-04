@@ -6,9 +6,10 @@ look into `types.rs`, though. There's bound to be some interesting stuff there!
 http://bit.ly/3UajKQv
 */
 
-use soroban_sdk::{contractimpl, Env};
+use soroban_sdk::{contractimpl, Env, contract};
 use types::*;
 
+#[contract]
 pub struct TypesContract;
 
 /// This `TypesContract` contract is really only here to accept a custom type as
