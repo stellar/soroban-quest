@@ -6,9 +6,9 @@ You again!? You're back here looking for the quick task? Well, alright, if you
 think you're really ready for it. Good luck!
 
 **For this quest, we have already deployed the `ReverseEngineerContract` using
-the account `GB5AM4XMNNFVPTAANNKMYSUIYTAYFXVLEFB7EQ46GM2T23YTJFLV6SFY`. You must
-_find_ the `contract_id` for this contract. Then you must invoke the correct
-function in that contract, while providing the correct argument.**
+the account `GALD6Y6MUEAWDP7HL6Z5RE2AAYGMVLMKQ4GL6CIP5XWWO2VFIJCD74PI`. You must
+_find_ the `contract_address` for this contract. Then you must invoke the
+correct function in that contract, while providing the correct argument.**
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -17,7 +17,7 @@ function in that contract, while providing the correct argument.**
 - [The Task at Hand](#the-task-at-hand)
   - [Explore the Contract Code](#explore-the-contract-code)
   - [Using `soroban` CLI to Decode XDR](#using-soroban-cli-to-decode-xdr)
-  - [How do I find a `contract_id`?](#how-do-i-find-a-contract_id)
+  - [How do I find a `contract_address`?](#how-do-i-find-a-contract_address)
     - [**Find an Operation**](#find-an-operation)
     - [**View the Transaction Result**](#view-the-transaction-result)
     - [**Sidenote About Reading Deployed WASM Binaries**](#sidenote-about-reading-deployed-wasm-binaries)
@@ -71,42 +71,41 @@ transaction XDR into a more human-readable format.
 ```bash
 soroban lab xdr dec \
     --type TransactionEnvelope \
-    --xdr AAAAAgAAAAB/+rzugobS5qPnSeG0CVkULwRl5Cc9kcg/XUHIdb4yCQAPQkAAAAHHAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAADUMzT2qToPBg3PknXD1EvFboyl8UexTQeoQmbHCGOYgwAAABdIdugAAAAAAAAAAAJ1vjIJAAAAQPR0KSBc+o4+MepdKaLIJxVHFrpal/ZDuVptfmz59KDleWyvavj/TUMOIwdB1supznkZPBvs56BEgMMsQqlyPwGGVuCcAAAAQEu+jREyXoJNXjyUqkHPeqL6uu+bHd0u69Ezvl++PcDnTiIqS2PGy9Ub4wFDsKGP1K6CE89fXDp3VXlwVrcBNgQ=
-# There is currently a bug that may give you an error when using soroban-cli to
-# decode XDR values. More info: https://github.com/stellar/soroban-tools/issues/670
+    --xdr AAAAAgAAAAC2yyilK7ianRVtbQOufDvtLkRQnMjw9zIDCPXPECuplAAPQkAAAAJoAAAABwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAACbdRi1TP0KcLQqDGQAtR7bd5l+4Lc6cH0AcFEJGSDBpAAAABdIdugAAAAAAAAAAAIQK6mUAAAAQPDJQbmQqNvRpbalCCKvScFVPlxZq2MLpq0bTQg9c+3VU6EX41p2ZXnPq3Xc9ehdnQIJ0weXwJUplmpmDlFw4gmGVuCcAAAAQGj/BQlHfSV8+H7uQ0iQZWZwbvtVR1bAOq99cJtLBD7yEholijXuS2F4jLvOL5mshy0+TE3abJv9cQGiRTIxKQM=
 ```
 
 I'll omit the output here, in an attempt to keep this README un-cluttered. But,
 if you were to run the above command, you'd see a human-readable representation
 of a transaction creating an account with a starting balance of 10,000 XLM
-(futurenet XLM, of course).
+(Futurenet XLM, of course).
 
 There are many different "types" you could use the `soroban` cli to decode. If
 you run `soroban lab xdr dec --help` in your terminal, you'll see all the
 different options that are available to you.
 
-### How do I find a `contract_id`?
+### How do I find a `contract_address`?
 
 Have you ever heard the expression "There is more than one way to skin a cat"? I
 know, it's nasty and gross! I don't know who wants to have even _one_ way to
 skin a cat!! Anyway, I'm getting sidetracked...
 
-There are a few different ways you could find a `contract_id` for an already
-deployed contract. Currently, all of them involve decoding XDR. Decoding can be
-done using the `soroban` cli, or the Stellar Laboratory, or RunKit, or you could
-come up with your own way to decode/encode the base64 as needed. But they all
-start with finding the correct XDR to decode.
+There are a few different ways you could find a `contract_address` for an
+already deployed contract. Currently, all of them involve decoding XDR. Decoding
+can be done using the `soroban` cli, or the Stellar Laboratory, or RunKit, or
+you could come up with your own way to decode/encode the base64 as needed. But
+they all start with finding the correct XDR to decode.
 
-The following sensible approach to finding a `contract_id` will start by finding
-a relevant `operation` for the account in question, and then the corresponding
-`transaction`. This definitely isn't the only way it could be done (it's not
-even the quickest or easiest), but it _is_ straight-forward, and easy to follow.
+The following sensible approach to finding a `contract_address` will start by
+finding a relevant `operation` for the account in question, and then the
+corresponding `transaction`. This definitely isn't the only way it could be done
+(it's not even the quickest or easiest), but it _is_ straight-forward, and easy
+to follow.
 
 #### **Find an Operation**
 
 We begin by heading to the [Stellar Lab][lab] (using futurenet), and we'll click
 on **Explore Endpoints** -> **Operations** -> **Operations for Account**. Enter
-the public key of an account that exists on futurenet (the example here shows an
+the public key of an account that exists on Futurenet (the example here shows an
 account that was used to deploy and invoke the `HelloWorld` Contract from Quest
 1), and click **Submit**. (If you prefer viewing the JSON output, you can get
 that [here][ops].)
@@ -114,18 +113,18 @@ that [here][ops].)
 <details>
 <summary>View screenshot</summary>
 
-![Operations for Account](https://user-images.githubusercontent.com/2024293/202301202-4cc30e8e-b5ca-4efd-873d-52d75a43eb50.png)
+![Operations for Account](./img/operations-for-account.png)
 
 </details>
 
 **Reminder:** For the _actual_ quest, you are looking for a contract that was
 deployed by this address:
-`GB5AM4XMNNFVPTAANNKMYSUIYTAYFXVLEFB7EQ46GM2T23YTJFLV6SFY`.
+`GALD6Y6MUEAWDP7HL6Z5RE2AAYGMVLMKQ4GL6CIP5XWWO2VFIJCD74PI`.
 
 When the results appear, we're going to look for an operation where `type` is
-`invoke_host_function`, **and** where the `host_functions` array contains a
-`create_contract` entry (i.e., this operation is an account deploying a smart
-contract). Our example operation:
+`invoke_host_function`, **and** where the `function` is
+`HostFunctionTypeHostFunctionTypeCreateContract` (i.e., this operation is
+an account deploying a smart contract). Our example operation:
 
 ```json5
 {
@@ -133,44 +132,34 @@ contract). Our example operation:
     "self": {...},
     // This is the link to the transaction you want to use (again, this is only an example)
     "transaction": {
-      "href": "https://horizon-futurenet.stellar.org/transactions/dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761"
+      "href": "https://horizon-futurenet.stellar.org/transactions/06330f8e50c7a5240b43523ed2b82d3958abb7b0a1f61ed7cbb9be09dd895ef7"
     },
     "effects": {...},
     "succeeds": {...},
     "precedes": {...}
   },
-  "id": "491408683175937",
-  "paging_token": "491408683175937",
+  "id": "348119984250881",
+  "paging_token": "348119984250881",
   "transaction_successful": true,
-  "source_account": "GBVYFLZUNE5WXU3LNRMBGF3Q64L7FJPFHNU5COWNL2UFLB7VXIOBJA3C",
+  "source_account": "GCNXKGFVJT6QU4FUFIGGIAFVD3NXPGL64C3TU4D5ABYFCCIZEDA2I3RE",
   // We want to find an operation where (type === "invoke_host_function")
   "type": "invoke_host_function",
   "type_i": 24,
-  "created_at": "2023-05-31T16:21:39Z",
-  "transaction_hash": "dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761",
-  // AND the array of host_functions should include one where (type === "create_contract")
-  "host_functions": [
-    {
-      "type": "create_contract",
-      "parameters": [
-        {
-          "from": "source_account",
-          "type": "string"
-        },
-        {
-          "salt": "61272459947224228775199236495899323097085701657772794745589727615095339805129",
-          "type": "string"
-        }
-      ]
-    }
-  ],
-  "asset_balance_changes": []
+  "created_at": "2023-07-26T18:35:29Z",
+  "transaction_hash": "06330f8e50c7a5240b43523ed2b82d3958abb7b0a1f61ed7cbb9be09dd895ef7",
+  // AND the function should should be "HostFunctionTypeHostFunctionTypeCreateContract"
+  "function": "HostFunctionTypeHostFunctionTypeCreateContract",
+  "parameters": null,
+  "address": "GCNXKGFVJT6QU4FUFIGGIAFVD3NXPGL64C3TU4D5ABYFCCIZEDA2I3RE",
+  "salt": "86270782951868913112546345828468199225090399296101245887357657231781104994315",
+  "asset_balance_changes": null
 }
 ```
 
 **Note**: You could also use this same technique to find some pretty useful
-information from operations where `invoke_contract` is in the array of host
-functions. You could use those operations to see exactly what a given account
+information from operations where the `function` property is
+`HostFunctionTypeHostFunctionTypeInvokeContract` and there is an array of
+`parameters`. You could use those operations to see exactly what a given account
 used to invoke a given contract. Check out [this video][twitch] to learn a bit
 more!
 
@@ -193,7 +182,7 @@ the `contractId` (don't forget to [decode the base64][twitch-clip] somehow).
 <details>
 <summary>View screenshot</summary>
 
-![Transaction Result Meta XDR](https://user-images.githubusercontent.com/2024293/242346996-7ae90c42-0fb0-40b7-b15f-dd37df344da1.png)
+![Transaction Result Meta XDR](./img/transaction-result-meta-xdr.png)
 
 </details>
 
@@ -209,13 +198,13 @@ useful nonetheless.
 <summary>Are you curious? Go ahead. Read on...</summary>
 
 The reason we've taken you to see the full transaction meta is to point out that
-included in this XDR is also the `wasmId`! Yeah, that's right. The ID of the
-installed WASM executable!
+included in this XDR is also the `wasmHash`! Yeah, that's right. The unique
+identifier of the installed WASM executable!
 
 In short, when you `deploy` a soroban contract, two things happen: first the
 code is "installed" (the wasm byte-code is uploaded, identified by its hash),
-then it is "deployed" (a `contract_id` is created that points to the installed
-code's hash).
+then it is "deployed" (a `contract_address` is created that points to the
+installed code's hash).
 
 It's a bit of a journey from there, and I highly suggest you take a trip to
 [this part][get-wasm-code] of the [`getLedgerEntries` method][gle] on the
@@ -256,8 +245,8 @@ got a couple of suggestions for where you might go from here.
 [xdr]: https://developers.stellar.org/docs/encyclopedia/xdr
 [soroban-cli]: https://soroban.stellar.org/docs/reference/soroban-cli
 [lab]: https://laboratory.stellar.org/#?network=futurenet
-[ops]: https://horizon-futurenet.stellar.org/accounts/GBVYFLZUNE5WXU3LNRMBGF3Q64L7FJPFHNU5COWNL2UFLB7VXIOBJA3C/operations?order=desc
-[tx]: https://horizon-futurenet.stellar.org/transactions/dec5b7bb3cfcd549fdd83f42cc263257a0e451bd7e42a20155c1199c11832761
+[ops]: https://horizon-futurenet.stellar.org/accounts/GCNXKGFVJT6QU4FUFIGGIAFVD3NXPGL64C3TU4D5ABYFCCIZEDA2I3RE/operations?order=desc
+[tx]: https://horizon-futurenet.stellar.org/transactions/06330f8e50c7a5240b43523ed2b82d3958abb7b0a1f61ed7cbb9be09dd895ef7
 [twitch]: https://www.twitch.tv/videos/1642865389?t=00h23m14s
 [twitch-clip]: https://clips.twitch.tv/FragileSneakyOstrichGivePLZ-DK9h3VVmUjqVDDZG
 [twitch-full]: https://www.twitch.tv/videos/1642865389

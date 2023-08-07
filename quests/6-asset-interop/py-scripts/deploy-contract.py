@@ -2,7 +2,7 @@
 """
 import time
 
-from stellar_sdk import Network, Keypair, TransactionBuilder
+from stellar_sdk import Network, Keypair, TransactionBuilder, StrKey
 from stellar_sdk import xdr as stellar_xdr
 from stellar_sdk.soroban import SorobanServer
 from stellar_sdk.soroban.soroban_rpc import GetTransactionStatus
@@ -11,12 +11,12 @@ from stellar_sdk.soroban.soroban_rpc import GetTransactionStatus
 secret = "SAAPYAPTTRZMCUZFPG3G66V4ZMHTK4TWA6NS7U4F7Z3IMUD52EK4DDEV"
 rpc_server_url = "https://rpc-futurenet.stellar.org:443/"
 network_passphrase = Network.FUTURENET_NETWORK_PASSPHRASE
-contract_file_path = "/Users/overcat/repo/stellar/soroban-examples/target/wasm32-unknown-unknown/release/soroban_hello_world_contract.wasm"
+contract_file_path = "/Users/overcat/repo/stellar/soroban-examples/hello_world/target/wasm32-unknown-unknown/release/soroban_hello_world_contract.wasm"
 
 kp = Keypair.from_secret(secret)
 soroban_server = SorobanServer(rpc_server_url)
 
-print("installing contract...")
+print("uploading contract...")
 source = soroban_server.load_account(kp.public_key)
 
 # with open(contract_file_path, "rb") as f:
@@ -25,22 +25,14 @@ source = soroban_server.load_account(kp.public_key)
 tx = (
     TransactionBuilder(source, network_passphrase)
     .set_timeout(300)
-    .append_install_contract_code_op(
+    .append_upload_contract_wasm_op(
         contract=contract_file_path,  # the path to the contract, or binary data
-        source=kp.public_key,
     )
     .build()
 )
 
-simulate_transaction_data = soroban_server.simulate_transaction(tx)
-print(f"simulated transaction: {simulate_transaction_data}")
-
-# The footpoint is predictable, maybe we can optimize the code to omit this step
-print(f"setting footprint and signing transaction...")
-assert simulate_transaction_data.results is not None
-tx.set_footpoint(simulate_transaction_data.results[0].footprint)
+tx = soroban_server.prepare_transaction(tx)
 tx.sign(kp)
-
 send_transaction_data = soroban_server.send_transaction(tx)
 print(f"sent transaction: {send_transaction_data}")
 
@@ -59,8 +51,7 @@ if get_transaction_data.status == GetTransactionStatus.SUCCESS:
     transaction_meta = stellar_xdr.TransactionMeta.from_xdr(
         get_transaction_data.result_meta_xdr
     )
-    result = transaction_meta.v3.tx_result.result.results[0].tr.invoke_host_function_result.success  # type: ignore
-    wasm_id = result.bytes.sc_bytes.hex()  # type: ignore
+    wasm_id = transaction_meta.v3.soroban_meta.return_value.bytes.sc_bytes.hex()  # type: ignore
     print(f"wasm id: {wasm_id}")
 
 assert wasm_id, "wasm id should not be empty"
@@ -76,18 +67,11 @@ tx = (
     .set_timeout(300)
     .append_create_contract_op(
         wasm_id=wasm_id,
-        source=kp.public_key,
     )
     .build()
 )
 
-simulate_transaction_data = soroban_server.simulate_transaction(tx)
-print(f"simulated transaction: {simulate_transaction_data}")
-
-# The footpoint is predictable, maybe we can optimize the code to omit this step
-print(f"setting footprint and signing transaction...")
-assert simulate_transaction_data.results is not None
-tx.set_footpoint(simulate_transaction_data.results[0].footprint)
+tx = soroban_server.prepare_transaction(tx)
 tx.sign(kp)
 
 send_transaction_data = soroban_server.send_transaction(tx)
@@ -107,6 +91,6 @@ if get_transaction_data.status == GetTransactionStatus.SUCCESS:
     transaction_meta = stellar_xdr.TransactionMeta.from_xdr(
         get_transaction_data.result_meta_xdr
     )
-    result = transaction_meta.v3.tx_result.result.results[0].tr.invoke_host_function_result.success  # type: ignore
-    contract_id = result.bytes.sc_bytes.hex()  # type: ignore
+    result = transaction_meta.v3.soroban_meta.return_value.address.contract_id.hash  # type: ignore
+    contract_id = StrKey.encode_contract(result)
     print(f"contract id: {contract_id}")

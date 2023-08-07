@@ -133,9 +133,9 @@ to get the hang of, but you'll get used to it in no time.
 
 In order for your cli arguments (the parts of the RPC message) to be passed
 along to your contract, you must use a `--` double-dash. (Fun fact: `--` is
-sometimes called a "slop"!) [This "Hello World" guide][gs-hello-world] has a lot
-more information, but I'll demonstrate how you might use this syntax to
-authenticate and increment a counter, taken from the [Auth guide][auth].
+sometimes called a "slop"!) [This "Hello World" tutorial][hello-world-tut] has a
+lot more information, but I'll demonstrate how you might use this syntax to
+authenticate and increment a counter, taken from the [Auth tutorial][auth].
 
 ```bash
 soroban contract invoke \
@@ -170,18 +170,18 @@ doing the JSON for you. It will let you know when it can't, though.
 
 ### Contract Identification: StrKey `Address` vs. Hex `ID`
 
-When invoking a contract from the command line, you'll need to use the
+When invoking a contract from the command line, we previously used the
 hex-encoded `contract_id` to tell the soroban-cli which contract you're
 invoking. Another, friendlier-to-read representation of this same contract
-identifying data is becoming increasingly common: the StrKey Address
+identifying data has become all but ubiquitous: the StrKey Address
 representation.
 
 This will look familiar if you've used Stellar's public/secret keys before. A
 contract's Address uses the same length and character set as the other types of
 keys, but starts with a `C`. Both the `contract_id` and `contract_address`
 represent the _same underlying data_, and can be thought of as interchangeable.
-(_Most_ places in soroban-cli can accept either representation when an `Address`
-type is specified.)
+(As far as the `soroban` is concerned, these two are interchangeable, and the
+cli can accept either representation when an `Address` type is specified.)
 
 Converting between the two representations can be done using [this very simple
 endpoint][strkey-hex]. Use it like this:
@@ -195,8 +195,8 @@ To make sure we're on the same page, here's those two values for native Lumens
 on Futurenet:
 
 - Contract
-  ID: `d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813`
-- Contract Address: `CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ`
+  ID: `7dc1ecdf9335199fc9918dbe0c732ce1d1146aa8f29cc9c360afc6a747ae94df`
+- Contract Address: `CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT`
 
 Using this kind of contract address, the above example invocation could look
 like this:
@@ -222,8 +222,9 @@ Much better, right!?
   [interacting with contracts][interacting-contracts], and it's **definitely**
   worth the read!
 - We didn't explore the finer details of keeping data on chain in this quest,
-  but there is so much more to learn about this! Please check out the
-  [persisting data][persisting-data] article in the Soroban documentation.
+  but there is so much more to learn about this! Especially with the newly
+  arrived [state expiration][state-exp]! Please check out the [persisting
+  data][persisting-data] article in the Soroban documentation.
 
 ## Still Stuck?
 
@@ -232,15 +233,16 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[ccc-example]: https://soroban.stellar.org/docs/how-to-guides/cross-contract-call
+[ccc-example]: https://soroban.stellar.org/docs/basic-tutorials/cross-contract-call
 [rpc-wiki]: https://en.wikipedia.org/wiki/Remote_procedure_call
 [rpc-gforg]: https://www.geeksforgeeks.org/remote-procedure-call-rpc-in-operating-system/
 [jsonrpc]: https://www.jsonrpc.org/
-[auth]: https://soroban.stellar.org/docs/how-to-guides/auth#run-the-contract
+[auth]: https://soroban.stellar.org/docs/basic-tutorials/auth#run-the-contract
 [optimizing]: https://soroban.stellar.org/docs/getting-started/hello-world#optimizing-builds
 [rust-traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
-[interacting-contracts]: https://soroban.stellar.org/docs/learn/interacting-with-contracts
-[persisting-data]: https://soroban.stellar.org/docs/learn/persisting-data
-[gs-hello-world]: https://soroban.stellar.org/docs/getting-started/hello-world#run-on-sandbox
+[interacting-contracts]: https://soroban.stellar.org/docs/fundamentals-and-concepts/interacting-with-contracts
+[persisting-data]: https://soroban.stellar.org/docs/fundamentals-and-concepts/persisting-data
+[hello-world-tut]: https://soroban.stellar.org/docs/getting-started/hello-world#run-on-sandbox
 [fca00c]: https://fastcheapandoutofcontrol.com
 [strkey-hex]: https://rpciege.com/convert/
+[state-exp]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-expiration

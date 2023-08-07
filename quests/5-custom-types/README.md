@@ -15,7 +15,7 @@ today you're going to be _writing_ some actual Rust in your contract!
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`11a13ca5d9a103689e68f612cc6748c68a5681abe11adb5e9242b30cb9e0ed99` so we can
+`CASLXWDDOX2AO4GQR3IX4CTHC3U2WGYYD3CUDZ7AHIVM6XRPMFURNSZ3` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -63,7 +63,7 @@ now. But today there's a fancy new `types.rs` file you should take a gander at.
 
 ### Custom Types in Rust
 
-A custom type in the [Soroban Rust dialect][soroban-dialect] is declared using
+A custom type in the [Soroban Rust dialect][contract-dialect] is declared using
 the `contracttype` attribute macro on either a `struct` or `enum` definition.
 But, before we dive into the Soroban-specific information, let's camp out with
 how this concept plays out in a standard Rust environment. Don't worry: this'll
@@ -264,11 +264,11 @@ arguments, authentication, data keys, and more. It is _opaque_ in the sense that
 while it might represent a Stellar account, or a Stellar contract, you can treat
 it the same no matter what type of `Address` you're dealing with.
 
-For each quest so far, you've been invoking contracts, and passing a hex string
-for the contract's `--id` argument. The `contract_id` and the `contract_address`
-both represent the same underlying data, and you can think of them as though
-they are interchangeably. Converting between the two representations can be done
-using [this very simple endpoint][strkey-hex]. Use it like this:
+For invoking contracts, we used to pass a hex string for the contract's `--id`
+argument. The `contract_id` and the `contract_address` both represent the same
+underlying data, and you can think of them as though they are interchangeably.
+Converting between the two representations can be done using [this very simple
+endpoint][strkey-hex]. Use it like this:
 
 - `https://rpciege.com/convert/<hex-encoded-contract-id>` will return to you the
   corresponding `contract_address`
@@ -279,8 +279,8 @@ To make sure we're on the same page, here's those two values for native Lumens
 on Futurenet:
 
 - Contract
-  ID: `d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813`
-- Contract Address: `CDMT6XD3WDV4JKOI64T4LTV4JZARSTJYEV7B2DMRANLLIO74KKEBHYNJ`
+  ID: `7dc1ecdf9335199fc9918dbe0c732ce1d1146aa8f29cc9c360afc6a747ae94df`
+- Contract Address: `CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT`
 
 Invoke the `c_part` function to create an account `Participant` using something
 like:
@@ -354,8 +354,8 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `11a13ca5d9a103689e68f612cc6748c68a5681abe11adb5e9242b30cb9e0ed99`,
-supplying your own contract ID as the `--contract_address` argument. We'll
+with the ID `CASLXWDDOX2AO4GQR3IX4CTHC3U2WGYYD3CUDZ7AHIVM6XRPMFURNSZ3`,
+supplying your own contract address as the `--contract_address` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
 
@@ -370,7 +370,7 @@ custom types with the necessary fields, variants, values, etc.
 - There is an entire [Custom Types example contract][example-ct] you can look at
   and read through in the Soroban docs. It's great for inspiration, or to see
   how all these pieces can fit together.
-- Read more about the [Contract Dialect][soroban-dialect] of Rust used in
+- Read more about the [Contract Dialect][contract-dialect] of Rust used in
   Soroban in the documentation.
 
 ## Still Stuck?
@@ -381,10 +381,10 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [sdk-contracttype]: https://docs.rs/soroban-sdk/latest/soroban_sdk/attr.contracttype.html
-[learn-ct]: https://soroban.stellar.org/docs/learn/custom-types
-[example-ct]: https://soroban.stellar.org/docs/how-to-guides/custom-types
+[learn-ct]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types
+[example-ct]: https://soroban.stellar.org/docs/basic-tutorials/custom-types
 [rust-struct]: https://doc.rust-lang.org/book/ch05-00-structs.html
 [rust-enums]: https://doc.rust-lang.org/book/ch06-00-enums.html
-[error-enums]: https://soroban.stellar.org/docs/learn/errors#error-enums
-[soroban-dialect]: https://soroban.stellar.org/docs/learn/rust-dialect
+[error-enums]: https://soroban.stellar.org/docs/fundamentals-and-concepts/errors#error-enums
+[contract-dialect]: https://soroban.stellar.org/docs/fundamentals-and-concepts/rust-dialect
 [strkey-hex]: https://rpciege.com/convert/

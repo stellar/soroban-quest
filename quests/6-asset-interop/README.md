@@ -29,7 +29,7 @@ contract deployed by the `Parent_Account`.**
 - [TL;DR](#tldr)
 - [How to Play](#how-to-play)
 - [The Task at Hand](#the-task-at-hand)
-  - ["Classic" Stellar Assets as Soroban Tokens](#classic-stellar-assets-as-soroban-tokens)
+  - [Stellar Assets as Soroban Tokens](#stellar-assets-as-soroban-tokens)
   - [The Stellar Asset Contract](#the-stellar-asset-contract)
   - [Yeah, but How do I Use That Asset Contract?](#yeah-but-how-do-i-use-that-asset-contract)
   - [Native XLM on Soroban](#native-xlm-on-soroban)
@@ -65,35 +65,35 @@ last time: **Read the code!** This contract is relatively complex. We won't make
 you fiddle with it today, but there's no better way to understand what's
 happening than to actually _read_ it. Seriously.
 
-### "Classic" Stellar Assets as Soroban Tokens
+### Stellar Assets as Soroban Tokens
 
 > _Please Note_: If you've forgotten, Soroban is still under active development,
 > design, and discussion. Significant changes can happen and should even be
-> expected. The area of asset interoperability between "Classic" Stellar and
-> Soroban is one such area that is under active consideration. We have designed
-> this quest to be as up-to-date as possible at the time of writing, but the
-> conventions, steps, terminology, architecture, etc. used in today's quest are
-> subject to change in the future.
+> expected. The area of asset interoperability between Stellar and Soroban is
+> one such area that is under active consideration. We have designed this quest
+> to be as up-to-date as possible at the time of writing, but the conventions,
+> steps, terminology, architecture, etc. used in today's quest are subject to
+> change in the future.
 >
-> _Revision Date: 2023-06-01_
+> _Revision Date: 2023-07-28_
 
-One of the defining characteristics of the "Classic" Stellar network is that
-assets are first-class citizens. They are easy to create, cheap to
-use/transfer/trade, and have many incredible use-cases. There also exists an
-extensive set of authorization tools that asset issuers can use to control who
-can acquire, use, or retain those assets. We won't spend _too_ much time here,
-because you may already be up-to-speed here (and if you aren't, you can still
-make it through today's quest). If you need a refresher the [developer
+One of the defining characteristics of the Stellar network is that assets are
+first-class citizens. They are easy to create, cheap to use/transfer/trade, and
+have many incredible use-cases. There also exists an extensive set of
+authorization tools that asset issuers can use to control who can acquire, use,
+or retain those assets. We won't spend _too_ much time here, because you may
+already be up-to-speed here (and if you aren't, you can still make it through
+today's quest). If you need a refresher the [developer
 documentation][docs-assets] and our own [Stellar Quest][sq-learn] course both
 have **loads** of information about assets. For now, just remember that the
 `native` asset on Stellar is the [Lumen][lumens]. It's identified using the
 asset code `XLM`.
 
 As Soroban development continues, one of the _key_ requirements is that assets
-issued on "Classic" Stellar can be used and incorporated into Soroban. It's even
-[one of the FAQs][assets-faq]! This interoperability is facilitated by using the
+issued on Stellar can be used and incorporated into Soroban. It's even [one of
+the FAQs][assets-faq]! This interoperability is facilitated by using the
 interface provided by [the Stellar Asset Contract](#the-stellar-asset-contract).
-(Note assets minted in Soroban cannot be exported to a "Classic" Stellar asset.)
+(Note assets minted in Soroban cannot be exported to a Stellar asset.)
 
 ### The Stellar Asset Contract
 
@@ -105,19 +105,19 @@ applicable.
 
 The [Stellar Asset Contract][asset-contract] is an implementation of the
 CAP-46-6 proposal. It can be used to to create a new token on Soroban, or to
-interact with a "Classic" asset that has been "wrapped" for use in Soroban. For
+interact with a Stellar asset that has been "wrapped" for use in Soroban. For
 today, we'll be using it with native Lumens that have been wrapped. This Stellar
 Asset Contract implements a [token interface][token-interface] that is quite
-feature-full. The most notable function you'll need from it today is
-`increase_allowance`, which will increase the amount of some token that one
-address can spend _from_ another address. It's like spending money from your
-parent's bank account.
+feature-full. The most notable function you'll need from it today is `approve`,
+which will allow us increase the amount of some token that one address can spend
+_from_ another address. It's like spending money directly from your parent's
+bank account (everyone's dream).
 
 ### Yeah, but How do I Use That Asset Contract?
 
 > It should be noted that a Soroban token developer can choose to implement any
 > token interface they choose. There is no _requirement_ to implement everything
-> from CAP-46-6, but doing so does allows a token to interoperate more easily
+> from CAP-46-6, but doing so does allow a token to interoperate more easily
 > with other tokens which _are_ compliant with CAP-46-6. You can learn more
 > about the [suggested token interface][sac-interface] in the Soroban docs.
 
@@ -140,7 +140,7 @@ available to us. Let's (briefly) look at them.
 
 ```bash
 soroban lab token wrap --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
-# 36d479817b7c64e765f084c121640ee8de62db22a2b37e0b40c5b08e09b63f59
+# CBZEHZO374JREJTTJWVJQLLM76J6RCHSOLKJHZQ4VZVTYBTEA6RR2DC2
 
 # It even works with the `native` asset!
 soroban lab token wrap --asset native
@@ -149,7 +149,10 @@ soroban lab token wrap --asset native
 It should be noted that wrapping an asset will work exactly one time per asset
 (per network). The `native` asset contract is already deployed to the Futurenet,
 and trying to wrap that again (on the Futurenet) will return an error rather
-than a `contract_id`.
+than a `contract_address`. (Caveat: since contract instances are subject to
+state expiration, you _may_ need to re-wrap the native token if Soroban gives
+you a `contract not found` error. We've bumped the instance to its maximum
+lifetime, however. So, this "shouldn't" be a problem for anyone.)
 
 > It should _also_ be noted you don't need to deploy or wrap any tokens or
 > assets for this quest. We just put this here for fun!
@@ -158,26 +161,30 @@ than a `contract_id`.
 
 Speaking of the `native` asset: One of the cool things about the Stellar Asset
 Contract is that even the native XLM token utilizes it! To use it, we just need
-to figure out the `contract_id` we should invoke. That can be done easily enough
-with one of the Stellar SDKs (below, we're using Python):
+to figure out the `contract_address` we should invoke. That can be done easily
+enough with one of the Stellar SDKs (below, we're using Python):
 
 ```python
 import hashlib
-from stellar_sdk import Asset, Network, xdr
+from stellar_sdk import Asset, Network, StrKey, xdr
 
 # This will work using either native or issued assets
 native_asset = Asset.native()
 issued_asset = Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
 
-network_id_hash = xdr.Hash(Network(Network.FUTURENET_NETWORK_PASSPHRASE).network_id())
-data = xdr.HashIDPreimage(
-    xdr.EnvelopeType.ENVELOPE_TYPE_CONTRACT_ID_FROM_ASSET,
-    from_asset=xdr.HashIDPreimageFromAsset(
-        network_id=network_id_hash, asset=native_asset.to_xdr_object()
+network_id_hash = xdr.Hash(hashlib.sha256(Network.FUTURENET_NETWORK_PASSPHRASE.encode()).digest())
+preimage = xdr.HashIDPreimage.from_envelope_type_contract_id(
+    contract_id=xdr.HashIDPreimageContractID(
+        network_id=network_id_hash,
+        contract_id_preimage=xdr.ContractIDPreimage.from_contract_id_preimage_from_asset(
+           from_asset=native_asset.to_xdr_object()
+        ),
     ),
 )
-contract_id = hashlib.sha256(data.to_xdr_bytes()).hexdigest()
+contract_id = xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
 print(f"Contract ID: {contract_id}")
+contract_address = StrKey.encode_contract(bytes.fromhex(contract_id))
+print(f"Contract Address: {contract_address})
 ```
 
 You can find an expanded version of the above script, as well as some other
@@ -186,10 +193,9 @@ the `py-scripts/` directory. They deal with all kinds of Soroban tasks: creating
 tokens, pyaments, finding asset contract IDs, deploying contracts, etc.
 
 As per our [tl;dr](#tldr) at the top, this native asset contract will _need_ to
-be invoked only once: The `Parent_Account` will need to `increase_allowance` to
-establish the `AllowanceContract` as a proxy spender. You could also make use of
-the `balance` and `allowance` functions of the contract to check your work along
-the way.
+be invoked only once: The `Parent_Account` will need to `approve` to the
+`AllowanceContract` as a proxy spender. You could also make use of the `balance`
+and `allowance` functions of the contract to check your work along the way.
 
 Don't forget to look into the [Token Interface][sac-interface] to figure out
 which arguments you'll need to use when making those invocations. You remember
@@ -211,9 +217,10 @@ If you forgot what your task is, here it is again:
 
 - [ ] Deploy the `AllowanceContract` as the `Parent_Account`
 - [ ] Invoke the `init` function of the `AllowanceContract`
-- [ ] Use the `increase_allowance` function of the native token contract to
-  allow your `AllowanceContract` to make proxy transfers from the
-  `Parent_Account` to the `Child_Account`
+- [ ] Use the `approve` function of the native token contract to allow your
+  `AllowanceContract` to make proxy transfers from the `Parent_Account` to the
+  `Child_Account` (you'll need to specify an expiration ledger for this
+  allowance, check back to quest 2 for a refresher on calculating ledgers)
 - [ ] Invoke the `withdraw` function of the `AllowanceContract` using either the
   `Child_Account` or `Parent_Account`
 
@@ -226,11 +233,11 @@ want to `transfer` 1 XLM, you'll need to supply `10000000`, `10_000_000` or `1 *
 Additionally, the astute observer might notice an interesting separation between
 the Parent's asset balance and the approved allowance the contract has access to
 at any given time. For example you could have a balance of  100,000 XLM in the
-Parent account, but only `increase_allowance` a "first tranche" to the contract
-of 10,000 XLM. Then the contract - depending on the `init` arguments passed -
-might `withdraw` 5,000 XLM during each successful invocation. The contract will
-only ever be able to proxy _from_ the parent _to_ the child as determined by the
-contract arithmetic, but this flexibility allows the parent to more safely and
+Parent account, but only `approve` a "first tranche" to the contract of 10,000
+XLM. Then the contract - depending on the `init` arguments passed - might
+`withdraw` 5,000 XLM during each successful invocation. The contract will only
+ever be able to proxy _from_ the parent _to_ the child as determined by the
+contract settings, but this flexibility allows the parent to more safely and
 sensibly control the flow of funds. All the levers! You **are** the man behind
 the curtain!
 
@@ -277,17 +284,17 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[asset-contract]: https://soroban.stellar.org/docs/how-to-guides/stellar-asset-contract
+[asset-contract]: https://soroban.stellar.org/docs/advanced-tutorials/stellar-asset-contract
 [token-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface
 [sac-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface#code
 [cap-46-6]: https://stellar.org/protocol/cap-46-06
 [docs-assets]: https://developers.stellar.org/docs/fundamentals-and-concepts/stellar-data-structures/assets
-[assets-faq]: https://soroban.stellar.org/docs/learn/faq#can-soroban-contracts-interact-with-stellar-assets
+[assets-faq]: https://soroban.stellar.org/docs/fundamentals-and-concepts/faq#can-soroban-contracts-interact-with-stellar-assets
 [lumens]: https://developers.stellar.org/docs/fundamentals-and-concepts/lumens
 [overcat]: https://github.com/overcat
 [stroop]: https://developers.stellar.org/docs/glossary#stroop
-[timelock]: https://soroban.stellar.org/docs/how-to-guides/timelock
-[single-offer]: https://soroban.stellar.org/docs/how-to-guides/single-offer-sale
-[liquidity-pool]: https://soroban.stellar.org/docs/how-to-guides/liquidity-pool
+[timelock]: https://soroban.stellar.org/docs/advanced-tutorials/timelock
+[single-offer]: https://soroban.stellar.org/docs/advanced-tutorials/single-offer-sale
+[liquidity-pool]: https://soroban.stellar.org/docs/advanced-tutorials/liquidity-pool
 [sq-learn]: https://quest.stellar.org/learn
 [sdk-ledger]: https://docs.rs/soroban-sdk/latest/soroban_sdk/ledger/struct.Ledger.html

@@ -237,9 +237,9 @@ resources that might be of interest to you:
 - The [Soroban CAP][cap] (and the related ones) outline the design choices and
   implementations of the Soroban smart contract platform. (Heads-up: these
   documents can be quite technical.)
-- The Soroban documentation contains a number of [how-to-guides][guides] that
-  can help you wrap your mind around even more of the concepts and ideas Soroban
-  is built on.
+- The Soroban documentation contains a number of [basic][basic-tut] and
+  [advanced][advanced-tut] tutorials that can help you wrap your mind around
+  even more of the concepts and ideas Soroban is built on.
 - You can learn more about the [contract lifecycle][contract-lifecycle] in the
   "Learn" section of the Soroban documentation. There are tons of great articles
   here, and you should read through as many of them as you can!
@@ -256,6 +256,7 @@ got a couple of suggestions for where you might go from here.
 [docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-futurenet
 [soroban]: https://soroban.stellar.org
 [cap]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md
-[guides]: https://soroban.stellar.org/docs/category/how-to-guides
+[basic-tut]: https://soroban.stellar.org/docs/category/basic-tutorials
+[advanced-tut]: https://soroban.stellar.org/docs/category/advanced-tutorials
 [contract-lifecycle]: https://soroban.stellar.org/docs/learn/contract-lifecycle
 [sq-site]: https://quest.stellar.org/

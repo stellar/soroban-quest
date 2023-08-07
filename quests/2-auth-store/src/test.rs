@@ -6,8 +6,8 @@ use soroban_sdk::{testutils::Address as _, Address, Env};
 
 /// These tests are a a lot more interesting and much more involved than the
 /// first quest, so let's dive into them a bit deeper. We are testing a few
-/// different scenarios with invocations as both a user acount and as a
-/// contract.
+/// different scenarios with invocations as both a "user" address and as a
+/// "contract" address.
 
 /// The first function, `test_store()`, will test the values that are being
 /// stored by our contract. This is accomplished by generating a couple user
@@ -50,7 +50,7 @@ fn test_store() {
     // returns 0 Bytes (i.e. the address has no data to get).
     assert_eq!(client.get(&u2).len(), 0);
     // Now, as `u2`, we invoke the `put()` function, storing the `Bytes`
-    // represetation of "Soroban Quest 2".
+    // representation of "Soroban Quest 2".
     client.put(&u2, &bytes![&env, 0x536f726f62616e2051756573742032]); // This is the hex value for "Soroban Quest 2"
 
     // We now assert that `get()` should return the same value back to us.
@@ -71,7 +71,7 @@ fn test_store() {
 /// that is shorter than the required 11 bytes long. We expect that this will
 /// end in a panic, with the relevant error code from `error.rs`.
 #[test]
-#[should_panic(expected = "Status(ContractError(2))")]
+#[should_panic(expected = "Error(Contract, #2)")]
 fn test_store_value_too_short() {
     // Here we register the DataStore contract in a default Soroban
     // environment, and build a client that can be used to invoke the contract.
@@ -98,6 +98,7 @@ fn test_store_value_too_short() {
 /// very simple Smart Contract here, that we can use in them. It's quite simple,
 /// and only exists as a client to invoke the main contract's `put()` and
 /// `get()` functions.
+#[contract]
 pub struct CallerContract;
 
 #[contractimpl]
@@ -106,8 +107,6 @@ impl CallerContract {
     // contract `put()` function, associating it the the `contract_id` Address.
     pub fn try_put(env: Env, contract_address: Address, user: Address, data: Bytes) {
         let cli = DataStoreContractClient::new(&env, &contract_address);
-        // We are creating an Address from the supplied `contract_id` to
-        // associate as the owner of the stored data.
         cli.put(&user, &data);
     }
 
@@ -166,9 +165,9 @@ fn test_contract_store() {
 /// function of the DataStore contract, as another smart contract.
 #[test]
 fn test_contract_get() {
-    // We create an environment, and register the DataStore contract in it. We
-    // *are* also creating a client for this contract, so we can invoke the
-    // `get()` function ourselves and expect some real data back (not Bytes(0)).
+    // Similar to all Soroban tests, we create an environment, and register the
+    // DataStore contract, and build a client to invoke this contract later in
+    // the test.
     let env = Env::default();
 
     // Disable checks for authentication. See note in previous test for more.

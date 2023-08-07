@@ -24,18 +24,15 @@ fn test_valid_sequence() {
     // If you do the math, you can tell when we wrote this test!
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // We create two user addresses to test with, `u1` and `u2`
-    let u1 = Address::random(&env); // `Parent` account
-    let u2 = Address::random(&env); // `Child` account
+    let u1 = Address::random(&env); // `Parent` address
+    let u2 = Address::random(&env); // `Child` address
 
     // We register a token contract that we can use to test our allowance and
-    // payments. For testing purposes, the specific `contract_id` we use for
+    // payments. For testing purposes, the specific `token_address` we use for
     // this asset contract doesn't matter.
     let token_address = env.register_stellar_asset_contract(u1.clone());
 
@@ -43,20 +40,24 @@ fn test_valid_sequence() {
     // the `init` function. Again, in tests, the values we supply here are
     // inconsequential.
     let token = token::Client::new(&env, &token_address);
+    let admin = token::AdminClient::new(&env, &token_address);
 
     // Disable checks for authentication. See note in quest 2 tests for details.
     env.mock_all_auths();
 
     // We use the `u1` account to mint 1,000,000,000 stroops of our token to the
     // `Parent` (that is equal to 100 units of the asset).
-    token.mint(&u1, &1000000000);
+    admin.mint(&u1, &1000000000);
 
-    // We invoke the token contract's `increase_allowance` function as the `u1`
-    // address, allowing our AllowanceContract to spend tokens out of the `u1`
-    // balance. We are giving the contract a 500,000,000 stroop (== 50 units)
-    // allowance.
-    token.increase_allowance(&u1, &contract_address, &500000000);
-
+    // We invoke the token contract's `approve` function as the `u1` address,
+    // allowing our AllowanceContract to spend tokens out of the `u1` balance.
+    // We are giving the contract a 500,000,000 stroop (== 50 units) allowance.
+    token.approve(
+        &u1,
+        &contract_address,
+        &500000000,
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+    );
     // We invoke the token contract's `allowance` function to ensure everything
     // has worked up to this point.
     assert_eq!(token.allowance(&u1, &contract_address), 500000000);
@@ -76,10 +77,7 @@ fn test_valid_sequence() {
     // the timestamp by one second.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // We invoke the inaugural `withdraw` to get the first allowance paid out.
@@ -93,10 +91,7 @@ fn test_valid_sequence() {
     // we've increased the timestamp by one second and one week.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // We invoke `withdraw` again, and check that the `u2` token balance
@@ -108,10 +103,7 @@ fn test_valid_sequence() {
     // skip ahead one second and two weeks from the `init` invocation.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60) + (7 * 24 * 60 * 60),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // We invoke `withdraw` again, and check that the `u2` token balance now
@@ -125,7 +117,7 @@ fn test_valid_sequence() {
 /// Again, this contract could be constructed to remove authentication from this
 /// function altogether. Pretty neat!
 #[test]
-#[should_panic(expected = "Status(ContractError(3))")] // We want this test to panic since it is not authorized correctly.
+#[should_panic(expected = "Error(Contract, #3)")] // We want this test to panic since it is not authorized correctly.
 fn test_invalid_auth() {
     // Almost everything in this test is identical to the previous one. We'll
     // drop a comment to let you know when things are getting interesting again.
@@ -135,10 +127,7 @@ fn test_invalid_auth() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     let u1 = Address::random(&env); // `Parent` address
@@ -147,23 +136,24 @@ fn test_invalid_auth() {
     let token_address = env.register_stellar_asset_contract(u1.clone());
 
     let token = token::Client::new(&env, &token_address);
+    let admin = token::AdminClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    token.mint(&u1, &1000000000);
-
-    token.increase_allowance(&u1, &contract_address, &500000000);
-
+    admin.mint(&u1, &1000000000);
+    token.approve(
+        &u1,
+        &contract_address,
+        &500000000,
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+    );
     assert_eq!(token.allowance(&u1, &contract_address), 500000000);
 
     client.init(&u1, &u2, &token_address, &500000000, &(7 * 24 * 60 * 60));
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // Ok, stop here! Instead of invoking as either of the `Parent` or `Child`
@@ -177,33 +167,36 @@ fn test_invalid_auth() {
 /// case where things are setup in the same way, but a second `withdraw`
 /// invocation is made too quickly.
 #[test]
-#[should_panic(expected = "Status(ContractError(4))")] // We want this test to panic since it is withdrawing too quickly.
+#[should_panic(expected = "Error(Contract, #4)")] // We want this test to panic since it is withdrawing too quickly.
 fn test_invalid_sequence() {
     // Almost everything in this test is identical to the previous one. We'll
     // drop a comment to let you know when things are getting interesting again.
     let env = Env::default();
-    let u1 = Address::random(&env);
-    let u2 = Address::random(&env);
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
+
+    let u1 = Address::random(&env); // `Parent` address
+    let u2 = Address::random(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
     let token = token::Client::new(&env, &token_address);
+    let admin = token::AdminClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    token.mint(&u1, &1000000000);
-
-    token.increase_allowance(&u1, &contract_address, &500000000);
+    admin.mint(&u1, &1000000000);
+    token.approve(
+        &u1,
+        &contract_address,
+        &500000000,
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+    );
 
     assert_eq!(token.allowance(&u1, &contract_address), 500000000);
 
@@ -211,10 +204,7 @@ fn test_invalid_sequence() {
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     client.withdraw(&u2);
@@ -222,10 +212,7 @@ fn test_invalid_sequence() {
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60),
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     client.withdraw(&u2);
@@ -236,10 +223,7 @@ fn test_invalid_sequence() {
     // weekly allowance transfers, this attempt should fail.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60) + 20,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
     // We don't need an assertion here, since this invocation should fail and
@@ -251,32 +235,36 @@ fn test_invalid_sequence() {
 /// invoking the AllowanceContract `init` function with invalid arguments will
 /// fail as expected. Specifically, we are passing `0` for the `step` value.
 #[test]
-#[should_panic(expected = "Status(ContractError(6))")] // We want this test to panic since we are giving an unusable argument.
+#[should_panic(expected = "Error(Contract, #6)")] // We want this test to panic since we are giving an unusable argument.
 fn test_invalid_init() {
     // Almost everything in this test is identical to the first one. We'll drop
     // a comment to let you know when things are getting interesting again.
     let env = Env::default();
+
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
-    let u1 = Address::random(&env);
-    let u2 = Address::random(&env);
+    let u1 = Address::random(&env); // `Parent` address
+    let u2 = Address::random(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
     let token = token::Client::new(&env, &token_address);
+    let admin = token::AdminClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    token.mint(&u1, &1000000000);
-    token.increase_allowance(&u1, &contract_address, &500000000);
+    admin.mint(&u1, &1000000000);
+    token.approve(
+        &u1,
+        &contract_address,
+        &500000000,
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+    );
 
     assert_eq!(token.allowance(&u1, &contract_address), 500000000);
 
@@ -303,7 +291,7 @@ fn test_invalid_init() {
 /// so that over the course of the year's allowance of 1 stroop, the child's
 /// withdrawal amount would be impossibly small.
 #[test]
-#[should_panic(expected = "Status(ContractError(6))")] // We want this test to panic since we are giving an unusable argument.
+#[should_panic(expected = "Error(Contract, #6)")] // We want this test to panic since we are giving an unusable argument.
 fn test_invalid_init_withdrawal() {
     // Almost everything in this test is identical to the first one. We'll drop
     // a comment to let you know when things are getting interesting again.
@@ -311,26 +299,29 @@ fn test_invalid_init_withdrawal() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        protocol_version: 1,
-        sequence_number: 10,
-        network_id: Default::default(),
-        base_reserve: 10,
+        ..Default::default()
     });
 
-    let u1 = Address::random(&env);
-    let u2 = Address::random(&env);
+    let u1 = Address::random(&env); // `Parent` address
+    let u2 = Address::random(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
     let token = token::Client::new(&env, &token_address);
+    let admin = token::AdminClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    token.mint(&u1, &1000000000);
+    admin.mint(&u1, &1000000000);
 
-    token.increase_allowance(&u1, &contract_address, &500000000);
+    token.approve(
+        &u1,
+        &contract_address,
+        &500000000,
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+    );
 
     assert_eq!(token.allowance(&u1, &contract_address), 500000000);
 
