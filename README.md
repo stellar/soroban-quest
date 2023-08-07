@@ -46,14 +46,8 @@ If you feel lost on any of that, you could probably use a refresher. Go ahead,
 
 ## Join us on Discord
 
-We have a thriving, active, and _extremely_ helpful Discord community! Join the
-[Stellar Quest Discord server][discord], where you'll find so many friendly
-folks who will help get you on your way! This Discord server is an excellent
-place to ask questions, learn the ropes, find tools, and meet others on the same
-journey as you.
-
-In the [Stellar Developers Discord server][dev-discord], you will also find a
-large, active, and helpful community! We have recently announced a $100M Soroban
+In the [Stellar Developers Discord server][dev-discord], you will find a large,
+active, and helpful community! We have recently announced a $100M Soroban
 Adoption Fund, which SDF created to support the growth and development of the
 Soroban ecosystem. We'll be sharing more about additional programs on the
 Stellar Dev Discord in the not-too-distant future, so make sure to join today to
@@ -68,5 +62,4 @@ Talk about "straight from the horse's mouth"!!
 [gp-btn]: https://gitpod.io/button/open-in-gitpod.svg
 [gitpod]: https://gitpod.io/#ENV=prod/https://github.com/stellar/soroban-quest
 [pioneer]: https://github.com/stellar/soroban-quest--pioneer
-[discord]: https://quest.stellar.org/join
 [dev-discord]: https://discord.gg/stellardev
