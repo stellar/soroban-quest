@@ -6,7 +6,7 @@ I know you're in a hurry. There are badges on the line! Here's the quick-n-dirty
 version of what you need to do to get that awesome SQ badge.
 
 **In this quest, you will use your Quest Account to deploy and invoke the quest
-1 Hello World contract on the Stellar Futurenet.**
+1 Hello World contract on the Stellar Testnet.**
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -22,8 +22,8 @@ version of what you need to do to get that awesome SQ badge.
   - [Explore the Contract Code](#explore-the-contract-code)
   - [Build the Contract](#build-the-contract)
   - [Run a Test](#run-a-test)
-  - [Deploy to Futurenet](#deploy-to-futurenet)
-  - [Invoke it on Futurenet](#invoke-it-on-futurenet)
+  - [Deploy to Testnet](#deploy-to-testnet)
+  - [Invoke it on Testnet](#invoke-it-on-testnet)
 - [Finish the Quest](#finish-the-quest)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
@@ -53,8 +53,8 @@ Otherwise, you should run:
 sq login
 ```
 
-to sign in with your Discord acccount. You'll then be prompted to complete KYC
-or submit tax information, if either are required of you.
+to sign in with your Discord account. You'll then be prompted to complete KYC or
+submit tax information, if either are required of you.
 
 **Note:** If you haven't completed the KYC flow and tax submission on the
 [Stellar Quest site][sq-site], your ability to claim XLM rewards will be
@@ -74,9 +74,8 @@ Save this information, because (trust me) you'll need it later!
 
 ### Fund that Account
 
-We even put together a handy way for you to get your Futurenet Lumens from
-Futurenet Friendbot (you might know his cousin...). `sq` can help you with that
-like so:
+We even put together a handy way for you to get your Testnet Lumens from
+Friendbot. `sq` can help you with that like so:
 
 ```bash
 sq fund --key GDGYB5FZUKAVPYGCLJTCYYOJPEHHVOCZS7I6SBWF233OQSIROZ7JXLGO
@@ -158,15 +157,13 @@ If you need some instructions to help you along with this step, you can check
 out the [build tutorial][docs-build] in the Soroban documentation.
 
 Here's the short story version of what you'll need to build the contract. Run
-these commands from within your Futurenet terminal:
+these commands from within your Testnet terminal:
 
 ```bash
 # change into the quest directory
 cd quests/1-hello-world
 # build the contract
-cargo build \
-    --target wasm32-unknown-unknown \
-    --release
+soroban contract build
 ```
 
 ### Run a Test
@@ -185,7 +182,7 @@ a much more elaborate explanation of this file, and what is happening along each
 step of the way.
 
 To actually run the test in your quest Gitpod workspace, run these commands from
-within your Futurenet terminal:
+within your Testnet terminal:
 
 ```bash
 # change into the quest directory (if you're not there already)
@@ -194,29 +191,29 @@ cd quests/1-hello-world
 cargo test
 ```
 
-### Deploy to Futurenet
+### Deploy to Testnet
 
-The Stellar Futurenet is a safe playground where your contract code can live and
+The Stellar Testnet is a safe playground where your contract code can live and
 work while it is still in development and (potentially) unstable.
 
-_Deploying the contract will upload the compiled binary file to the Futurenet,
+_Deploying the contract will upload the compiled binary file to the Testnet,
 making it readily available for invocation and use in the network's Soroban
 environment._
 
-You can find some guidance on deploying your contract to the Futurenet in the
+You can find some guidance on deploying your contract to the Testnet in the
 [deploy tutorial][docs-deploy] from the Soroban documentation.
 
-### Invoke it on Futurenet
+### Invoke it on Testnet
 
 Now comes the exciting part! Your job is to **invoke** the smart contract that
-you just uploaded to the Futurenet. Doesn't it just make you want to shout with
+you just uploaded to the Testnet. Doesn't it just make you want to shout with
 excitement!?
 
 _Invoking your contract will use the Stellar network to call up the contract you
 just uploaded and execute the `hello()` function._
 
 The [deploy tutorial][docs-deploy] can also give you some guidance on the finer
-points of invoking a Futurenet contract, if you need.
+points of invoking a Testnet contract, if you need.
 
 ## Finish the Quest
 
@@ -253,10 +250,10 @@ got a couple of suggestions for where you might go from here.
 [pq-lib]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/lib.rs
 [pq-test]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
 [docs-build]: https://soroban.stellar.org/docs/getting-started/hello-world#build
-[docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-futurenet
+[docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet
 [soroban]: https://soroban.stellar.org
 [cap]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md
 [basic-tut]: https://soroban.stellar.org/docs/category/basic-tutorials
 [advanced-tut]: https://soroban.stellar.org/docs/category/advanced-tutorials
-[contract-lifecycle]: https://soroban.stellar.org/docs/learn/contract-lifecycle
+[contract-lifecycle]: https://soroban.stellar.org/docs/fundamentals-and-concepts/contract-lifecycle
 [sq-site]: https://quest.stellar.org/
