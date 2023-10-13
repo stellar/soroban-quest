@@ -29,7 +29,7 @@ def get_asset_contract_address(token_id: str) -> str:
 
 
 if __name__ == '__main__':
-    network_passphrase = Network.FUTURENET_NETWORK_PASSPHRASE
+    network_passphrase = Network.TESTNET_NETWORK_PASSPHRASE
     asset = Asset.native() # Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
 
     token_id = get_asset_contract_id(asset, network_passphrase)
