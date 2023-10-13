@@ -6,7 +6,7 @@ look into `types.rs`, though. There's bound to be some interesting stuff there!
 http://bit.ly/3UajKQv
 */
 
-use soroban_sdk::{contractimpl, Env, contract};
+use soroban_sdk::{contract, contractimpl, Env};
 use types::*;
 
 #[contract]

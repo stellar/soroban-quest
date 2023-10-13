@@ -15,7 +15,7 @@ today you're going to be _writing_ some actual Rust in your contract!
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`CASLXWDDOX2AO4GQR3IX4CTHC3U2WGYYD3CUDZ7AHIVM6XRPMFURNSZ3` so we can
+`CA6S7UOMUHURW7IEOR732JGPUBEYZ2BWQELD2UPMERSX4J46SR3INXDG` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -127,9 +127,9 @@ even more information! Check this one out, too!
 ### Custom Types in Soroban
 
 If you choose to click only one link in this entire README, please make it this
-one: The **[Custom Types][learn-ct]** article in the Soroban documentation is
-just truly _very_ good. The custom types you can create on Soroban are made up
-of `struct` types and `enum` types, though there are a few different conventions
+one: The **[Custom Types][fc-ct]** article in the Soroban documentation is just
+truly _very_ good. The custom types you can create on Soroban are made up of
+`struct` types and `enum` types, though there are a few different conventions
 used to define those types. The broad categories of custom types you can create
 are:
 
@@ -138,17 +138,17 @@ are:
 - [`Enum` with Unit and Tuple Variants][enum-unit-tuple]
 - [`Enum` with Integer Variants][enum-integer]
 
-[struct-named]: https://soroban.stellar.org/docs/learn/custom-types#structs-with-named-fields
-[struct-unnamed]: https://soroban.stellar.org/docs/learn/custom-types#structs-with-unnamed-fields
-[enum-unit-tuple]: https://soroban.stellar.org/docs/learn/custom-types#enum-unit-and-tuple-variants
-[enum-integer]: https://soroban.stellar.org/docs/learn/custom-types#enum-integer-variants
+[struct-named]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#structs-with-named-fields
+[struct-unnamed]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#structs-with-unnamed-fields
+[enum-unit-tuple]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#enum-unit-and-tuple-variants
+[enum-integer]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#enum-integer-variants
 
 It's also important to understand that `enum`s are currently supported as
 contract types in Soroban only when all variants have an explicit integer
 literal, **or** when all variants are unit or single field variants.
 
-In the **[Custom Types][learn-ct]** article you'll even learn quite a bit about
-how Soroban will store your custom types on the Ledger, XDR conversion, JSON
+In the **[Custom Types][fc-ct]** article you'll even learn quite a bit about how
+Soroban will store your custom types on the Ledger, XDR conversion, JSON
 representation, and more!
 
 An additional (and very useful) resource in the Soroban documentation can be
@@ -264,24 +264,6 @@ arguments, authentication, data keys, and more. It is _opaque_ in the sense that
 while it might represent a Stellar account, or a Stellar contract, you can treat
 it the same no matter what type of `Address` you're dealing with.
 
-For invoking contracts, we used to pass a hex string for the contract's `--id`
-argument. The `contract_id` and the `contract_address` both represent the same
-underlying data, and you can think of them as though they are interchangeably.
-Converting between the two representations can be done using [this very simple
-endpoint][strkey-hex]. Use it like this:
-
-- `https://rpciege.com/convert/<hex-encoded-contract-id>` will return to you the
-  corresponding `contract_address`
-- `https://rpciege.com/convert/<strkey-contract-address>` will return to you the
-  corresponding `contract_id`
-
-To make sure we're on the same page, here's those two values for native Lumens
-on Futurenet:
-
-- Contract
-  ID: `7dc1ecdf9335199fc9918dbe0c732ce1d1146aa8f29cc9c360afc6a747ae94df`
-- Contract Address: `CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT`
-
 Invoke the `c_part` function to create an account `Participant` using something
 like:
 
@@ -354,7 +336,7 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `CASLXWDDOX2AO4GQR3IX4CTHC3U2WGYYD3CUDZ7AHIVM6XRPMFURNSZ3`,
+with the ID `CA6S7UOMUHURW7IEOR732JGPUBEYZ2BWQELD2UPMERSX4J46SR3INXDG`,
 supplying your own contract address as the `--contract_address` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
@@ -363,8 +345,8 @@ custom types with the necessary fields, variants, values, etc.
 
 ## Further Reading
 
-- Again, just trust me and **read this**: The [Custom Types][learn-ct] article
-  in the Learn section of the Soroban docs could _not_ be more useful!
+- Again, just trust me and **read this**: The [Custom Types][fc-ct] article in
+  the Learn section of the Soroban docs could _not_ be more useful!
 - You can look in the [SDK Docs][sdk-contracttype] to learn more about the
   `contracttype` attribute macro.
 - There is an entire [Custom Types example contract][example-ct] you can look at
@@ -381,10 +363,9 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [sdk-contracttype]: https://docs.rs/soroban-sdk/latest/soroban_sdk/attr.contracttype.html
-[learn-ct]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types
+[fc-ct]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types
 [example-ct]: https://soroban.stellar.org/docs/basic-tutorials/custom-types
 [rust-struct]: https://doc.rust-lang.org/book/ch05-00-structs.html
 [rust-enums]: https://doc.rust-lang.org/book/ch06-00-enums.html
 [error-enums]: https://soroban.stellar.org/docs/fundamentals-and-concepts/errors#error-enums
 [contract-dialect]: https://soroban.stellar.org/docs/fundamentals-and-concepts/rust-dialect
-[strkey-hex]: https://rpciege.com/convert/
