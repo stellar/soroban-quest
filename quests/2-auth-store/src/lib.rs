@@ -5,7 +5,8 @@ use soroban_sdk::{bytes, contract, contractimpl, panic_with_error, Address, Byte
 // We will use this `MAX` constant to bump our contract's storage entry
 // immediately after we create the ledger entry. We are using the maximum
 // lifetime allowed in Soroban, measured in the number of ledgers.
-const MAX: u32 = 6_312_000; // This equates to roughly one year (5 seconds per ledger)
+const HIGH_EXPIRATION: u32 = 483_840; // Our "upper bounds" is roughly 28 days (5 seconds per ledger)
+const LOW_EXPIRATION: u32 = HIGH_EXPIRATION / 2; // Our "lower bounds" is roughly 14 days (5 seconds per ledger)
 
 #[contract]
 pub struct DataStoreContract;
@@ -43,15 +44,32 @@ impl DataStoreContract {
         // re-created after expiration without needing to get into the weeds of
         // ledger entry restore operations.
         env.storage().temporary().set(&user, &value);
-        env.storage().temporary().bump(&user, MAX); // We are bumping the entry by `MAX`.
+
+        // Immediately after we create the storage entry, we are bumping its
+        // expiration so it will live on the ledger longer than the default
+        // amount (hopefully long enough for you to complete the quest). We
+        // provide two values here because we're essentially setting up a range
+        // of acceptable lifetimes for our storage entry. If the `bump` function
+        // were to discover that the expiration is already greater than our
+        // lower bounds, it would save us the fee and not bump the entry. If,
+        // however, the entry's expiration is closer to now than our lower
+        // threshold, it will bump the expiration of the storage entry until
+        // MAX_EXPIRATION ledgers from now. (This strategy doesn't accomplish
+        // much in this scenario, where the entry was just created and will
+        // **definitely** have a shorter lifetime than `LOW_EXPIRATION`, but
+        // it's useful chance to demonstrate how and why the `bump` function
+        // operates this way.)
+        env.storage()
+            .temporary()
+            .bump(&user, LOW_EXPIRATION, HIGH_EXPIRATION); // We are bumping the entry by `MAX`.
 
         Ok(()) // return ok if function call succeeded
     }
 
-    /// The `get()` function takes an `owner` parameter, accepting an Address
-    /// object for it. We then use `env.storage().temporary().get()` to
-    /// retrieve the value which has been associated with the supplied Address.
-    /// If there is no data associated, return Bytes of length 0.
+    /// The `get` function takes an `owner` parameter, accepting an Address for
+    /// it. We then use `env.storage().temporary().get()` to retrieve the value
+    /// which has been associated with the supplied Address. If there is no data
+    /// associated, return Bytes of length 0.
     pub fn get(env: Env, owner: Address) -> Bytes {
         env.storage()
             .temporary()
