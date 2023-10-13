@@ -31,8 +31,8 @@ please checkout our [pioneer quest][pioneer]. It covers the basic structure of
 this repository, all the tools you'll need, and the process of getting
 everything working together.
 
-It's an important resource to keep handy during all these live
-quests. Some of the most important bits you'll need to know from it:
+It's an important resource to keep handy during all these live quests. Some of
+the most important bits you'll need to know from it:
 
 - Understanding what a "Gitpod workspace" even is, and how we've set it up for
   you to successfully complete these quests.
