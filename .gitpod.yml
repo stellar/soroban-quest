@@ -2,25 +2,25 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: Futurenet
+  - name: Testnet
     init: |
-      docker pull stellar/quickstart:soroban-dev@sha256:8a99332f834ca82e3ac1418143736af59b5288e792d1c4278d6c547c6ed8da3b
+      docker pull stellar/quickstart:testing@sha256:40636cdb1b9168b47e5dc120949fe3610ff914e8dd43409edb6fa66496bdd9c3
     command: |
       docker run --rm -it \
       -p 8000:8000 \
       --name stellar \
-      stellar/quickstart:soroban-dev@sha256:8a99332f834ca82e3ac1418143736af59b5288e792d1c4278d6c547c6ed8da3b \
-      --futurenet \
+      stellar/quickstart:testing@sha256:40636cdb1b9168b47e5dc120949fe3610ff914e8dd43409edb6fa66496bdd9c3 \
+      --testnet \
       --enable-soroban-rpc
   - name: "Albedo Signer"
     command: |
       cd ~/.local/_client
       clear
       npm run start
-  - name: CLI - Futurenet
+  - name: CLI - Testnet
     env:
-      SOROBAN_RPC_URL: "https://rpc-futurenet.stellar.org:443"
-      SOROBAN_NETWORK_PASSPHRASE: "Test SDF Future Network ; October 2022"
+      SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org:443/"
+      SOROBAN_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
     command: |
       source ~/.local/bash-hook
       clear
@@ -43,16 +43,6 @@ vscode:
   extensions:
     - vadimcn.vscode-lldb
     - rust-lang.rust-analyzer
-
-github:
-  prebuilds:
-    master: true
-    branches: true
-    pullRequests: true
-    pullRequestsFromForks: true
-    addCheck: false
-    addComment: true
-    addBadge: true
 
 ports:
   - name: Futurenet
