@@ -32,7 +32,10 @@ fn test_types() {
         name: bytes!(&env, 0x7374656c6c6172),
         age: 8,
         pet: Animal::Dog,
-        food: String::from_slice(&env, "I really like to eat pizza! I think it's my favorite food in all the world."),
+        food: String::from_slice(
+            &env,
+            "I really like to eat pizza! I think it's my favorite food in all the world.",
+        ),
     };
     client.c_user(&user);
 

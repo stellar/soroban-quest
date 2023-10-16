@@ -16,7 +16,7 @@ There are two relevant accounts today:
 - `Parent_Account` will be your Quest Account, (what you are given when you run
   `sq play {n}`) and will be used to deploy an `AllowanceContract`.
 - `Child_Account` will be a secondary account which will interact with your
-  contract. Create and fund this Futurenet account on your own.
+  contract. Create and fund this Testnet account on your own.
 
 **For our finale quest, you must build and deploy the `AllowanceContract` using
 your Quest Account (`Parent_Account`). Next grant your deployed contract an
@@ -124,17 +124,17 @@ bank account (everyone's dream).
 So, how do we actually make one of them tokens, then? There are a few methods
 available to us. Let's (briefly) look at them.
 
-1. (Spicy 🌶️🌶️🌶️) You _could_ write the whole thing from scratch, implementing
-   whatever features, functions, and fun suit your needs. That would take a lot
-   of work, but you could do it. I won't stop you.
+1. (Spicy 🌶️🌶️🌶️) You _could_ write the whole thing from scratch,
+   implementing whatever features, functions, and fun suit your needs. That
+   would take a lot of work, but you could do it. I won't stop you.
 
 2. (Medium 🌶️🌶️) There's a `create-token.py` script in the `py-scripts/`
    directory here that will do a lot of the heavy lifting for you. This can be
    used and adapted to match whatever asset you're trying to create. It's a
    fantastic starting point.
 
-3. (Mild 🌶️) Fun fact, the `soroban` CLI has a handy little helper command built
-   right into it that will (we promise, we're not making this up) do
+3. (Mild 🌶️) Fun fact, the `soroban` CLI has a handy little helper command
+   built right into it that will (we promise, we're not making this up) do
    _everything_ for you! You don't have to code anything, just run the command a
    single time, and the contract is **deployed**. You could use it like this:
 
@@ -147,12 +147,12 @@ soroban lab token wrap --asset native
 ```
 
 It should be noted that wrapping an asset will work exactly one time per asset
-(per network). The `native` asset contract is already deployed to the Futurenet,
-and trying to wrap that again (on the Futurenet) will return an error rather
-than a `contract_address`. (Caveat: since contract instances are subject to
-state expiration, you _may_ need to re-wrap the native token if Soroban gives
-you a `contract not found` error. We've bumped the instance to its maximum
-lifetime, however. So, this "shouldn't" be a problem for anyone.)
+(per network). The `native` asset contract is already deployed to the Testnet,
+and trying to wrap that again (on the Testnet) will return an error rather than
+a `contract_address`. (Caveat: since contract instances are subject to state
+expiration, you _may_ need to re-wrap the native token if Soroban gives you a
+`contract not found` error. We've bumped the instance to its maximum lifetime,
+however. So, this "shouldn't" be a problem for anyone.)
 
 > It should _also_ be noted you don't need to deploy or wrap any tokens or
 > assets for this quest. We just put this here for fun!
@@ -172,7 +172,7 @@ from stellar_sdk import Asset, Network, StrKey, xdr
 native_asset = Asset.native()
 issued_asset = Asset("QUEST6", "GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2")
 
-network_id_hash = xdr.Hash(hashlib.sha256(Network.FUTURENET_NETWORK_PASSPHRASE.encode()).digest())
+network_id_hash = xdr.Hash(hashlib.sha256(Network.TESTNET_NETWORK_PASSPHRASE.encode()).digest())
 preimage = xdr.HashIDPreimage.from_envelope_type_contract_id(
     contract_id=xdr.HashIDPreimageContractID(
         network_id=network_id_hash,
@@ -184,18 +184,19 @@ preimage = xdr.HashIDPreimage.from_envelope_type_contract_id(
 contract_id = xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
 print(f"Contract ID: {contract_id}")
 contract_address = StrKey.encode_contract(bytes.fromhex(contract_id))
-print(f"Contract Address: {contract_address})
+print(f"Contract Address: {contract_address}")
 ```
 
 You can find an expanded version of the above script, as well as some other
 _very_ handy Python scripts (big shoutout to [Jun Luo (@overcat)][overcat]) in
 the `py-scripts/` directory. They deal with all kinds of Soroban tasks: creating
-tokens, pyaments, finding asset contract IDs, deploying contracts, etc.
+tokens, payments, finding asset contract addresses, deploying contracts, etc.
 
 As per our [tl;dr](#tldr) at the top, this native asset contract will _need_ to
-be invoked only once: The `Parent_Account` will need to `approve` to the
-`AllowanceContract` as a proxy spender. You could also make use of the `balance`
-and `allowance` functions of the contract to check your work along the way.
+be invoked only once: The `Parent_Account` will need to `approve` the
+`AllowanceContract` as a proxy spender. You could also make use of the
+`balance`, `allowance`, and/or `spendable_balance` functions of the contract to
+check your work along the way.
 
 Don't forget to look into the [Token Interface][sac-interface] to figure out
 which arguments you'll need to use when making those invocations. You remember
@@ -225,7 +226,7 @@ If you forgot what your task is, here it is again:
   `Child_Account` or `Parent_Account`
 
 While performing the above steps, you'll want to consider the amount of XLM
-you're using along the way. In Soroban, most assets are quantified using
+you're using along the way. In Soroban, assets are quantified using
 [Stroop][stroop]s (that is, one ten-millionth of the asset). For example, if you
 want to `transfer` 1 XLM, you'll need to supply `10000000`, `10_000_000` or `1 *
 10**7` stroops as an argument in your invocation.
@@ -287,7 +288,7 @@ got a couple of suggestions for where you might go from here.
 [asset-contract]: https://soroban.stellar.org/docs/advanced-tutorials/stellar-asset-contract
 [token-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface
 [sac-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface#code
-[cap-46-6]: https://stellar.org/protocol/cap-46-06
+[cap-46-6]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md
 [docs-assets]: https://developers.stellar.org/docs/fundamentals-and-concepts/stellar-data-structures/assets
 [assets-faq]: https://soroban.stellar.org/docs/fundamentals-and-concepts/faq#can-soroban-contracts-interact-with-stellar-assets
 [lumens]: https://developers.stellar.org/docs/fundamentals-and-concepts/lumens

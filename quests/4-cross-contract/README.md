@@ -81,22 +81,22 @@ code for `contract_b`. Doing so makes a couple things happen inside
 Here's how this might play out in the (pretend) `contract_b/src/lib.rs` file:
 
 ```rust
-// We put this inside a `mod{}` block to avoid collisions between type names
+// We put this inside a `mod{}` block to avoid collisions between type names.
 mod contract_a {
-    soroban_sdk::contractimport!(file = "path/to/contract_a.wasm");
+    soroban_sdk::contractimport!(file = "../relative/path/to/contract_a.wasm");
 }
 ```
 
-> _Note:_ When importing a contract file into another contract, it's a good time
-> to think about whether or not you want to optimize your build process. You can
-> read more about [Optimizing Builds][optimizing] in the Soroban docs, or you
-> could come experiment with us in [fca00c][fca00c].
+> **Note:** When importing a contract file into another contract, it's a good
+> time to think about whether or not you want to optimize your build process.
+> You can read more about [Optimizing Builds][optimizing] in the Soroban docs,
+> or you could come experiment with us in [fca00c][fca00c].
 
 #### **Caveat on Contract Compilation Order** <!-- omit in toc -->
 
 When importing a contract's `.wasm` file into another contract's source code,
-`contract_a.wasm` (in the above example) must _already exist_, or Rust will let
-you know forcefully that it cannot find the referenced file.
+the compiled `contract_a.wasm` file (in the above example) must _already exist_,
+or Rust will let you know forcefully that it cannot find the referenced file.
 
 ### Using a Contract Client
 
@@ -111,6 +111,28 @@ cross-contract call is quite simple. The process looks like this:
 - `contract_b` then takes the response and does whatever is needed with it
   (returns all or part of the response to the invoker, processes the response
   and returns something else, calls yet another contract, you get the idea...)
+
+We've illustrated this in the diagram below:
+
+```mermaid
+sequenceDiagram
+    actor User
+    Participant contract_b
+    Participant contract_a
+    User->>contract_b: invokes function
+    activate contract_b
+    contract_b-->>contract_b: begins executing <br> invoked function
+    contract_b-->>contract_b: creates client for <br> contract_a
+    contract_b->>contract_a: invokes function through client
+    activate contract_a
+    contract_a-->>contract_a: executes invoked function
+    contract_a->>contract_b: returns function result
+    deactivate contract_a
+    contract_b-->>contract_b: processes and "does something" <br> with contract_a result
+    contract_b-->>contract_b: finishes executing <br> invoked function
+    contract_b->>User: returns function result
+    deactivate contract_b
+```
 
 You can think of this contract client as if it were an existing "module" that
 you're using in your own contract. Not too bad, Soroban my ol' buddy!
@@ -139,9 +161,8 @@ authenticate and increment a counter, taken from the [Auth tutorial][auth].
 
 ```bash
 soroban contract invoke \
-    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     --id 1 \
+    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     -- \
     increment \
     --user GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
@@ -152,13 +173,13 @@ In the above example, the values are specified simply as strings. There are
 other situations where that may not be possible, and you'll have to use
 something a bit _fancier_. Suppose you wish to supply an `Address` argument to a
 contract's function, but you want to use some other contract's address, instead
-of a "regular" account address:
+of a "regular" account address. But, if you only have the contract's ID in hex,
+you'd have to pass it like this:
 
 ```bash
 soroban contract invoke \
-    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     --id 1 \
+    --wasm path/to/contract.wasm \
     -- \
     foo \
     --address '{"address":{"contract":"<contract_id_hex>"}}'
@@ -171,17 +192,17 @@ doing the JSON for you. It will let you know when it can't, though.
 ### Contract Identification: StrKey `Address` vs. Hex `ID`
 
 When invoking a contract from the command line, we previously used the
-hex-encoded `contract_id` to tell the soroban-cli which contract you're
+hex-encoded `contract_id` to tell the Soroban-CLI which contract you're
 invoking. Another, friendlier-to-read representation of this same contract
-identifying data has become all but ubiquitous: the StrKey Address
-representation.
+identifying data has now taken over: the StrKey Address representation. When
+using the Soroban-CLI, you're now **required** to use the Address representation
+when an `Address` type is specified.
 
 This will look familiar if you've used Stellar's public/secret keys before. A
 contract's Address uses the same length and character set as the other types of
 keys, but starts with a `C`. Both the `contract_id` and `contract_address`
 represent the _same underlying data_, and can be thought of as interchangeable.
-(As far as the `soroban` is concerned, these two are interchangeable, and the
-cli can accept either representation when an `Address` type is specified.)
+(As far as the `soroban` is concerned, these two are interchangeable.)
 
 Converting between the two representations can be done using [this very simple
 endpoint][strkey-hex]. Use it like this:
@@ -191,21 +212,20 @@ endpoint][strkey-hex]. Use it like this:
 - `https://rpciege.com/convert/<strkey-contract-address>` will return to you the
   corresponding `contract_id`
 
-To make sure we're on the same page, here's those two values for native Lumens
-on Futurenet:
+To make sure we're on the same page, here are those two values for native Lumens
+on Testnet:
 
 - Contract
-  ID: `7dc1ecdf9335199fc9918dbe0c732ce1d1146aa8f29cc9c360afc6a747ae94df`
-- Contract Address: `CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT`
+  ID: `d7928b72c2703ccfeaf7eb9ff4ef4d504a55a8b979fc9b450ea2c842b4d1ce61`
+- Contract Address: `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
 
 Using this kind of contract address, the above example invocation could look
 like this:
 
 ```bash
 soroban contract invoke \
-    --source GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
     --id 1 \
+    --wasm path/to/contract.wasm \
     -- \
     foo \
     --address <strkey-contract-address>
@@ -215,8 +235,8 @@ Much better, right!?
 
 ## Further Reading
 
-- The [Cross Contract Calls guide][ccc-example] in the Soroban
-  documentation has even more details and hints regarding this topic.
+- The [Cross Contract Calls guide][ccc-example] in the Soroban documentation has
+  even more details and hints regarding this topic.
 - Read more about [`traits` in Rust][rust-traits] in The Rust Reference
 - The "Learn" section of the Soroban documentation has an article all about
   [interacting with contracts][interacting-contracts], and it's **definitely**

@@ -8,12 +8,12 @@
 /// wasm file. Just `use` it directly from the SDK! How cool!?
 use soroban_sdk::{contract, contracterror, contractimpl, contracttype, token, Address, Env};
 
-/// An `Error` enum is used to meaningfully and concisely share error
+/// Our `ContractError` enum is used to meaningfully and concisely share error
 /// information with a contract user.
 #[contracterror]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(u32)]
-pub enum Error {
+pub enum ContractError {
     ContractAlreadyInitialized = 1,
     ContractNotInitialized = 2,
     InvalidAuth = 3,
@@ -70,11 +70,11 @@ pub trait AllowanceTrait {
         token: Address,  // the id of the token being transferred as an allowance
         amount: i128,    // the total allowance amount given for the year
         step: u64,       // how frequently (in seconds) a withdrawal can be made
-    ) -> Result<(), Error>;
+    ) -> Result<(), ContractError>;
 
     // When `withdraw` is invoked, a transfer is made from the `Parent` asset
     // balance to the `Child` asset balance.
-    fn withdraw(e: Env, invoker: Address) -> Result<(), Error>;
+    fn withdraw(e: Env, invoker: Address) -> Result<(), ContractError>;
 }
 
 #[contractimpl]
@@ -87,12 +87,12 @@ impl AllowanceTrait for AllowanceContract {
         token: Address,
         amount: i128,
         step: u64,
-    ) -> Result<(), Error> {
+    ) -> Result<(), ContractError> {
         // When running `init`, we want to make sure the function hasn't already
         // been invoked. To do so, we assert that there are no settings stored
         // for this contract yet.
         if e.storage().instance().has(&StorageKey::Settings) {
-            return Err(Error::ContractAlreadyInitialized);
+            return Err(ContractError::ContractAlreadyInitialized);
         }
 
         // We `require_auth()` for the parent address. Makes sense to have
@@ -102,13 +102,13 @@ impl AllowanceTrait for AllowanceContract {
         // You can't have a withdraw every 0 seconds. Obviously. Also, you can't
         // divide by 0. So say the calculators, at least.
         if step == 0 {
-            return Err(Error::InvalidArguments);
+            return Err(ContractError::InvalidArguments);
         }
 
         // A withdrawal should never be `0` stroops. I mean, really. At that
         // point, why even go through the trouble of setting this up?
         if (amount * step as i128) / SECONDS_IN_YEAR as i128 == 0 {
-            return Err(Error::InvalidArguments);
+            return Err(ContractError::InvalidArguments);
         }
 
         // Here, we declare the settings struct values that conforms to the
@@ -145,11 +145,11 @@ impl AllowanceTrait for AllowanceContract {
         Ok(())
     }
 
-    fn withdraw(e: Env, invoker: Address) -> Result<(), Error> {
+    fn withdraw(e: Env, invoker: Address) -> Result<(), ContractError> {
         // Conversely from `init`, we want to make sure the contract _has_ been
         // initialized before a withdraw can be made.
         if !e.storage().instance().has(&StorageKey::Settings) {
-            return Err(Error::ContractNotInitialized);
+            return Err(ContractError::ContractNotInitialized);
         }
 
         // This time, we _retrieve_ all the settings data that has been stored
@@ -177,7 +177,7 @@ impl AllowanceTrait for AllowanceContract {
         // practice, for today's quest, the function **must** be invoked by
         // either the `Parent` or the `Child` address.
         if invoker != child && invoker != parent {
-            return Err(Error::InvalidAuth);
+            return Err(ContractError::InvalidAuth);
         }
         invoker.require_auth();
 
@@ -196,7 +196,7 @@ impl AllowanceTrait for AllowanceContract {
         // all at once, after all.
         let latest: u64 = e.storage().instance().get(&StorageKey::Latest).unwrap();
         if latest + step > e.ledger().timestamp() {
-            return Err(Error::ChildAlreadyWithdrawn);
+            return Err(ContractError::ChildAlreadyWithdrawn);
         }
 
         // This is where the magic happens! We use the client we set up for our

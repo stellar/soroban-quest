@@ -1,5 +1,7 @@
 #![cfg(test)]
 
+extern crate std;
+
 use super::*;
 
 use soroban_sdk::{
@@ -24,7 +26,7 @@ fn test_valid_sequence() {
     // If you do the math, you can tell when we wrote this test!
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // We create two user addresses to test with, `u1` and `u2`
@@ -39,20 +41,20 @@ fn test_valid_sequence() {
     // We create a client that can be used for our token contract and we invoke
     // the `init` function. Again, in tests, the values we supply here are
     // inconsequential.
-    let token = token::Client::new(&env, &token_address);
-    let admin = token::AdminClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address);
+    let token_admin = token::StellarAssetClient::new(&env, &token_address);
 
     // Disable checks for authentication. See note in quest 2 tests for details.
     env.mock_all_auths();
 
     // We use the `u1` account to mint 1,000,000,000 stroops of our token to the
     // `Parent` (that is equal to 100 units of the asset).
-    admin.mint(&u1, &1000000000);
+    token_admin.mint(&u1, &1000000000);
 
     // We invoke the token contract's `approve` function as the `u1` address,
     // allowing our AllowanceContract to spend tokens out of the `u1` balance.
     // We are giving the contract a 500,000,000 stroop (== 50 units) allowance.
-    token.approve(
+    token_client.approve(
         &u1,
         &contract_address,
         &500000000,
@@ -60,7 +62,7 @@ fn test_valid_sequence() {
     );
     // We invoke the token contract's `allowance` function to ensure everything
     // has worked up to this point.
-    assert_eq!(token.allowance(&u1, &contract_address), 500000000);
+    assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
     // We invoke the `init` function of the AllowanceContract, providing the
     // starting arguments. These values result in a weekly allowance of
@@ -77,7 +79,7 @@ fn test_valid_sequence() {
     // the timestamp by one second.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // We invoke the inaugural `withdraw` to get the first allowance paid out.
@@ -85,31 +87,31 @@ fn test_valid_sequence() {
     // 9,615,384. (Technically, at this point in time, that should be _exactly_
     // their balance, because they didn't have any of the asset minted to them.)
     client.withdraw(&u1);
-    assert_eq!(token.balance(&u2), 9615384);
+    assert_eq!(token_client.balance(&u2), 9615384);
 
     // We (again) set new ledger state to simulate time passing. This time,
     // we've increased the timestamp by one second and one week.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // We invoke `withdraw` again, and check that the `u2` token balance
     // reflects two allowance transfers.
     client.withdraw(&u2);
-    assert_eq!(token.balance(&u2), 9615384 * 2);
+    assert_eq!(token_client.balance(&u2), 9615384 * 2);
 
     // A third time, we set new ledger state to simulate time passing. Here, we
     // skip ahead one second and two weeks from the `init` invocation.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60) + (7 * 24 * 60 * 60),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // We invoke `withdraw` again, and check that the `u2` token balance now
     // reflects three allowance transfers.
     client.withdraw(&u1);
-    assert_eq!(token.balance(&u2), 9615384 * 3);
+    assert_eq!(token_client.balance(&u2), 9615384 * 3);
 }
 
 /// The `test_invalid_auth()` function will test that the contract panics when
@@ -127,7 +129,7 @@ fn test_invalid_auth() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     let u1 = Address::random(&env); // `Parent` address
@@ -135,25 +137,25 @@ fn test_invalid_auth() {
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
 
-    let token = token::Client::new(&env, &token_address);
-    let admin = token::AdminClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address);
+    let token_admin = token::StellarAssetClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    admin.mint(&u1, &1000000000);
-    token.approve(
+    token_admin.mint(&u1, &1000000000);
+    token_client.approve(
         &u1,
         &contract_address,
         &500000000,
         &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
     );
-    assert_eq!(token.allowance(&u1, &contract_address), 500000000);
+    assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
     client.init(&u1, &u2, &token_address, &500000000, &(7 * 24 * 60 * 60));
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // Ok, stop here! Instead of invoking as either of the `Parent` or `Child`
@@ -175,7 +177,7 @@ fn test_invalid_sequence() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     let u1 = Address::random(&env); // `Parent` address
@@ -185,45 +187,45 @@ fn test_invalid_sequence() {
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token = token::Client::new(&env, &token_address);
-    let admin = token::AdminClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address);
+    let token_admin = token::StellarAssetClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    admin.mint(&u1, &1000000000);
-    token.approve(
+    token_admin.mint(&u1, &1000000000);
+    token_client.approve(
         &u1,
         &contract_address,
         &500000000,
         &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
     );
 
-    assert_eq!(token.allowance(&u1, &contract_address), 500000000);
+    assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
     client.init(&u1, &u2, &token_address, &500000000, &(7 * 24 * 60 * 60));
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     client.withdraw(&u2);
-    assert_eq!(token.balance(&u2), 9615384);
+    assert_eq!(token_client.balance(&u2), 9615384);
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60),
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     client.withdraw(&u2);
-    assert_eq!(token.balance(&u2), 9615384 * 2);
+    assert_eq!(token_client.balance(&u2), 9615384 * 2);
 
     // Ok, stop here! This time, for our third `withdraw` invocation, we are
     // only adding 20 seconds to the previous invocation. Since we've set up for
     // weekly allowance transfers, this attempt should fail.
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1) + (7 * 24 * 60 * 60) + 20,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     // We don't need an assertion here, since this invocation should fail and
@@ -243,7 +245,7 @@ fn test_invalid_init() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     let u1 = Address::random(&env); // `Parent` address
@@ -253,20 +255,20 @@ fn test_invalid_init() {
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token = token::Client::new(&env, &token_address);
-    let admin = token::AdminClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address);
+    let token_admin = token::StellarAssetClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    admin.mint(&u1, &1000000000);
-    token.approve(
+    token_admin.mint(&u1, &1000000000);
+    token_client.approve(
         &u1,
         &contract_address,
         &500000000,
         &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
     );
 
-    assert_eq!(token.allowance(&u1, &contract_address), 500000000);
+    assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
     // Ok, stop here! This time, when invoking `init`, we give a `0` for the
     // `step` field. This isn't possible because it would turn the
@@ -299,7 +301,7 @@ fn test_invalid_init_withdrawal() {
 
     env.ledger().set(LedgerInfo {
         timestamp: 1669726145,
-        ..Default::default()
+        ..env.ledger().get()
     });
 
     let u1 = Address::random(&env); // `Parent` address
@@ -309,21 +311,21 @@ fn test_invalid_init_withdrawal() {
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token = token::Client::new(&env, &token_address);
-    let admin = token::AdminClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address);
+    let token_admin = token::StellarAssetClient::new(&env, &token_address);
 
     env.mock_all_auths();
 
-    admin.mint(&u1, &1000000000);
+    token_admin.mint(&u1, &1000000000);
 
-    token.approve(
+    token_client.approve(
         &u1,
         &contract_address,
         &500000000,
         &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
     );
 
-    assert_eq!(token.allowance(&u1, &contract_address), 500000000);
+    assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
     // Ok, stop here! This time, when invoking `init`, we give a `1` for the
     // `amount` field and a `1` for the `step` field. If you've followed along
