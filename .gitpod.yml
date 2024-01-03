@@ -4,12 +4,12 @@ image:
 tasks:
   - name: Testnet
     init: |
-      docker pull stellar/quickstart:testing@sha256:40636cdb1b9168b47e5dc120949fe3610ff914e8dd43409edb6fa66496bdd9c3
+      docker pull stellar/quickstart:testing
     command: |
-      docker run --rm -it \
+      docker run --rm -i \
       -p 8000:8000 \
       --name stellar \
-      stellar/quickstart:testing@sha256:40636cdb1b9168b47e5dc120949fe3610ff914e8dd43409edb6fa66496bdd9c3 \
+      stellar/quickstart:testing
       --testnet \
       --enable-soroban-rpc
   - name: "Albedo Signer"
@@ -21,16 +21,13 @@ tasks:
     env:
       SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org:443/"
       SOROBAN_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
-    command: |
-      source ~/.local/bash-hook
-      clear
-  - name: CLI - Sandbox
     init: |
       cargo clean
       cargo fetch
-      cargo build --package soroban-hello-world-contract --target wasm32-unknown-unknown --release
+      soroban contract build --package soroban-hello-world-contract
       cargo test --package soroban-hello-world-contract
     command: |
+      source ~/.local/bash-hook
       if [[ ${QUEST} ]]
       then
         gp open quests/${QUEST}*/README.md
@@ -45,7 +42,7 @@ vscode:
     - rust-lang.rust-analyzer
 
 ports:
-  - name: Futurenet
+  - name: Testnet
     port: 8000
     visibility: public
     onOpen: ignore
