@@ -8,8 +8,10 @@ use soroban_sdk::{symbol_short, vec, Env};
 // in further in a future quest. Just you wait!
 #[test]
 fn test() {
-    // we register the contract in a Soroban environment, and build a client we
-    // can use to invoke the contract
+    // We register the contract in a Soroban environment, and build a client we
+    // can use to invoke the contract. You **will** see this chunk repeatedly
+    // over the course of many tests. The environment, address, then client
+    // pattern is required for most tests we'll create in these quests.
     let env = Env::default();
     let contract_address = env.register_contract(None, HelloContract);
     let client = HelloContractClient::new(&env, &contract_address);
