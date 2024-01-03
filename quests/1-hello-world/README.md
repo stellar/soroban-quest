@@ -40,31 +40,31 @@ instructions and make yourself familiar with them. You'll be thankful you did!
 ### Authenticate with Discord
 
 In one of your `bash` shells in the bottom panel of your Gitpod Workspace, run
-the following command:
+the following command.
 
 ```bash
 sq user
 ```
 
 If you see that you are successfully authenticated, you can keep moving.
-Otherwise, you should run:
+Otherwise, you should login with the following command.
 
 ```bash
 sq login
 ```
 
-to sign in with your Discord account. You'll then be prompted to complete KYC or
-submit tax information, if either are required of you.
+This will sign you in with your Discord account. You'll then be prompted to
+complete KYC or submit tax information, if either are required of you.
 
-**Note:** If you haven't completed the KYC flow and tax submission on the
-[Stellar Quest site][sq-site], your ability to claim XLM rewards will be
-affected by that. Complete those steps so we can give you the rewards you've
-worked really hard for!
+> _Note:_ If you haven't completed the KYC flow and tax submission on the
+> [Stellar Quest site][sq-site], your ability to claim XLM awards will be
+> affected. Complete those steps so we can give you the awards you've worked
+> really hard for!
 
 ### Retrieve your Quest Account
 
 Before you can play, you must retrieve the `Quest Keypair` for the quest you
-want to play. You get that information by running the following:
+want to play. You get that information by running the following command.
 
 ```bash
 sq play 1 # use whichever quest number you are trying to play
@@ -96,14 +96,14 @@ your work!
 ### Check your Quest Answer
 
 You've done the hard work, and you're ready to see if it has paid off! Run the
-following command to verify your work:
+following command to verify your work.
 
 ```bash
 sq check 1 # use whichever quest number you are trying to verify
 ```
 
 If you still haven't completed KYC and/or tax submission, you'll be reminded one
-more time that you can't claim XLM rewards without them. If you still have more
+more time that you can't claim XLM awards without them. If you still have more
 work to do, you'll be given a clue as to what you might be missing.
 
 ### Claim your Badge
@@ -113,7 +113,7 @@ emoji! You'll then be able to choose how you want to claim your prize: sign a
 transaction using **Albedo**, or sign the **Raw XDR**.
 
 If you select "Albedo," a window will open asking you to sign the transaction,
-and thus allowing you to claim your badge and any prize XLM you may have earned.
+and thus allowing you to claim your badge and any XLM award you may have earned.
 
 If you choose "Raw XDR," the transaction will be output to the terminal window,
 and you will need to sign it using Stellar Laboratory (or your preferred
@@ -131,16 +131,16 @@ Stellar Quest badge!
 
 This first quest is a pretty simple one, and it comes almost directly from the
 Soroban examples, too! All we're doing here is getting our feet wet, so you
-won't need to worry about _writing_ any Rust contracts, or anything like that.
-Here's what you need to know to complete this quest.
+won't need to worry about _writing_ any Rust smart contracts. Here's what you
+need to know to complete this quest.
 
 ### Explore the Contract Code
 
 If you open up the [`lib.rs` file](src/lib.rs), you'll be able to see some
 helpful comments that briefly describe what each portion of the code is doing.
 
-_This contract accepts an argument and responds with a greeting containing that
-argument that was supplied._
+_This contract's single function accepts an argument and responds with a
+greeting containing that argument that was supplied._
 
 A more in-depth dissection of this example smart contract can be found in our
 [Pioneer Quest][pq-lib].
@@ -150,14 +150,13 @@ A more in-depth dissection of this example smart contract can be found in our
 We can now move on to actually _build_ our contract! I know you didn't think you
 would make it this far. Give yourself a pat on the back!
 
-_The build process compiles our Rust code into a binary that is purpose-built
-for the WebAssembly environment that Soroban will provide for it._
+_The build process will compile our Rust code into a binary that is
+purpose-built for the WebAssembly environment that Soroban will provide for it._
 
 If you need some instructions to help you along with this step, you can check
-out the [build tutorial][docs-build] in the Soroban documentation.
-
-Here's the short story version of what you'll need to build the contract. Run
-these commands from within your Testnet terminal:
+out the [build tutorial][docs-build] in the Soroban documentation. Here's the
+short story version of what you'll need to build the contract. Run these
+commands from within your Testnet terminal.
 
 ```bash
 # change into the quest directory
@@ -171,8 +170,8 @@ soroban contract build
 You can also look at the [`test.rs` file](src/test.rs), and you'll see we've
 included some helpful comments there, too.
 
-_This test invokes the contract's `hello()` function, and checks to make sure
-the contract gives the expected response._
+_This test invokes the contract's `hello` function, and checks to make sure the
+contract gives the expected response._
 
 Once you've got an understanding of what's happening in the test scenario, go
 ahead and run the test, ensuring that our contract is behaving properly.
@@ -182,7 +181,7 @@ a much more elaborate explanation of this file, and what is happening along each
 step of the way.
 
 To actually run the test in your quest Gitpod workspace, run these commands from
-within your Testnet terminal:
+within your Testnet terminal.
 
 ```bash
 # change into the quest directory (if you're not there already)
@@ -210,10 +209,10 @@ you just uploaded to the Testnet. Doesn't it just make you want to shout with
 excitement!?
 
 _Invoking your contract will use the Stellar network to call up the contract you
-just uploaded and execute the `hello()` function._
+just uploaded and execute the `hello` function._
 
 The [deploy tutorial][docs-deploy] can also give you some guidance on the finer
-points of invoking a Testnet contract, if you need.
+points of invoking a Testnet contract.
 
 ## Finish the Quest
 
@@ -231,15 +230,15 @@ resources that might be of interest to you:
 
 - The official [Soroban Site][soroban] contains announcements, resources,
   exciting learning opportunities, and more!
-- The [Soroban CAP][cap] (and the related ones) outline the design choices and
-  implementations of the Soroban smart contract platform. (Heads-up: these
+- The [Soroban CAP][cap] (and the related sub-CAPs) outline the design choices
+  and implementations of the Soroban smart contract platform. (Heads-up: these
   documents can be quite technical.)
 - The Soroban documentation contains a number of [basic][basic-tut] and
   [advanced][advanced-tut] tutorials that can help you wrap your mind around
   even more of the concepts and ideas Soroban is built on.
 - You can learn more about the [contract lifecycle][contract-lifecycle] in the
-  "Learn" section of the Soroban documentation. There are tons of great articles
-  here, and you should read through as many of them as you can!
+  Soroban documentation. There are tons of great articles here, and you should
+  read through as many of them as you can!
 
 ## Still Stuck?
 
