@@ -9,7 +9,7 @@ tasks:
       docker run --rm -i \
       -p 8000:8000 \
       --name stellar \
-      stellar/quickstart:testing
+      stellar/quickstart:testing \
       --testnet \
       --enable-soroban-rpc
   - name: "Albedo Signer"
