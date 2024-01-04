@@ -1,4 +1,4 @@
-//! # Data Store
+//! # Auth Store
 //!
 //! A Soroban smart contract that stores data entries keyed by user address.
 
