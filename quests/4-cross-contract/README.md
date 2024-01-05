@@ -20,7 +20,6 @@ the `get` function from your `DataStore` contract.**
   - [Importing Contracts](#importing-contracts)
   - [Using a Contract Client](#using-a-contract-client)
   - [Passing Arguments to Soroban CLI](#passing-arguments-to-soroban-cli)
-  - [Contract Identification: StrKey `Address` vs. Hex `ID`](#contract-identification-strkey-address-vs-hex-id)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
 
@@ -46,7 +45,7 @@ Now, let's talk theory:
 A blockchain "oracle" might seem like one of those buzz-words that _sounds_ like
 something cool, but you're not really sure what it's supposed to mean. You could
 think of an oracle as a window into the "outside world" from within a
-blockchain. An oracle brings in outside data for use in the network. You could
+blockchain. An oracle provides outside data for use in the network. You could
 make one that pulls in all kinds of data! Maybe it's:
 
 - weather data from around the world,
@@ -78,7 +77,7 @@ code for `contract_b`. Doing so makes a couple things happen inside
 - a `ContractClient` is generated that can be used to invoke `contract_a`
   functions
 
-Here's how this might play out in the (pretend) `contract_b/src/lib.rs` file:
+Here's how this might play out in a pretend `contract_b/src/lib.rs` file.
 
 ```rust
 // We put this inside a `mod{}` block to avoid collisions between type names.
@@ -101,7 +100,7 @@ or Rust will let you know forcefully that it cannot find the referenced file.
 ### Using a Contract Client
 
 Once `contract_a` has been imported into `contract_b`, utilizing a
-cross-contract call is quite simple. The process looks like this:
+cross-contract call is quite simple. The process unfolds like this:
 
 - `contract_b` creates a client it will use to invoke functions in `contract_a`
 - `contract_b` makes its invocations using that client, and supplying any
@@ -161,8 +160,7 @@ authenticate and increment a counter, taken from the [Auth tutorial][auth].
 
 ```bash
 soroban contract invoke \
-    --id 1 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --id C... \
     -- \
     increment \
     --user GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B \
@@ -171,67 +169,21 @@ soroban contract invoke \
 
 In the above example, the values are specified simply as strings. There are
 other situations where that may not be possible, and you'll have to use
-something a bit _fancier_. Suppose you wish to supply an `Address` argument to a
-contract's function, but you want to use some other contract's address, instead
-of a "regular" account address. But, if you only have the contract's ID in hex,
-you'd have to pass it like this:
+something a bit _fancier_. Suppose you wish to supply an argument for a
+contract's function that requires you to specify a custom type you've created.
+You may need to pass it in the cli like this:
 
 ```bash
 soroban contract invoke \
-    --id 1 \
-    --wasm path/to/contract.wasm \
+    --id C... \
     -- \
     foo \
-    --address '{"address":{"contract":"<contract_id_hex>"}}'
+    --address '{"cylinder":{"radius":3,"height":14}}'
 ```
 
 You can see that it's very much like a JSON object. Often the `soroban` cli is
 smart enough to figure out what kind of argument you're _trying_ to supply, and
 doing the JSON for you. It will let you know when it can't, though.
-
-### Contract Identification: StrKey `Address` vs. Hex `ID`
-
-When invoking a contract from the command line, we previously used the
-hex-encoded `contract_id` to tell the Soroban-CLI which contract you're
-invoking. Another, friendlier-to-read representation of this same contract
-identifying data has now taken over: the StrKey Address representation. When
-using the Soroban-CLI, you're now **required** to use the Address representation
-when an `Address` type is specified.
-
-This will look familiar if you've used Stellar's public/secret keys before. A
-contract's Address uses the same length and character set as the other types of
-keys, but starts with a `C`. Both the `contract_id` and `contract_address`
-represent the _same underlying data_, and can be thought of as interchangeable.
-(As far as the `soroban` is concerned, these two are interchangeable.)
-
-Converting between the two representations can be done using [this very simple
-endpoint][strkey-hex]. Use it like this:
-
-- `https://rpciege.com/convert/<hex-encoded-contract-id>` will return to you the
-  corresponding `contract_address`
-- `https://rpciege.com/convert/<strkey-contract-address>` will return to you the
-  corresponding `contract_id`
-
-To make sure we're on the same page, here are those two values for native Lumens
-on Testnet:
-
-- Contract
-  ID: `d7928b72c2703ccfeaf7eb9ff4ef4d504a55a8b979fc9b450ea2c842b4d1ce61`
-- Contract Address: `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
-
-Using this kind of contract address, the above example invocation could look
-like this:
-
-```bash
-soroban contract invoke \
-    --id 1 \
-    --wasm path/to/contract.wasm \
-    -- \
-    foo \
-    --address <strkey-contract-address>
-```
-
-Much better, right!?
 
 ## Further Reading
 
@@ -242,8 +194,8 @@ Much better, right!?
   [interacting with contracts][interacting-contracts], and it's **definitely**
   worth the read!
 - We didn't explore the finer details of keeping data on chain in this quest,
-  but there is so much more to learn about this! Especially with the newly
-  arrived [state expiration][state-exp]! Please check out the [persisting
+  but there is so much more to learn about this! Especially with Soroban's novel
+  system of [state archival][state-archival]! Please check out the [persisting
   data][persisting-data] article in the Soroban documentation.
 
 ## Still Stuck?
@@ -262,7 +214,6 @@ got a couple of suggestions for where you might go from here.
 [rust-traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
 [interacting-contracts]: https://soroban.stellar.org/docs/fundamentals-and-concepts/interacting-with-contracts
 [persisting-data]: https://soroban.stellar.org/docs/fundamentals-and-concepts/persisting-data
-[hello-world-tut]: https://soroban.stellar.org/docs/getting-started/hello-world#run-on-sandbox
+[hello-world-tut]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet#interact
 [fca00c]: https://fastcheapandoutofcontrol.com
-[strkey-hex]: https://rpciege.com/convert/
-[state-exp]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-expiration
+[state-archival]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-archival

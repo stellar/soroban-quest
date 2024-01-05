@@ -21,12 +21,12 @@ fn get_cross_call() {
     let cross_call_contract_client =
         CrossContractCallContractClient::new(&env, &cross_call_contract_address);
 
-    // Disable checks for authentication. See note in quest 2 tests for details.
+    // Mock authentication checks. See note in quest 2 tests for details.
     env.mock_all_auths();
 
     // We generate a test user, and invoke the `put` function to store some data
     // in the DataStore contract.
-    let u1 = Address::random(&env);
+    let u1 = Address::generate(&env);
     storage_contract_client.put(&u1, &bytes![&env, 0x48656c6c6f20536f726f62616e21]); // This is the hex value for "Hello Soroban!"
 
     // We invoke the `inv_get` function using our CrossContractCall client,
