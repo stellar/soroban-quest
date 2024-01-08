@@ -115,12 +115,3 @@ Roscoe gritted his teeth. "I will find her," he declared into the emptiness. "No
 matter what, I will get her back!" With newfound resolve, Roscoe prepared to
 call back the Luck Fish, escape the cave, and embark upon the daring rescue of
 his best friend. After a trip to the bar, of course.
-
-<details>
-<summary>To be continued...</summary>
-
-```text
-f09f8e84204d65727279204368726973746d61730a2d2d7370656e64657220277b2261646472657373223a7b22636f6e7472616374223a223c636f6e74726163745f69643e227d7d270a2d2d7370656e6465722043444d5436584433574456344a4b4f49363454344c5456344a5a415253544a594556374232444d52414e4c4c494f37344b4b454248594e4a0a49206c6f766520796f7520616c6c2c20636865636b207468652070792d7363726970747320e29da4efb88f
-```
-
-</details>
