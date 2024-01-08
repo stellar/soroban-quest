@@ -1,8 +1,8 @@
 /// This seems like as good a place as any to quickly point out a handy
-/// difference to know about two types we're importing from `soroban_sdk`:
+/// difference to know about two types we've been importing from `soroban_sdk`:
 /// `Bytes` and `BytesN`. This won't affect today's quest, just good to know.
-/// - `Bytes` is a *growable* array of `u8` values
-/// - `BytesN` is a *fixed-size* array of `u8` values
+/// - `Bytes` is a _growable_ array of `u8` values
+/// - `BytesN` is a _fixed-size_ array of `u8` values
 use soroban_sdk::{contracttype, Address, Bytes, String};
 
 /**
@@ -20,8 +20,11 @@ They are simply here as a place to make some sensible documentation.
 // to define the type, which allows us to structure together multiple related
 // values. Inside the struct, we create the `fields` that will describe an
 // instance of the `Cylinder` type. A `field` is made up of a name (`radius`)
-// paired with a type the associated value must conform to (`u32`).
-pub struct Cylinder {
+// paired with a type the associated value must conform to (`u32`). Note in
+// these examples, we've removed the `pub` keyword. That means we couldn't use
+// the `Cylinder` or `Car` types in our `lib.rs` contract file, even if we
+// wanted to.
+struct Cylinder {
     pub radius: u32,
     pub height: u32,
 }
@@ -30,7 +33,7 @@ pub struct Cylinder {
 /// to define a custom type by listing its possible variants. In this case, any
 /// instance of `Car` could be manufactured by `Ford`, `Honda`, `Porsche`, etc.
 #[contracttype]
-pub enum Car {
+enum Car {
     Chevrolet,
     Ford,
     Mercedes,
