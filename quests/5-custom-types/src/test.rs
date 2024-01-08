@@ -32,7 +32,7 @@ fn test_types() {
         name: bytes!(&env, 0x7374656c6c6172),
         age: 8,
         pet: Animal::Dog,
-        food: String::from_slice(
+        food: String::from_str(
             &env,
             "I really like to eat pizza! I think it's my favorite food in all the world.",
         ),
@@ -49,7 +49,7 @@ fn test_types() {
 
     // We create a random user `u1` to use when we create a `Participant` from
     // our custom type, and then we invoke `c_part`
-    let u1 = Address::random(&env);
+    let u1 = Address::generate(&env);
     let participant = Participant::Account(u1);
     client.c_part(&participant);
 
