@@ -9,13 +9,13 @@ further down in the README!
 **ALSO**: We're going to flip things around on you today! You've gotten pretty
 good at the deploy and invoke steps of the Soroban process (and, yes, you'll
 have to do those today, as well). But, how are your Rust chops?? That's right,
-today you're going to be _writing_ some actual Rust in your contract!
+today you're going to be _writing_ some actual Rust for your contract!
 
 **For today's quest, you must create a set of custom types in your contract that
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`CA6S7UOMUHURW7IEOR732JGPUBEYZ2BWQELD2UPMERSX4J46SR3INXDG` so we can
+`CBMKM3HNJXQ3HTO3AP5GLM5PHFVNHOMYQSITJULCKZAP6SI2COB23IES` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -115,7 +115,7 @@ something like this:
 let homework1 = Homework {
     class: String::from("AA429"),
     subject: String::from("Advanced Astrophotography"),
-    studentId: 8675309,
+    student_id: 8675309,
     complete: false,
     date: String::from("Next Wednesday"),
 };
@@ -336,7 +336,7 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `CA6S7UOMUHURW7IEOR732JGPUBEYZ2BWQELD2UPMERSX4J46SR3INXDG`,
+with the ID `CBMKM3HNJXQ3HTO3AP5GLM5PHFVNHOMYQSITJULCKZAP6SI2COB23IES`,
 supplying your own contract address as the `--contract_address` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
