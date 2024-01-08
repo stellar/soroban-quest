@@ -8,8 +8,8 @@ from stellar_sdk.exceptions import PrepareTransactionException
 from stellar_sdk.soroban_rpc import GetTransactionStatus, SendTransactionStatus
 
 # TODO: You need to replace the following parameters according to the actual situation
-secret = "SBVXDP3N5JPPHBFW7ZSUNBMLUEVLRSQ4YYSO4MTLMFCBFACTGZBLUSYW"
-rpc_server_url = "https://soroban-testnet.stellar.org:443/"
+secret = "SA7U2LASUUQAIW3SGKBMZOJJ6DFNDVSYG7V5F7QWMFITCE6OLHH2ACFY"
+rpc_server_url = "https://soroban-testnet.stellar.org:443"
 network_passphrase = Network.TESTNET_NETWORK_PASSPHRASE
 contract_file_path = "../../../target/wasm32-unknown-unknown/release/soroban_hello_world_contract.wasm"
 
