@@ -1,7 +1,13 @@
+//! # Asset Interop
+//!
+//! A Soroban smart contract to showcase the interactions between smart
+//! contracts and existing Stellar assets.
+//!
+//! DON'T PANIC!! You don't actually have to change anything here. Yes, you
+//! should read this file to understand what's happening, but there's nothing
+//! that needs to be changed in the code for today.
+
 #![no_std]
-/// DON'T PANIC!! You don't actually have to change anything here. Yes, you
-/// should read this file to understand what's happening, but there's nothing
-/// that needs to be changed in the code for today.
 
 /// As of `soroban_sdk` v0.8.x, the `token` spec is included within the SDK
 /// itself! No more keeping track of and importing the Stellar Asset Contract's
@@ -23,7 +29,7 @@ pub enum ContractError {
 }
 
 /// We will keep this `Settings` struct in the contract's `instance` storage,
-/// this will allow the stored data to inherit the same expiration and bump
+/// this will allow the stored data to inherit the same expiration and TTL
 /// behavior of the contract instance. In other words: If the contract is live,
 /// the data is live!
 #[contracttype]
@@ -61,19 +67,48 @@ pub struct AllowanceContract;
 /// implementation must be included in the trait, along with the arguments,
 /// their expected types, and the return type of the function.
 pub trait AllowanceTrait {
-    // When `init`ializing the contract, we must specify some of the data that
-    // will be stored (remember the `Settings`?) for the contract to reference.
+    /// When `init`ializing the contract, we must specify some of the data that
+    /// will be stored (remember the `Settings`?) for the contract to reference.
+    ///
+    /// # Arguments
+    ///
+    /// * `parent` - an address corresponding to the account that created and
+    ///   setup this contract.
+    /// * `child` - an address corresponding to the beneficiary of this allowance
+    ///   contract (i.e., the one getting paid).
+    /// * `token` - the address of a deployed SAC token contract that will be
+    ///   used as the payment medium for the allowances.
+    /// * `amount` - the total allowance amount given over the course of a year.
+    /// * `step` - how frequently (in seconds) a withdrawal can be made.
+    ///
+    /// # Panics
+    ///
+    /// * If the contract is already initialized.
+    /// * If the withdraw step is 0.
+    /// * If the withdraw amount would be 0 based on the provided arguments.
     fn init(
         e: Env,
         parent: Address, // the parent account giving the allowance
         child: Address,  // the child account receiving the allowance
         token: Address,  // the id of the token being transferred as an allowance
-        amount: i128,    // the total allowance amount given for the year
+        amount: i128,    // the total allowance amount given for the year (in stroops)
         step: u64,       // how frequently (in seconds) a withdrawal can be made
     ) -> Result<(), ContractError>;
 
-    // When `withdraw` is invoked, a transfer is made from the `Parent` asset
-    // balance to the `Child` asset balance.
+    /// When `withdraw` is invoked, a transfer is made from the `Parent` asset
+    /// balance to the `Child` asset balance.
+    ///
+    /// # Arguments
+    ///
+    /// * `invoker` - address invoking this withdrawal. (In the real world, this
+    ///   could be _any_ address. For this quest, however, this must be invoked
+    ///   by either the parent or the child address.)
+    ///
+    /// # Panics
+    ///
+    /// * If the contract has not yet been initialized.
+    /// * If the `invoker` address is not the parent or child.
+    /// * If not enough time has elapsed to release another withdrawal.
     fn withdraw(e: Env, invoker: Address) -> Result<(), ContractError>;
 }
 
@@ -186,8 +221,8 @@ impl AllowanceTrait for AllowanceContract {
         let client = token::Client::new(&e, &token);
 
         // We do some really quick maths to figure out a couple things:
-        // - `iterations` - the number of withdraws that can be made in a year
-        // - `withdraw_amount` - the amount withdrawn for every iteration
+        // * `iterations` - the number of withdraws that can be made in a year
+        // * `withdraw_amount` - the amount withdrawn for every iteration
         let iterations = SECONDS_IN_YEAR / step;
         let withdraw_amount = amount / iterations as i128;
 
