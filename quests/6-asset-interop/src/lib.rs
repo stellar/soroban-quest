@@ -29,7 +29,7 @@ pub enum ContractError {
 }
 
 /// We will keep this `Settings` struct in the contract's `instance` storage,
-/// this will allow the stored data to inherit the same expiration and TTL
+/// this will allow the stored data to inherit the same archival and TTL
 /// behavior of the contract instance. In other words: If the contract is live,
 /// the data is live!
 #[contracttype]
