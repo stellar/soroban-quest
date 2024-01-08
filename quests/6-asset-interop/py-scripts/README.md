@@ -9,7 +9,7 @@ your benefit and future use, learnings, and experiments.
 Enjoy!
 
 ```bash
-pip install --upgrade --pre stellar-sdk
+pip install --upgrade stellar-sdk
 ```
 
 Massive props to [Jun Luo (@overcat)](https://github.com/overcat) for his

@@ -16,8 +16,8 @@ from stellar_sdk.exceptions import PrepareTransactionException
 from stellar_sdk.soroban_rpc import GetTransactionStatus, SendTransactionStatus
 
 # TODO: You need to replace the following parameters according to the actual situation
-secret = "SBVXDP3N5JPPHBFW7ZSUNBMLUEVLRSQ4YYSO4MTLMFCBFACTGZBLUSYW"
-rpc_server_url = "https://soroban-testnet.stellar.org:443/"
+secret = "SA7U2LASUUQAIW3SGKBMZOJJ6DFNDVSYG7V5F7QWMFITCE6OLHH2ACFY"
+rpc_server_url = "https://soroban-testnet.stellar.org:443"
 network_passphrase = Network.TESTNET_NETWORK_PASSPHRASE
 hello_asset = Asset("HELLO", "GBCXQUEPSEGIKXLYODHKMZD7YMTZ4IUY3BYPRZL4D5MSJZHHE7HG6RWR")
 
@@ -28,7 +28,7 @@ source = soroban_server.load_account(kp.public_key)
 tx = (
     TransactionBuilder(source, network_passphrase)
     .set_timeout(300)
-    .append_create_token_contract_from_asset_op(asset=hello_asset)
+    .append_create_stellar_asset_contract_from_asset_op(asset=hello_asset)
     .build()
 )
 

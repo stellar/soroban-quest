@@ -9,16 +9,16 @@ from stellar_sdk import xdr as stellar_xdr
 from stellar_sdk.exceptions import PrepareTransactionException
 from stellar_sdk.soroban_rpc import GetTransactionStatus, SendTransactionStatus
 
-rpc_server_url = "https://soroban-testnet.stellar.org:443/"
+rpc_server_url = "https://soroban-testnet.stellar.org:443"
 soroban_server = SorobanServer(rpc_server_url)
 network_passphrase = Network.TESTNET_NETWORK_PASSPHRASE
 
 alice_kp = Keypair.from_secret(
-    "SBVXDP3N5JPPHBFW7ZSUNBMLUEVLRSQ4YYSO4MTLMFCBFACTGZBLUSYW"
-)  # GAB42ELTRPZF4DWQK2SPYJCCLJVU6SRWAMPD34JGTH67IKERDPZTASHO
+    "SAAPYAPTTRZMCUZFPG3G66V4ZMHTK4TWA6NS7U4F7Z3IMUD52EK4DDEV"
+)  # GDAT5HWTGIU4TSSZ4752OUC4SABDLTLZFRPZUJ3D6LKBNEPA7V2CIG54
 bob_kp = Keypair.from_secret(
-    "SDSD2EBT7RN3BTKKVKJ7FGEDT7HIW5CQYUX42UGDB3REEZPVQNAUS72L"
-)  # GAM7IFOOUVOTC3VJX6B5PFY33VK7DXXB3BSEJJRODJXE3DRVP3JMRRSF
+    "SAEZSI6DY7AXJFIYA4PM6SIBNEYYXIEM2MSOTHFGKHDW32MBQ7KVO6EN"
+)  # GBMLPRFCZDZJPKUPHUSHCKA737GOZL7ERZLGGMJ6YGHBFJZ6ZKMKCZTM
 native_token_contract_id = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
 
 alice_source = soroban_server.load_account(alice_kp.public_key)
@@ -47,7 +47,7 @@ except PrepareTransactionException as e:
     raise e
 
 tx.sign(alice_kp)
-print(f"Signed XDR: {tx.to_xdr()}")
+print(f"Signed XDR:\n{tx.to_xdr()}")
 
 send_transaction_data = soroban_server.send_transaction(tx)
 print(f"sent transaction: {send_transaction_data}")

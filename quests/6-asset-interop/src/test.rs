@@ -1,7 +1,5 @@
 #![cfg(test)]
 
-extern crate std;
-
 use super::*;
 
 use soroban_sdk::{
@@ -30,8 +28,8 @@ fn test_valid_sequence() {
     });
 
     // We create two user addresses to test with, `u1` and `u2`
-    let u1 = Address::random(&env); // `Parent` address
-    let u2 = Address::random(&env); // `Child` address
+    let u1 = Address::generate(&env); // `Parent` address
+    let u2 = Address::generate(&env); // `Child` address
 
     // We register a token contract that we can use to test our allowance and
     // payments. For testing purposes, the specific `token_address` we use for
@@ -58,7 +56,7 @@ fn test_valid_sequence() {
         &u1,
         &contract_address,
         &500000000,
-        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_ttl),
     );
     // We invoke the token contract's `allowance` function to ensure everything
     // has worked up to this point.
@@ -132,8 +130,8 @@ fn test_invalid_auth() {
         ..env.ledger().get()
     });
 
-    let u1 = Address::random(&env); // `Parent` address
-    let u2 = Address::random(&env); // `Child` address
+    let u1 = Address::generate(&env); // `Parent` address
+    let u2 = Address::generate(&env); // `Child` address
 
     let token_address = env.register_stellar_asset_contract(u1.clone());
 
@@ -147,7 +145,7 @@ fn test_invalid_auth() {
         &u1,
         &contract_address,
         &500000000,
-        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_ttl),
     );
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
@@ -161,7 +159,7 @@ fn test_invalid_auth() {
     // Ok, stop here! Instead of invoking as either of the `Parent` or `Child`
     // addresses, we are generating an entirely different address to invoke the
     // `withdraw` function. Since we expect to panic here, we stop.
-    let u3 = Address::random(&env);
+    let u3 = Address::generate(&env);
     client.withdraw(&u3);
 }
 
@@ -180,8 +178,8 @@ fn test_invalid_sequence() {
         ..env.ledger().get()
     });
 
-    let u1 = Address::random(&env); // `Parent` address
-    let u2 = Address::random(&env); // `Child` address
+    let u1 = Address::generate(&env); // `Parent` address
+    let u2 = Address::generate(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
@@ -197,7 +195,7 @@ fn test_invalid_sequence() {
         &u1,
         &contract_address,
         &500000000,
-        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_ttl),
     );
 
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
@@ -248,8 +246,8 @@ fn test_invalid_init() {
         ..env.ledger().get()
     });
 
-    let u1 = Address::random(&env); // `Parent` address
-    let u2 = Address::random(&env); // `Child` address
+    let u1 = Address::generate(&env); // `Parent` address
+    let u2 = Address::generate(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
@@ -265,7 +263,7 @@ fn test_invalid_init() {
         &u1,
         &contract_address,
         &500000000,
-        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_ttl),
     );
 
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
@@ -304,8 +302,8 @@ fn test_invalid_init_withdrawal() {
         ..env.ledger().get()
     });
 
-    let u1 = Address::random(&env); // `Parent` address
-    let u2 = Address::random(&env); // `Child` address
+    let u1 = Address::generate(&env); // `Parent` address
+    let u2 = Address::generate(&env); // `Child` address
 
     let contract_address = env.register_contract(None, AllowanceContract);
     let client = AllowanceContractClient::new(&env, &contract_address);
@@ -322,7 +320,7 @@ fn test_invalid_init_withdrawal() {
         &u1,
         &contract_address,
         &500000000,
-        &(env.ledger().sequence() + LedgerInfo::default().max_entry_expiration),
+        &(env.ledger().sequence() + LedgerInfo::default().max_entry_ttl),
     );
 
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);

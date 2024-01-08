@@ -67,16 +67,6 @@ happening than to actually _read_ it. Seriously.
 
 ### Stellar Assets as Soroban Tokens
 
-> _Please Note_: If you've forgotten, Soroban is still under active development,
-> design, and discussion. Significant changes can happen and should even be
-> expected. The area of asset interoperability between Stellar and Soroban is
-> one such area that is under active consideration. We have designed this quest
-> to be as up-to-date as possible at the time of writing, but the conventions,
-> steps, terminology, architecture, etc. used in today's quest are subject to
-> change in the future.
->
-> _Revision Date: 2023-07-28_
-
 One of the defining characteristics of the Stellar network is that assets are
 first-class citizens. They are easy to create, cheap to use/transfer/trade, and
 have many incredible use-cases. There also exists an extensive set of
@@ -89,19 +79,20 @@ have **loads** of information about assets. For now, just remember that the
 `native` asset on Stellar is the [Lumen][lumens]. It's identified using the
 asset code `XLM`.
 
-As Soroban development continues, one of the _key_ requirements is that assets
-issued on Stellar can be used and incorporated into Soroban. It's even [one of
-the FAQs][assets-faq]! This interoperability is facilitated by using the
+As Soroban was designed and developed, one of the _key_ requirements was that
+assets issued on Stellar can be used and incorporated into Soroban. It's even
+[one of the FAQs][assets-faq]! This interoperability is facilitated by using the
 interface provided by [the Stellar Asset Contract](#the-stellar-asset-contract).
-(Note assets minted in Soroban cannot be exported to a Stellar asset.)
+(Note tokens/assets created using a custom Soroban contract cannot be exported
+to a Stellar asset trustline.)
 
 ### The Stellar Asset Contract
 
-Soroban development regarding assets involves an effort to decide what a
-"Standardized Asset" looks like in a smart contract context. These decisions,
-and related discussions, are recorded in [CAP-0046-06][cap-46-6]. If you're
-familiar with Ethereum, this proposal tries to follow an ERC-20 model, where
-applicable.
+On of the big priorities in the process of Soroban development involved an
+effort to decide what a "Standardized Asset" looks like in a smart contract
+context. These decisions, and related discussions, are recorded in
+[CAP-0046-06][cap-46-6]. If you're familiar with Ethereum, this proposal tries
+to follow an ERC-20 model, where applicable.
 
 The [Stellar Asset Contract][asset-contract] is an implementation of the
 CAP-46-6 proposal. It can be used to to create a new token on Soroban, or to
@@ -140,7 +131,7 @@ available to us. Let's (briefly) look at them.
 
 ```bash
 soroban lab token wrap --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
-# CBZEHZO374JREJTTJWVJQLLM76J6RCHSOLKJHZQ4VZVTYBTEA6RR2DC2
+# CDCPEACOOZULMT6GGHK44TP6DPF4VUXKBM6B5DBQNIRQBMRXWJZYODGD
 
 # It even works with the `native` asset!
 soroban lab token wrap --asset native
@@ -148,10 +139,10 @@ soroban lab token wrap --asset native
 
 It should be noted that wrapping an asset will work exactly one time per asset
 (per network). The `native` asset contract is already deployed to the Testnet,
-and trying to wrap that again (on the Testnet) will return an error rather than
-a `contract_address`. (Caveat: since contract instances are subject to state
-expiration, you _may_ need to re-wrap the native token if Soroban gives you a
-`contract not found` error. We've bumped the instance to its maximum lifetime,
+and trying to wrap that again (on Testnet) will return an error rather than a
+`contract_address`. (Caveat: since even SAC contract instances are subject to
+state archival, you _may_ need to re-wrap the native token if Soroban gives you
+a `contract not found` error. We've bumped the instance to its maximum lifetime,
 however. So, this "shouldn't" be a problem for anyone.)
 
 > It should _also_ be noted you don't need to deploy or wrap any tokens or
@@ -194,19 +185,14 @@ tokens, payments, finding asset contract addresses, deploying contracts, etc.
 
 As per our [tl;dr](#tldr) at the top, this native asset contract will _need_ to
 be invoked only once: The `Parent_Account` will need to `approve` the
-`AllowanceContract` as a proxy spender. You could also make use of the
-`balance`, `allowance`, and/or `spendable_balance` functions of the contract to
-check your work along the way.
+`AllowanceContract` as a proxy spender. You could also make use of the `balance`
+and/or `allowance` functions of the contract to check your work along the way.
 
 Don't forget to look into the [Token Interface][sac-interface] to figure out
 which arguments you'll need to use when making those invocations. You remember
 how to format those arguments, don't you? What!? You don't?! Ok, ok, ok. It's
 gonna be fine. You can check back in [Quest 4](../4-cross-contract/README.md)
 and [Quest 5](../5-custom-types/README.md) for a recap.
-
-<sup><sub><sup><sub><sup><sub>
-or poke around in here some more
-</sup></sub></sup></sub></sup></sub>
 
 ### Back to Your Quest
 
@@ -225,13 +211,19 @@ If you forgot what your task is, here it is again:
 - [ ] Invoke the `withdraw` function of the `AllowanceContract` using either the
   `Child_Account` or `Parent_Account`
 
+> _Note:_ We _could_ have programmed the invocation of the XLM's `approve`
+> function right into the contract's `init` function. That would be a pretty
+> clean way to accomplish the job. However, we're trying to help you get used to
+> interacting with contracts and making invocations to the XLM SAC is a really
+> useful skill to learn.
+
 While performing the above steps, you'll want to consider the amount of XLM
 you're using along the way. In Soroban, assets are quantified using
 [Stroop][stroop]s (that is, one ten-millionth of the asset). For example, if you
 want to `transfer` 1 XLM, you'll need to supply `10000000`, `10_000_000` or `1 *
 10**7` stroops as an argument in your invocation.
 
-Additionally, the astute observer might notice an interesting separation between
+Additionally, the astute observer might notice an interesting disparity between
 the Parent's asset balance and the approved allowance the contract has access to
 at any given time. For example you could have a balance of  100,000 XLM in the
 Parent account, but only `approve` a "first tranche" to the contract of 10,000

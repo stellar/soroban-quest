@@ -6,7 +6,7 @@
     to deploy the [Hello World contract](https://github.com/stellar/soroban-examples/tree/main/hello_world) first.
 
 2. Install Stellar Python SDK from pypi:
-    pip install --upgrade --pre stellar-sdk
+    pip install --upgrade stellar-sdk
 
 3. Modify the necessary parameters in this script, then run it.
 """
@@ -18,9 +18,9 @@ from stellar_sdk.exceptions import PrepareTransactionException
 from stellar_sdk.soroban_rpc import GetTransactionStatus, SendTransactionStatus
 
 # TODO: You need to replace the following parameters according to the actual situation
-secret = "SBVXDP3N5JPPHBFW7ZSUNBMLUEVLRSQ4YYSO4MTLMFCBFACTGZBLUSYW"
-rpc_server_url = "https://soroban-testnet.stellar.org:443/"
-contract_id = "CCZ3ZHUCY47KIF57POP6YVBEOHJEYVLUDOB7OZTDYK37TVW7KKKYOHIN"
+secret = "SA7U2LASUUQAIW3SGKBMZOJJ6DFNDVSYG7V5F7QWMFITCE6OLHH2ACFY"
+rpc_server_url = "https://soroban-testnet.stellar.org:443"
+contract_id = "CCICEJR365CZKTJKVQX6GSRUZ4DUM6KSXCJSWNCHUWCOVIYDWK45ETEV"
 network_passphrase = Network.TESTNET_NETWORK_PASSPHRASE
 
 kp = Keypair.from_secret(secret)
