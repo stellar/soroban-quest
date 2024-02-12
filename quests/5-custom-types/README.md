@@ -15,7 +15,7 @@ today you're going to be _writing_ some actual Rust for your contract!
 conform to the specifications listed below. You must also deploy that contract,
 and then make the necessary invocations for each of the custom types. Finally,
 you must invoke the `verify` function of our verification contract
-`CBMKM3HNJXQ3HTO3AP5GLM5PHFVNHOMYQSITJULCKZAP6SI2COB23IES` so we can
+`CDQRNT7GJ5F3X6KH23YTZZEIOVKI3VUSL3B6GKX4PKW2WVSIZETQORNG` so we can
 double-check your custom type definitions.**
 
 ## Table of Contents <!-- omit in toc -->
@@ -138,10 +138,10 @@ are:
 - [`Enum` with Unit and Tuple Variants][enum-unit-tuple]
 - [`Enum` with Integer Variants][enum-integer]
 
-[struct-named]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#structs-with-named-fields
-[struct-unnamed]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#structs-with-unnamed-fields
-[enum-unit-tuple]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#enum-unit-and-tuple-variants
-[enum-integer]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types#enum-integer-variants
+[struct-named]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#structs-with-named-fields
+[struct-unnamed]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#structs-with-unnamed-fields
+[enum-unit-tuple]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#enum-unit-and-tuple-variants
+[enum-integer]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#enum-integer-variants
 
 It's also important to understand that `enum`s are currently supported as
 contract types in Soroban only when all variants have an explicit integer
@@ -172,7 +172,7 @@ Invoke the `c_rect` function to create a `Rectangle` using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_rect \
     --_rect '{"height":<a-u32-integer>,"width":<a-u32-integer>}'
@@ -187,7 +187,7 @@ Invoke the `c_animal` function to create an `Animal` using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_animal \
     --_animal <an animal-variant>
@@ -202,7 +202,7 @@ Invoke the `c_user` function to create a `User` using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_user \
     --_user '{"name":"<a-hex-encoded-string>","age":<a-u32-integer>,"pet":<an-animal-variant>,"food":"<a-string-can-be-as-long-as-you-want-it-to-be-yay-strings>"}'
@@ -228,7 +228,7 @@ Invoke the `c_rgb` function to create a `RGB` value using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_rgb \
     --_rgb [<a-u32-integer>,<a-u32-integer>,<a-u32-integer>]
@@ -245,7 +245,7 @@ Invoke the `c_color` function to create a `Color` using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_color \
     --_val '{"RGB":<a-rgb-object>}'
@@ -269,7 +269,7 @@ like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_part \
     --_participant '{"Account":"<stellar-public-g-address>"}'
@@ -280,7 +280,7 @@ something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_part \
     --_participant '{"Contract":"<stellar-contract-c-address>"}'
@@ -299,7 +299,7 @@ Invoke the `c_card` function using something like:
 
 ```bash
 soroban contract invoke \
-    --id <contract-id> \
+    --id C... \
     -- \
     c_card \
     --_card <a-u32-integer>
@@ -336,7 +336,7 @@ you're ready to claim your prize! Before we get on with it, just _one_ more
 thing: **You need to invoke our verification contract.**
 
 Using your Quest Keypair, you must invoke the `verify` function on the contract
-with the ID `CBMKM3HNJXQ3HTO3AP5GLM5PHFVNHOMYQSITJULCKZAP6SI2COB23IES`,
+with the ID `CDQRNT7GJ5F3X6KH23YTZZEIOVKI3VUSL3B6GKX4PKW2WVSIZETQORNG`,
 supplying your own contract address as the `--contract_address` argument. We'll
 double-check all your hard work, and make sure you've implemented the required
 custom types with the necessary fields, variants, values, etc.
@@ -363,9 +363,9 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [sdk-contracttype]: https://docs.rs/soroban-sdk/latest/soroban_sdk/attr.contracttype.html
-[fc-ct]: https://soroban.stellar.org/docs/fundamentals-and-concepts/custom-types
-[example-ct]: https://soroban.stellar.org/docs/basic-tutorials/custom-types
+[fc-ct]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types
+[example-ct]: https://soroban.stellar.org/docs/tutorials/custom-types
 [rust-struct]: https://doc.rust-lang.org/book/ch05-00-structs.html
 [rust-enums]: https://doc.rust-lang.org/book/ch06-00-enums.html
-[error-enums]: https://soroban.stellar.org/docs/fundamentals-and-concepts/errors#error-enums
-[contract-dialect]: https://soroban.stellar.org/docs/fundamentals-and-concepts/rust-dialect
+[error-enums]: https://soroban.stellar.org/docs/soroban-internals/errors#error-enums
+[contract-dialect]: https://soroban.stellar.org/docs/soroban-internals/rust-dialect
