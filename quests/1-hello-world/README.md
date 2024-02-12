@@ -53,13 +53,7 @@ Otherwise, you should login with the following command.
 sq login
 ```
 
-This will sign you in with your Discord account. You'll then be prompted to
-complete KYC or submit tax information, if either are required of you.
-
-> _Note:_ If you haven't completed the KYC flow and tax submission on the
-> [Stellar Quest site][sq-site], your ability to claim XLM awards will be
-> affected. Complete those steps so we can give you the awards you've worked
-> really hard for!
+This will sign you in with your Discord account.
 
 ### Retrieve your Quest Account
 
@@ -102,9 +96,8 @@ following command to verify your work.
 sq check 1 # use whichever quest number you are trying to verify
 ```
 
-If you still haven't completed KYC and/or tax submission, you'll be reminded one
-more time that you can't claim XLM awards without them. If you still have more
-work to do, you'll be given a clue as to what you might be missing.
+If you still have more work to do, you'll be given a clue as to what you might
+be missing.
 
 ### Claim your Badge
 
@@ -233,9 +226,9 @@ resources that might be of interest to you:
 - The [Soroban CAP][cap] (and the related sub-CAPs) outline the design choices
   and implementations of the Soroban smart contract platform. (Heads-up: these
   documents can be quite technical.)
-- The Soroban documentation contains a number of [basic][basic-tut] and
-  [advanced][advanced-tut] tutorials that can help you wrap your mind around
-  even more of the concepts and ideas Soroban is built on.
+- The Soroban documentation contains a number of [tutorials][tutorials] that can
+  help you wrap your mind around even more of the concepts and ideas Soroban is
+  built on.
 - You can learn more about the [contract lifecycle][contract-lifecycle] in the
   Soroban documentation. There are tons of great articles here, and you should
   read through as many of them as you can!
@@ -250,9 +243,7 @@ got a couple of suggestions for where you might go from here.
 [pq-test]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
 [docs-build]: https://soroban.stellar.org/docs/getting-started/hello-world#build
 [docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet
-[soroban]: https://soroban.stellar.org
+[soroban]: https://soroban.stellar.org/docs
 [cap]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md
-[basic-tut]: https://soroban.stellar.org/docs/category/basic-tutorials
-[advanced-tut]: https://soroban.stellar.org/docs/category/advanced-tutorials
-[contract-lifecycle]: https://soroban.stellar.org/docs/fundamentals-and-concepts/contract-lifecycle
-[sq-site]: https://quest.stellar.org/
+[tutorials]: https://soroban.stellar.org/docs/tutorials
+[contract-lifecycle]: https://soroban.stellar.org/docs/soroban-internals/contract-lifecycle
