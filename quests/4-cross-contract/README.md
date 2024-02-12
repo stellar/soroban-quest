@@ -205,15 +205,15 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[ccc-example]: https://soroban.stellar.org/docs/basic-tutorials/cross-contract-call
+[ccc-example]: https://soroban.stellar.org/docs/tutorials/cross-contract-call
 [rpc-wiki]: https://en.wikipedia.org/wiki/Remote_procedure_call
 [rpc-gforg]: https://www.geeksforgeeks.org/remote-procedure-call-rpc-in-operating-system/
 [jsonrpc]: https://www.jsonrpc.org/
-[auth]: https://soroban.stellar.org/docs/basic-tutorials/auth#run-the-contract
+[auth]: https://soroban.stellar.org/docs/tutorials/auth#run-the-contract
 [optimizing]: https://soroban.stellar.org/docs/getting-started/hello-world#optimizing-builds
 [rust-traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
-[interacting-contracts]: https://soroban.stellar.org/docs/fundamentals-and-concepts/interacting-with-contracts
-[persisting-data]: https://soroban.stellar.org/docs/fundamentals-and-concepts/persisting-data
+[interacting-contracts]: https://soroban.stellar.org/docs/soroban-internals/contract-interactions
+[persisting-data]: https://soroban.stellar.org/docs/soroban-internals/persisting-data
 [hello-world-tut]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet#interact
 [fca00c]: https://fastcheapandoutofcontrol.com
-[state-archival]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-archival
+[state-archival]: https://soroban.stellar.org/docs/soroban-internals/state-archival
