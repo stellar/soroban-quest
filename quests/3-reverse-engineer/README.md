@@ -19,8 +19,9 @@ correct function in that contract, while providing the correct argument.**
   - [Using `soroban` CLI to Decode XDR](#using-soroban-cli-to-decode-xdr)
   - [How do I find a `contract_address`?](#how-do-i-find-a-contract_address)
     - [1. Find an Operation](#1-find-an-operation)
-    - [2. View the Transaction Result](#2-view-the-transaction-result)
-    - [3. Decode the Contract ID](#3-decode-the-contract-id)
+    - [2. View the Transaction Envelope](#2-view-the-transaction-envelope)
+    - [3. Decode the Contract Address](#3-decode-the-contract-address)
+    - [4. Other Methods](#4-other-methods)
     - [Sidenote About Reading Deployed WASM Binaries](#sidenote-about-reading-deployed-wasm-binaries)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
@@ -77,7 +78,8 @@ a Friendbot transaction XDR into a more human-readable format.
 ```bash
 soroban lab xdr decode \
     --type TransactionEnvelope \
-    <<< AAAAAgAAAACmN0e8ttedJKGOAPEKv0+cqyxD5qewnsD9Im0+T/7txAAPQkAAAACRAAAAPQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAAB2DTZ9R+YsHsoEDsJLGecrLpcIDQ0wEu5l9RSOw1IvIQAAABdIdugAAAAAAAAAAAJP/u3EAAAAQG4v81gCPbD0qRnBbdl9luOeNHzE6agAgvh4xNNrlzmgv1/YCjYAxT6GY88ZTZx7XgRLCjb2y8oppWbLA4HifAqGVuCcAAAAQPE6uOS2yKri4PY5x0uevCGB7Fn6ADp4vcDF3LKpVGC+ApNrSvuHEjenvmyrdylnfmkDAuGEW7GGEHq6ID5ZRAQ=
+    --output json-formatted \
+    <<< AAAAAgAAAABIu5usRTTahvcdKMNti3923mNvvKPWQV3xI7qtMuKh2AAPQkAAAADaAAAAGAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAADoiSQ5BfDlk+YhXpfApUuA63FeWkousb+bg9gfpDrGnQAAABdIdugAAAAAAAAAAAIy4qHYAAAAQJRl+oVaaDSwh2FcfmLdsEr/72DPFt9HxtBHRS0tNFiy+PymjWsWlO0v2/UOIo85gjXxHpZ3nzp63pdr/0KTvgiGVuCcAAAAQHq1Q5lFYJHU0HILXH70DIzdbWvbsk9/dnGcEhNNlzXsSp3WXeNk8xlDx0CtrD5DqVhITfOOVMGzlRFuWN1Tews=
 ```
 
 I'll omit the output here, in an attempt to keep this README un-cluttered. But,
@@ -138,26 +140,26 @@ account deploying a smart contract). Our example operation:
     "self": {...},
     // This is the link to the transaction you want to use (again, this is only an example)
     "transaction": {
-      "href": "https://horizon-testnet.stellar.org/transactions/01a425f848411a690f58b7fa887005a310e0571d5cce95df2893a2e3d07cf296"
+      "href": "https://horizon-testnet.stellar.org/transactions/21f329e415594da21dbe4c12e446411aa435603801bd5bf67dd1b376f5f37fab"
     },
     "effects": {...},
     "succeeds": {...},
     "precedes": {...}
   },
-  "id": "1059164705021953",
-  "paging_token": "1059164705021953",
+  "id": "214606630912001",
+  "paging_token": "214606630912001",
   "transaction_successful": true,
-  "source_account": "GAZSIU6DIUHXWVCL4RM2LNS7EQKLMSXMYXNQU7YJY6HIKMXSYZC7PBRO",
+  "source_account": "GDUISJBZAXYOLE7GEFPJPQFFJOAOW4K6LJFC5MN7TOB5QH5EHLDJ2SGP",
   // We want to find an operation where (type === "invoke_host_function")
   "type": "invoke_host_function",
   "type_i": 24,
-  "created_at": "2024-01-02T17:30:18Z",
-  "transaction_hash": "01a425f848411a690f58b7fa887005a310e0571d5cce95df2893a2e3d07cf296",
+  "created_at": "2024-02-09T18:28:45Z",
+  "transaction_hash": "21f329e415594da21dbe4c12e446411aa435603801bd5bf67dd1b376f5f37fab",
   // AND the function should should be "HostFunctionTypeHostFunctionTypeCreateContract"
   "function": "HostFunctionTypeHostFunctionTypeCreateContract",
   "parameters": null,
-  "address": "GAZSIU6DIUHXWVCL4RM2LNS7EQKLMSXMYXNQU7YJY6HIKMXSYZC7PBRO",
-  "salt": "104193306611158899834207077226582865949687104409972074634116888497450612582616",
+  "address": "GDUISJBZAXYOLE7GEFPJPQFFJOAOW4K6LJFC5MN7TOB5QH5EHLDJ2SGP",
+  "salt": "107042770548726611785372457388627877260558000302253805902028758166610775935470",
   "asset_balance_changes": null
 }
 ```
@@ -169,7 +171,7 @@ account deploying a smart contract). Our example operation:
 > account used to invoke a given contract. Check out [this video][twitch] to
 > learn a bit more!
 
-#### 2. View the Transaction Result
+#### 2. View the Transaction Envelope
 
 From there, we find the link to the **transaction** that contains this
 operation. It's provided in the operation's `_links.transaction` object. If
@@ -178,30 +180,44 @@ explorer with the fields for that transaction pre-filled, and you just have to
 click **Submit** once again. (For the JSON among us, you can copy/paste the link
 into your browser, or you can [click here][tx].)
 
-In the transaction information, you're looking for the `result_meta_xdr` field.
-This contains the result from the transaction, as well as what has changed on
-the network as a result of the transaction. Most pertinent to this quest, it
-will contain the `contractId` of the deployed contract. In the Lab, if you click
-on that XDR string, it will take you to the XDR viewer, where you can find the
-`contractId`.
+In the transaction information, you're looking for the `envelope_xdr` field.
+This contains the (binary encoded) actual transaction that was submitted to the
+network. Most pertinent to this quest, it will contain the `contractId` of the
+deployed contract. In the Lab, if you click on that XDR string, it will take you
+to the XDR viewer, where you can find the `contractId`.
 
 <details>
 <summary>View screenshot</summary>
 
-![Transaction Result Meta XDR](./img/transaction-result-meta-xdr.png)
+![Transaction Envelope](./img/transaction-envelope.png)
 
 </details>
 
-Alternatively, you could copy/paste the whole Result Meta XDR string and decode
-it using the `soroban` CLI to get the information you're after.
+Alternatively, you could copy/paste the whole Transaction Envelope string and
+decode it using the `soroban` CLI to get the information you're after.
 
-#### 3. Decode the Contract ID
+#### 3. Decode the Contract Address
 
 With the `contractId` in hand, you'll need to figure out a way to decode that
 from its [base64 encoding][twitch-clip] into a `C...` address you can use and
 invoke. There are [multiple ways][sdk-encode-contract] to do that, and we've
 sprinkled _a lot_ of helpful links throughout this README, so we won't exactly
 spell it out here. That's all a part of the adventure!
+
+#### 4. Other Methods
+
+Without going into details, here are some other methods you could use to
+discover a contract address from a known deployer account:
+
+- Calculate the address by hand by correctly hashing together the network
+  passphrase and the salt provided in the
+  `HostFunctionTypeHostFunctionTypeCreateContract` operation.
+- Use a block explorer or indexer to find relevant operations and/or
+  transactions.
+- Use the soroban cli to generate a contract address from a provided wasm hash
+  and salt.
+
+The possibilities are limitless!
 
 #### Sidenote About Reading Deployed WASM Binaries
 
@@ -260,8 +276,8 @@ got a couple of suggestions for where you might go from here.
 [xdr]: https://developers.stellar.org/docs/encyclopedia/xdr
 [soroban-cli]: https://soroban.stellar.org/docs/reference/soroban-cli
 [lab]: https://laboratory.stellar.org/#?network=test
-[ops]: https://horizon-testnet.stellar.org/accounts/GAZSIU6DIUHXWVCL4RM2LNS7EQKLMSXMYXNQU7YJY6HIKMXSYZC7PBRO/operations?order=desc
-[tx]: https://horizon-testnet.stellar.org/transactions/01a425f848411a690f58b7fa887005a310e0571d5cce95df2893a2e3d07cf296
+[ops]: https://horizon-testnet.stellar.org/accounts/GDUISJBZAXYOLE7GEFPJPQFFJOAOW4K6LJFC5MN7TOB5QH5EHLDJ2SGP/operations?order=desc
+[tx]: https://horizon-testnet.stellar.org/transactions/21f329e415594da21dbe4c12e446411aa435603801bd5bf67dd1b376f5f37fab
 [twitch]: https://www.twitch.tv/videos/1642865389?t=00h23m14s
 [twitch-clip]: https://clips.twitch.tv/FragileSneakyOstrichGivePLZ-DK9h3VVmUjqVDDZG
 [twitch-full]: https://www.twitch.tv/videos/1642865389

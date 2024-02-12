@@ -126,7 +126,7 @@ fn test_store() {
 /// is shorter than the required 11 bytes long. We expect that this will end in
 /// a panic, with the relevant error code from `error.rs`.
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #1)")]
 fn test_store_value_too_short() {
     // Here we register the DataStore contract in a default Soroban
     // environment, and build a client that can be used to invoke the contract.

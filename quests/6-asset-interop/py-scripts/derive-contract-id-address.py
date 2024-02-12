@@ -1,26 +1,25 @@
 """
 This example shows how to derive a contract ID for a particular Stellar asset,
-and also how to convert a contract ID into a StrKey address representation.
+and also how to convert a hex contract ID into a StrKey address representation.
 """
 import hashlib
 
-from stellar_sdk import Asset, Network, StrKey
-from stellar_sdk import xdr as stellar_xdr
+from stellar_sdk import Asset, Network, StrKey, xdr
 
 def get_asset_contract_id(asset: Asset, network_passphrase: str) -> str:
     """Get the contract id of the wrapped token contract."""
-    network_id = stellar_xdr.Hash(hashlib.sha256(network_passphrase.encode()).digest())
-    preimage = stellar_xdr.HashIDPreimage(
-        type=stellar_xdr.EnvelopeType.ENVELOPE_TYPE_CONTRACT_ID,
-        contract_id=stellar_xdr.HashIDPreimageContractID(
+    network_id = xdr.Hash(hashlib.sha256(network_passphrase.encode()).digest())
+    preimage = xdr.HashIDPreimage(
+        type=xdr.EnvelopeType.ENVELOPE_TYPE_CONTRACT_ID,
+        contract_id=xdr.HashIDPreimageContractID(
             network_id=network_id,
-            contract_id_preimage=stellar_xdr.ContractIDPreimage(
-                type=stellar_xdr.ContractIDPreimageType.CONTRACT_ID_PREIMAGE_FROM_ASSET,
+            contract_id_preimage=xdr.ContractIDPreimage(
+                type=xdr.ContractIDPreimageType.CONTRACT_ID_PREIMAGE_FROM_ASSET,
                 from_asset=asset.to_xdr_object(),
             ),
         ),
     )
-    return stellar_xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
+    return xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
 
 def get_asset_contract_address(token_id: str) -> str:
     """Get the contract address of a wrapped token contract."""

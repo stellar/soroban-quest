@@ -9,8 +9,8 @@ use soroban_sdk::{bytes, contract, contractimpl, panic_with_error, Address, Byte
 // We will use this `MAX` constant to bump our contract's storage entry
 // immediately after we create the ledger entry. We are using the maximum
 // lifetime allowed in Soroban, measured in the number of ledgers.
-const HIGH_TTL: u32 = 483_840; // Our "upper bounds" is roughly 28 days (5 seconds per ledger)
-const LOW_TTL: u32 = HIGH_TTL / 2; // Our "lower bounds" is roughly 14 days (5 seconds per ledger)
+const HIGH_TTL: u32 = 3_110_399; // Our "upper bounds" is roughly 6 months (5 seconds per ledger)
+const LOW_TTL: u32 = HIGH_TTL / 2; // Our "lower bounds" is roughly 3 months (5 seconds per ledger)
 
 #[contract]
 pub struct DataStoreContract;

@@ -1,4 +1,4 @@
-//! Reverse Engineer
+//! # Reverse Engineer
 //!
 //! A Soroban smart contract that checks if a submitted string matches the
 //! secret defined in the contract.

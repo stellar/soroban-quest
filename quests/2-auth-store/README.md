@@ -100,8 +100,8 @@ Soroban has three types of Storage: `Temporary`, `Persistent`, and `Instance`.
 - An unlimited amount of persistent storage is available to each contract.
 - It's designed for data that is unique among each contract user, and is not
   suitable to store temporarily. (e.g., user balances)
-- The default "lifetime" for persistent storage is **4,096 ledgers** (with an
-  estimated 5 seconds per ledger, that lifetime is roughly 6 hours)
+- The default "lifetime" for persistent storage is **120,960 ledgers** (with an
+  estimated 5 seconds per ledger, that lifetime is roughly 14 days)
 - The entry will be archived once the lifetime ends (unless the entry's TTL has
   been extended). Once archived (which can happen while the contract instance is
   still active), the ledger is moved to the "Inactive State Store" (ISS) and the
@@ -110,6 +110,10 @@ Soroban has three types of Storage: `Temporary`, `Persistent`, and `Instance`.
   prevents over-writing a restorable ledger entry with different data).
 
 #### Instance Storage
+
+> _Note:_ Instance Storage uses `Persistent` storage under the hood. Everything
+> is essentially the same, and the difference between the two is more of an
+> abstraction to identify shared state vs. user-specific state.
 
 - This is the most expensive storage type (same price as `Persistent` storage).
 - A limited amount of instance storage is available to each contract.
@@ -175,11 +179,11 @@ current set of values for these lifetime settings are listed in the following
 table. The values are listed in "number of ledgers" and a typical ledger will
 settle in an estimated 5 seconds.
 
-| Storage Type | Minimum Lifetime | Maximum Lifetime    | Default Lifetime |
-| ------------ | ---------------- | ------------------- | ---------------- |
-| Temporary    | 16 (~80 seconds) | 535,680 (~31 days)  | 16 (~80 seconds) |
-| Persistent   | 4,096 (~6 hours) | 535,680 (~31 days)  | 4,096 (~6 hours) |
-| Instance     | 4,096 (~6 hours) | 535,680 (~31 days)  | 4,096 (~6 hours) |
+| Storage Type | Minimum Lifetime   | Maximum Lifetime       | Default Lifetime   |
+| ------------ | ------------------ | ---------------------- | ------------------ |
+| Temporary    | 16 (~80 seconds)   | 3,110,400 (~6 months)  | 16 (~80 seconds)   |
+| Persistent   | 120,960 (~14 days) | 3,110,400 (~6 months)  | 120,960 (~14 days) |
+| Instance     | 120,960 (~14 days) | 3,110,400 (~6 months)  | 120,960 (~14 days) |
 
 Because the `temporary` storage type has such a short default lifetime, our
 contract code immediately extends the TTL of the entry to the maximum lifetime
@@ -233,7 +237,7 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [data-example]: https://soroban.stellar.org/docs/getting-started/storing-data
-[auth-example]: https://soroban.stellar.org/docs/basic-tutorials/auth
-[persist-data]: https://soroban.stellar.org/docs/fundamentals-and-concepts/persisting-data
-[state-archival]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-archival
-[extend-ttl]: https://soroban.stellar.org/docs/fundamentals-and-concepts/state-archival#extendfootprintttlop
+[auth-example]: https://soroban.stellar.org/docs/tutorials/auth
+[persist-data]: https://soroban.stellar.org/docs/soroban-internals/persisting-data
+[state-archival]: https://soroban.stellar.org/docs/soroban-internals/state-archival
+[extend-ttl]: https://soroban.stellar.org/docs/soroban-internals/state-archival#extendfootprintttlop
