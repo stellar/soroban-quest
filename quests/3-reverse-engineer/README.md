@@ -181,11 +181,10 @@ click **Submit** once again. (For the JSON among us, you can copy/paste the link
 into your browser, or you can [click here][tx].)
 
 In the transaction information, you're looking for the `envelope_xdr` field.
-This contains the result from the transaction, as well as what has changed on
-the network as a result of the transaction. Most pertinent to this quest, it
-will contain the `contractId` of the deployed contract. In the Lab, if you click
-on that XDR string, it will take you to the XDR viewer, where you can find the
-`contractId`.
+This contains the (binary encoded) actual transaction that was submitted to the
+network. Most pertinent to this quest, it will contain the `contractId` of the
+deployed contract. In the Lab, if you click on that XDR string, it will take you
+to the XDR viewer, where you can find the `contractId`.
 
 <details>
 <summary>View screenshot</summary>
