@@ -91,8 +91,8 @@ to a Stellar asset trustline.)
 On of the big priorities in the process of Soroban development involved an
 effort to decide what a "Standardized Asset" looks like in a smart contract
 context. These decisions, and related discussions, are recorded in
-[CAP-0046-06][cap-46-6]. If you're familiar with Ethereum, this proposal tries
-to follow an ERC-20 model, where applicable.
+[CAP-46-6][cap-46-6]. If you're familiar with Ethereum, this proposal tries to
+follow an ERC-20 model, where applicable.
 
 The [Stellar Asset Contract][asset-contract] is an implementation of the
 CAP-46-6 proposal. It can be used to to create a new token on Soroban, or to
@@ -172,9 +172,9 @@ preimage = xdr.HashIDPreimage.from_envelope_type_contract_id(
         ),
     ),
 )
-contract_id = xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
-print(f"Contract ID: {contract_id}")
-contract_address = StrKey.encode_contract(bytes.fromhex(contract_id))
+contract_address = StrKey.encode_contract(
+    xdr.Hash(hashlib.sha256(preimage.to_xdr_bytes()).digest()).hash.hex()
+)
 print(f"Contract Address: {contract_address}")
 ```
 
@@ -245,7 +245,7 @@ wisely, my friend.
 
 ## Further Reading
 
-- **[Core Advancement Proposal 0046-06][cap-46-6]** contains more information
+- **[Core Advancement Proposal 46-6][cap-46-6]** contains more information
   than you probably want about how the asset interoperability is intended to
   work. These "CAP" documents are excellent resources for discovering not only
   _how_ something on Stellar works, but also _why_ it is designed that way.
@@ -277,17 +277,17 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[asset-contract]: https://soroban.stellar.org/docs/advanced-tutorials/stellar-asset-contract
-[token-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface
-[sac-interface]: https://soroban.stellar.org/docs/reference/interfaces/token-interface#code
+[asset-contract]: https://soroban.stellar.org/docs/tutorials/stellar-asset-contract
+[token-interface]: https://soroban.stellar.org/docs/tokens/token-interface
+[sac-interface]: https://soroban.stellar.org/docs/tokens/token-interface#code
 [cap-46-6]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md
 [docs-assets]: https://developers.stellar.org/docs/fundamentals-and-concepts/stellar-data-structures/assets
-[assets-faq]: https://soroban.stellar.org/docs/fundamentals-and-concepts/faq#can-soroban-contracts-interact-with-stellar-assets
+[assets-faq]: https://soroban.stellar.org/docs/faq#can-soroban-contracts-interact-with-stellar-assets
 [lumens]: https://developers.stellar.org/docs/fundamentals-and-concepts/lumens
 [overcat]: https://github.com/overcat
 [stroop]: https://developers.stellar.org/docs/glossary#stroop
-[timelock]: https://soroban.stellar.org/docs/advanced-tutorials/timelock
-[single-offer]: https://soroban.stellar.org/docs/advanced-tutorials/single-offer-sale
-[liquidity-pool]: https://soroban.stellar.org/docs/advanced-tutorials/liquidity-pool
+[timelock]: https://soroban.stellar.org/docs/tutorials/timelock
+[single-offer]: https://soroban.stellar.org/docs/tutorials/single-offer-sale
+[liquidity-pool]: https://soroban.stellar.org/docs/tutorials/liquidity-pool
 [sq-learn]: https://quest.stellar.org/learn
 [sdk-ledger]: https://docs.rs/soroban-sdk/latest/soroban_sdk/ledger/struct.Ledger.html

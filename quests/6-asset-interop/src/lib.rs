@@ -222,8 +222,8 @@ impl AllowanceTrait for AllowanceContract {
 
         // We do some really quick maths to figure out a couple things:
         // * `iterations` - the number of withdraws that can be made in a year
-        // * `withdraw_amount` - the amount withdrawn for every iteration
         let iterations = SECONDS_IN_YEAR / step;
+        // * `withdraw_amount` - the amount withdrawn for every iteration
         let withdraw_amount = amount / iterations as i128;
 
         // Some more quick maths to make sure the `Latest` withdraw occurred _at
