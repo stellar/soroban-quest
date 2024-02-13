@@ -95,10 +95,11 @@ context. These decisions, and related discussions, are recorded in
 follow an ERC-20 model, where applicable.
 
 The [Stellar Asset Contract][asset-contract] is an implementation of the
-CAP-46-6 proposal. It can be used to to create a new token on Soroban, or to
-interact with a Stellar asset that has been "wrapped" for use in Soroban. For
-today, we'll be using it with native Lumens that have been wrapped. This Stellar
-Asset Contract implements a [token interface][token-interface] that is quite
+CAP-46-6 proposal. It can be used to enable smart contract interactions for an
+existing Stellar asset. _Every_ Stellar asset has a contract reserved for it,
+which anybody can deploy. For today, we'll be using it with native Lumens (an
+asset that has already had its smart contract enabled). This Stellar Asset
+Contract implements a [token interface][token-interface] that is quite
 feature-full. The most notable function you'll need from it today is `approve`,
 which will allow us increase the amount of some token that one address can spend
 _from_ another address. It's like spending money directly from your parent's
@@ -130,23 +131,25 @@ available to us. Let's (briefly) look at them.
    single time, and the contract is **deployed**. You could use it like this:
 
 ```bash
-soroban lab token wrap --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
+soroban contract asset deploy --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
 # CDCPEACOOZULMT6GGHK44TP6DPF4VUXKBM6B5DBQNIRQBMRXWJZYODGD
 
 # It even works with the `native` asset!
-soroban lab token wrap --asset native
+soroban contract asset deploy --asset native
 ```
 
-It should be noted that wrapping an asset will work exactly one time per asset
-(per network). The `native` asset contract is already deployed to the Testnet,
-and trying to wrap that again (on Testnet) will return an error rather than a
-`contract_address`. (Caveat: since even SAC contract instances are subject to
-state archival, you _may_ need to re-wrap the native token if Soroban gives you
-a `contract not found` error. We've bumped the instance to its maximum lifetime,
-however. So, this "shouldn't" be a problem for anyone.)
+It should be noted that enabling an asset's smart contract will work exactly one
+time per asset (per network). The `native` asset contract is already enabled on
+the Testnet, and trying to enable it again (on Testnet) will return an error
+rather than a `contract_address`. (Caveat: since even SAC contract instances are
+subject to state archival, you _may_ need to re-enable the native token if
+Soroban gives you a `contract not found` error. We've extended the TTL of the
+native XLM contract instance to its maximum lifetime, however. So, this
+"shouldn't" be a problem for anyone.)
 
-> It should _also_ be noted you don't need to deploy or wrap any tokens or
-> assets for this quest. We just put this here for fun!
+> It should _also_ be noted you don't need to deploy or enable any smart
+> contract tokens or Stellar assets for this quest. We just put this here for
+> fun!
 
 ### Native XLM on Soroban
 
