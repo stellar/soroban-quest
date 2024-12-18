@@ -2,9 +2,9 @@ FROM gitpod/workspace-full:2024-02-09-09-43-54
 LABEL version="1.1.24"
 
 RUN mkdir -p ~/.local/bin
-RUN curl -L https://github.com/stellar/soroban-cli/releases/download/v20.3.1/soroban-cli-20.3.1-x86_64-unknown-linux-gnu.tar.gz | tar xz -C ~/.local/bin soroban
-RUN chmod +x ~/.local/bin/soroban
-RUN echo "source <(soroban completion --shell bash)" >> ~/.bashrc
+RUN curl -L https://github.com/stellar/stellar-cli/releases/download/v22.0.1/stellar-cli-22.0.1-x86_64-unknown-linux-gnu.tar.gz | tar xz -C ~/.local/bin
+RUN chmod +x ~/.local/bin/stellar
+RUN echo "source <(stellar completion --shell bash)" >> ~/.bashrc
 RUN curl -L https://github.com/mozilla/sccache/releases/download/v0.3.3/sccache-v0.3.3-x86_64-unknown-linux-musl.tar.gz | tar xz --strip-components 1 -C ~/.local/bin sccache-v0.3.3-x86_64-unknown-linux-musl/sccache
 RUN chmod +x ~/.local/bin/sccache
 RUN curl -L https://github.com/watchexec/cargo-watch/releases/download/v8.1.2/cargo-watch-v8.1.2-x86_64-unknown-linux-gnu.tar.xz | tar xJ --strip-components 1 -C ~/.local/bin cargo-watch-v8.1.2-x86_64-unknown-linux-gnu/cargo-watch
