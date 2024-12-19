@@ -24,7 +24,7 @@ tasks:
     init: |
       cargo clean
       cargo fetch
-      soroban contract build --package soroban-hello-world-contract
+      stellar contract build --package soroban-hello-world-contract
       cargo test --package soroban-hello-world-contract
     command: |
       source ~/.local/bash-hook
