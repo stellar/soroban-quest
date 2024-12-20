@@ -2,7 +2,7 @@ FROM gitpod/workspace-full:2024-02-09-09-43-54
 LABEL version="1.1.24"
 
 RUN mkdir -p ~/.local/bin
-RUN curl -L https://github.com/stellar/stellar-cli/releases/download/v22.0.1/stellar-cli-22.0.1-x86_64-unknown-linux-gnu.tar.gz | tar xz -C ~/.local/bin
+RUN curl -L https://github.com/stellar/stellar-cli/releases/download/v22.1.0/stellar-cli-22.1.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C ~/.local/bin
 RUN chmod +x ~/.local/bin/stellar
 RUN echo "source <(stellar completion --shell bash)" >> ~/.bashrc
 RUN curl -L https://github.com/mozilla/sccache/releases/download/v0.3.3/sccache-v0.3.3-x86_64-unknown-linux-musl.tar.gz | tar xz --strip-components 1 -C ~/.local/bin sccache-v0.3.3-x86_64-unknown-linux-musl/sccache
