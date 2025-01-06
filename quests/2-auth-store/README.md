@@ -90,7 +90,7 @@ Soroban has three types of Storage: `Temporary`, `Persistent`, and `Instance`.
 - The default "lifetime" for temporary storage is **16 ledgers** (with an
   estimated 5 seconds per ledger, that lifetime is roughly 80 seconds).
 - The entry will become "dead" once the lifetime ends (unless the entry's TTL
-  has been extended). Once dead, the the ledger entry is **permanently**
+  has been extended). Once dead, the ledger entry is **permanently**
   deleted.
 - Later on, the entry _can_ be re-created, but it _cannot_ be restored.
 

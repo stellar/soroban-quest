@@ -205,7 +205,7 @@ fn test_contract_store() {
     let caller_contract_address = env.register_contract(None, CallerContract);
     let caller_client = CallerContractClient::new(&env, &caller_contract_address);
 
-    // We are invoking the the DataStore contract's `put` function using our
+    // We are invoking the DataStore contract's `put` function using our
     // Caller contract's `try_put` function.
     caller_client.try_put(
         // The address of the DataStore contract where we are storing our data
@@ -250,7 +250,7 @@ fn test_contract_get() {
     let u1 = Address::generate(&env);
     data_store_client.put(&u1, &bytes!(&env, 0x48656c6c6f20536f726f62616e21)); // This is the hex value for "Hello Soroban!"
 
-    // We are invoking the the DataStore contract's `get` function by using
+    // We are invoking the DataStore contract's `get` function by using
     // the `try_get` function in the Caller contract. We expect our returned
     // value to match the value we `put` before.
     let value = caller_client.try_get(&data_store_contract_address, &u1);
