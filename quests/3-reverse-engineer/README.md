@@ -16,7 +16,7 @@ correct function in that contract, while providing the correct argument.**
 - [How to Play](#how-to-play)
 - [The Task at Hand](#the-task-at-hand)
   - [Explore the Contract Code](#explore-the-contract-code)
-  - [Using `soroban` CLI to Decode XDR](#using-soroban-cli-to-decode-xdr)
+  - [Using `stellar` CLI to Decode XDR](#using-stellar-cli-to-decode-xdr)
   - [How do I find a `contract_address`?](#how-do-i-find-a-contract_address)
     - [1. Find an Operation](#1-find-an-operation)
     - [2. View the Transaction Envelope](#2-view-the-transaction-envelope)
@@ -61,7 +61,7 @@ honestly). Sure, reading the code will help you understand the contract. Yes,
 that's what we're trying to do. **But**, it will also answer many of the
 questions you'll come up with as you work on this task.
 
-### Using `soroban` CLI to Decode XDR
+### Using `stellar` CLI to Decode XDR
 
 A term you may already be familiar with is "XDR" which stands for _e**X**ternal
 **D**ata **R**epresentation_. So much of what happens on the Stellar network is
@@ -69,14 +69,14 @@ done in XDR format: transactions, ledger data, history, operation results, and
 the list goes on. XDR is a compact, network-efficient, binary format. While it's
 great for many things, it's not human readable, so it can be pretty confusing.
 
-Thankfully, the [`soroban` CLI][soroban-cli] makes it pretty easy to get
+Thankfully, the [`stellar` CLI][stellar-cli] makes it pretty easy to get
 decoded, useful, and understandable output from supplied XDR. For example, when
 a transaction is submitted to the Network, the validators work with it in XDR
-format. Here is how you could use the `soroban lab xdr decode` command to decode
+format. Here is how you could use the `stellar lab xdr decode` command to decode
 a Friendbot transaction XDR into a more human-readable format.
 
 ```bash
-soroban lab xdr decode \
+stellar lab xdr decode \
     --type TransactionEnvelope \
     --output json-formatted \
     <<< AAAAAgAAAABIu5usRTTahvcdKMNti3923mNvvKPWQV3xI7qtMuKh2AAPQkAAAADaAAAAGAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAAAAAAAAAADoiSQ5BfDlk+YhXpfApUuA63FeWkousb+bg9gfpDrGnQAAABdIdugAAAAAAAAAAAIy4qHYAAAAQJRl+oVaaDSwh2FcfmLdsEr/72DPFt9HxtBHRS0tNFiy+PymjWsWlO0v2/UOIo85gjXxHpZ3nzp63pdr/0KTvgiGVuCcAAAAQHq1Q5lFYJHU0HILXH70DIzdbWvbsk9/dnGcEhNNlzXsSp3WXeNk8xlDx0CtrD5DqVhITfOOVMGzlRFuWN1Tews=
@@ -87,8 +87,8 @@ if you were to run the above command, you'd see a human-readable representation
 of a transaction creating an account with a starting balance of 10,000 XLM
 (Testnet XLM, of course).
 
-There are many different "types" you could use the `soroban` cli to decode. If
-you run `soroban lab xdr types list` in your terminal, you'll see all the
+There are many different "types" you could use the `stellar` cli to decode. If
+you run `stellar lab xdr types list` in your terminal, you'll see all the
 different options that are available to you.
 
 ### How do I find a `contract_address`?
@@ -99,7 +99,7 @@ skin a cat!! Anyway, I'm getting sidetracked...
 
 There are a few different ways you could find a `contract_address` for an
 already deployed contract. Currently, all of them involve decoding XDR. Decoding
-can be done using the `soroban` cli, or the Stellar Laboratory, or RunKit, or
+can be done using the `stellar` cli, or the Stellar Laboratory, or RunKit, or
 you could come up with your own way to decode/encode the base64 as needed. But
 they all start with finding the correct XDR to decode.
 
@@ -194,7 +194,7 @@ to the XDR viewer, where you can find the `contractId`.
 </details>
 
 Alternatively, you could copy/paste the whole Transaction Envelope string and
-decode it using the `soroban` CLI to get the information you're after.
+decode it using the `stellar` CLI to get the information you're after.
 
 #### 3. Decode the Contract Address
 
@@ -214,7 +214,7 @@ discover a contract address from a known deployer account:
   `HostFunctionTypeHostFunctionTypeCreateContract` operation.
 - Use a block explorer or indexer to find relevant operations and/or
   transactions.
-- Use the soroban cli to generate a contract address from a provided wasm hash
+- Use the stellar cli to generate a contract address from a provided wasm hash
   and salt.
 
 The possibilities are limitless!
@@ -238,11 +238,11 @@ installed executable's hash identifier).
 
 It's a bit of a journey from there, and I highly suggest you take a trip to
 [this part][get-wasm-code] of the [`getLedgerEntries` method][gle] on the
-Soroban-RPC docs. You could ultimately retrieve the binary byte-code, decode it
+Stellar-RPC docs. You could ultimately retrieve the binary byte-code, decode it
 from base64 into hex, and then store it as a binary `.wasm` file locally.
 
 The resulting `.wasm` file would be **identical** to the compiled contract that
-was initially deployed. You could re-deploy it, use `soroban contract inspect`
+was initially deployed. You could re-deploy it, use `stellar contract inspect`
 to get information about it, or whatever else you could come up with. Cool,
 huh!?
 
@@ -258,12 +258,12 @@ in handy at some point for you.
   you get a handle on what's happening inside of Soroban. (Hint: Starting around
   [23:14][twitch] is a _really_ useful discussion about decoding the XDR values
   into something a little more user-friendly.)
-- Developers can also use the Soroban-RPC interface to interact with futurenet
-  and get current state data. [The existing API docs][soroban-rpc] are still a
+- Developers can also use the Stellar-RPC interface to interact with futurenet
+  and get current state data. [The existing API docs][stellar-rpc] are still a
   work in progress, but contain some _very_ helpful information about how
   Soroban contract invocations actually happen.
-- Some basic information about the usage of the `soroban` CLI can be found on
-  the [Soroban Docs website][install-soroban]. In addition to that page many of
+- Some basic information about the usage of the `stellar` CLI can be found on
+  the [Stellar Docs website][install-stellar]. In addition to that page many of
   the tutorials and examples contain example CLI commands.
 
 ## Still Stuck?
@@ -274,15 +274,15 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [xdr]: https://developers.stellar.org/docs/encyclopedia/xdr
-[soroban-cli]: https://soroban.stellar.org/docs/reference/soroban-cli
-[lab]: https://laboratory.stellar.org/#?network=test
-[ops]: https://horizon-testnet.stellar.org/accounts/GDUISJBZAXYOLE7GEFPJPQFFJOAOW4K6LJFC5MN7TOB5QH5EHLDJ2SGP/operations?order=desc
+[stellar-cli]: https://developers.stellar.org/docs/tools/developer-tools/cli/stellar-cli
+[lab]: https://lab.stellar.org/?$=network$id=testnet&label=Testnet&horizonUrl=https:////horizon-testnet.stellar.org&rpcUrl=https:////soroban-testnet.stellar.org&passphrase=Test%20SDF%20Network%20/;%20September%202015;;
+[ops]: https://horizon-testnet.stellar.org/operations/GDUISJBZAXYOLE7GEFPJPQFFJOAOW4K6LJFC5MN7TOB5QH5EHLDJ2SGP
 [tx]: https://horizon-testnet.stellar.org/transactions/21f329e415594da21dbe4c12e446411aa435603801bd5bf67dd1b376f5f37fab
 [twitch]: https://www.twitch.tv/videos/1642865389?t=00h23m14s
 [twitch-clip]: https://clips.twitch.tv/FragileSneakyOstrichGivePLZ-DK9h3VVmUjqVDDZG
 [twitch-full]: https://www.twitch.tv/videos/1642865389
-[soroban-rpc]: https://soroban.stellar.org/api
-[install-soroban]: https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
-[gle]: https://soroban.stellar.org/api/methods/getLedgerEntries
-[get-wasm-code]: https://soroban.stellar.org/api/methods/getLedgerEntries#requesting-a-contracts-wasm-code
+[stellar-rpc]: https://developers.stellar.org/docs/data/rpc
+[install-stellar]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup#install-the-stellar-cli
+[gle]: https://developers.stellar.org/docs/data/hubble/analyst-guide/queries-for-horizon-like-data#getledgerentries
+[get-wasm-code]: https://developers.stellar.org/docs/build/guides/dapps/state-archival#step-4-handling-contract-instance-restoration
 [sdk-encode-contract]: https://stellar.github.io/js-stellar-sdk/StrKey.html#.encodeContract

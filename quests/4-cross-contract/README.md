@@ -19,7 +19,7 @@ the `get` function from your `DataStore` contract.**
   - [Making an On-Chain Oracle](#making-an-on-chain-oracle)
   - [Importing Contracts](#importing-contracts)
   - [Using a Contract Client](#using-a-contract-client)
-  - [Passing Arguments to Soroban CLI](#passing-arguments-to-soroban-cli)
+  - [Passing Arguments to Stellar CLI](#passing-arguments-to-stellar-cli)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
 
@@ -136,7 +136,7 @@ sequenceDiagram
 You can think of this contract client as if it were an existing "module" that
 you're using in your own contract. Not too bad, Soroban my ol' buddy!
 
-### Passing Arguments to Soroban CLI
+### Passing Arguments to Stellar CLI
 
 In case you haven't realized yet, Soroban depends on [Remote Procedure Call
 (RPC)][rpc-wiki] to pass messages between clients and the network. RPC is used
@@ -159,7 +159,7 @@ lot more information, but I'll demonstrate how you might use this syntax to
 authenticate and increment a counter, taken from the [Auth tutorial][auth].
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     increment \
@@ -174,14 +174,14 @@ contract's function that requires you to specify a custom type you've created.
 You may need to pass it in the cli like this:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     foo \
     --address '{"cylinder":{"radius":3,"height":14}}'
 ```
 
-You can see that it's very much like a JSON object. Often the `soroban` cli is
+You can see that it's very much like a JSON object. Often the `stellar` cli is
 smart enough to figure out what kind of argument you're _trying_ to supply, and
 doing the JSON for you. It will let you know when it can't, though.
 
@@ -205,15 +205,15 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[ccc-example]: https://soroban.stellar.org/docs/tutorials/cross-contract-call
+[ccc-example]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/cross-contract-call
 [rpc-wiki]: https://en.wikipedia.org/wiki/Remote_procedure_call
 [rpc-gforg]: https://www.geeksforgeeks.org/remote-procedure-call-rpc-in-operating-system/
 [jsonrpc]: https://www.jsonrpc.org/
-[auth]: https://soroban.stellar.org/docs/tutorials/auth#run-the-contract
-[optimizing]: https://soroban.stellar.org/docs/getting-started/hello-world#optimizing-builds
+[auth]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth#run-the-contract
+[optimizing]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world#optimizing-builds
 [rust-traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
-[interacting-contracts]: https://soroban.stellar.org/docs/soroban-internals/contract-interactions
-[persisting-data]: https://soroban.stellar.org/docs/soroban-internals/persisting-data
-[hello-world-tut]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet#interact
+[interacting-contracts]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/overview
+[persisting-data]: https://developers.stellar.org/docs/learn/encyclopedia/storage/persisting-data
+[hello-world-tut]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet#interact
 [fca00c]: https://fastcheapandoutofcontrol.com
-[state-archival]: https://soroban.stellar.org/docs/soroban-internals/state-archival
+[state-archival]: https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival

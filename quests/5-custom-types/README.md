@@ -138,10 +138,10 @@ are:
 - [`Enum` with Unit and Tuple Variants][enum-unit-tuple]
 - [`Enum` with Integer Variants][enum-integer]
 
-[struct-named]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#structs-with-named-fields
-[struct-unnamed]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#structs-with-unnamed-fields
-[enum-unit-tuple]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#enum-unit-and-tuple-variants
-[enum-integer]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types#enum-integer-variants
+[struct-named]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/custom-types#structs-with-named-fields
+[struct-unnamed]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/custom-types#structs-with-unnamed-fields
+[enum-unit-tuple]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/custom-types#enum-unit-and-tuple-variants
+[enum-integer]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/custom-types#enum-integer-variants
 
 It's also important to understand that `enum`s are currently supported as
 contract types in Soroban only when all variants have an explicit integer
@@ -160,7 +160,7 @@ what error you were receiving (and why) during a previous quest.
 ### Create Your Custom Types
 
 Ok, that was some **great** educational content, but we're back on track! For
-this quest, you must create and then use in an invocation from the soroban-cli
+this quest, you must create and then use in an invocation from the stellar-cli
 the following custom types in your contract:
 
 #### Rectangle
@@ -171,7 +171,7 @@ which both must be a `u32` value.
 Invoke the `c_rect` function to create a `Rectangle` using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_rect \
@@ -186,7 +186,7 @@ The `Animal` type must be an `enum`, with at least two variations: `Cat` and
 Invoke the `c_animal` function to create an `Animal` using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_animal \
@@ -201,7 +201,7 @@ corresponding to `Bytes`, `u32`, `Animal`, and `String` values, respectively.
 Invoke the `c_user` function to create a `User` using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_user \
@@ -227,7 +227,7 @@ values.
 Invoke the `c_rgb` function to create a `RGB` value using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_rgb \
@@ -244,7 +244,7 @@ your `RGB` type.
 Invoke the `c_color` function to create a `Color` using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_color \
@@ -268,7 +268,7 @@ Invoke the `c_part` function to create an account `Participant` using something
 like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_part \
@@ -279,7 +279,7 @@ Also invoke the `c_part` function to create a contract `Participant` using
 something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_part \
@@ -298,7 +298,7 @@ as follows:
 Invoke the `c_card` function using something like:
 
 ```bash
-soroban contract invoke \
+stellar contract invoke \
     --id C... \
     -- \
     c_card \
@@ -363,9 +363,9 @@ got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
 [sdk-contracttype]: https://docs.rs/soroban-sdk/latest/soroban_sdk/attr.contracttype.html
-[fc-ct]: https://soroban.stellar.org/docs/soroban-internals/types/custom-types
-[example-ct]: https://soroban.stellar.org/docs/tutorials/custom-types
+[fc-ct]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/custom-types
+[example-ct]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/custom-types
 [rust-struct]: https://doc.rust-lang.org/book/ch05-00-structs.html
 [rust-enums]: https://doc.rust-lang.org/book/ch06-00-enums.html
-[error-enums]: https://soroban.stellar.org/docs/soroban-internals/errors#error-enums
-[contract-dialect]: https://soroban.stellar.org/docs/soroban-internals/rust-dialect
+[error-enums]: https://developers.stellar.org/docs/learn/encyclopedia/errors-and-debugging/errors#error-enums
+[contract-dialect]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/rust-dialect

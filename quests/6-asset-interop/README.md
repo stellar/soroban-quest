@@ -29,11 +29,11 @@ contract deployed by the `Parent_Account`.**
 - [TL;DR](#tldr)
 - [How to Play](#how-to-play)
 - [The Task at Hand](#the-task-at-hand)
-  - [Stellar Assets as Soroban Tokens](#stellar-assets-as-soroban-tokens)
-  - [The Stellar Asset Contract](#the-stellar-asset-contract)
-  - [Yeah, but How do I Use That Asset Contract?](#yeah-but-how-do-i-use-that-asset-contract)
-  - [Native XLM on Soroban](#native-xlm-on-soroban)
-  - [Back to Your Quest](#back-to-your-quest)
+    - [Stellar Assets as Soroban Tokens](#stellar-assets-as-soroban-tokens)
+    - [The Stellar Asset Contract](#the-stellar-asset-contract)
+    - [Yeah, but How do I Use That Asset Contract?](#yeah-but-how-do-i-use-that-asset-contract)
+    - [Native XLM on Soroban](#native-xlm-on-soroban)
+    - [Back to Your Quest](#back-to-your-quest)
 - [Further Reading](#further-reading)
 - [Still Stuck?](#still-stuck)
 
@@ -80,8 +80,8 @@ have **loads** of information about assets. For now, just remember that the
 asset code `XLM`.
 
 As Soroban was designed and developed, one of the _key_ requirements was that
-assets issued on Stellar can be used and incorporated into Soroban. It's even
-[one of the FAQs][assets-faq]! This interoperability is facilitated by using the
+assets issued on Stellar can be used and incorporated into Soroban. This
+interoperability is facilitated by using the
 interface provided by [the Stellar Asset Contract](#the-stellar-asset-contract).
 (Note tokens/assets created using a custom Soroban contract cannot be exported
 to a Stellar asset trustline.)
@@ -125,17 +125,17 @@ available to us. Let's (briefly) look at them.
    used and adapted to match whatever asset you're trying to create. It's a
    fantastic starting point.
 
-3. (Mild 🌶️) Fun fact, the `soroban` CLI has a handy little helper command
+3. (Mild 🌶️) Fun fact, the `stellar` CLI has a handy little helper command
    built right into it that will (we promise, we're not making this up) do
    _everything_ for you! You don't have to code anything, just run the command a
    single time, and the contract is **deployed**. You could use it like this:
 
 ```bash
-soroban contract asset deploy --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
+stellar contract asset deploy --asset QUEST6:GAS4VPQ22OBEAEWBZZIO2ENPGPZEOPJ4JBSN6F7BIQQDGAHUXY7XJAR2
 # CDCPEACOOZULMT6GGHK44TP6DPF4VUXKBM6B5DBQNIRQBMRXWJZYODGD
 
 # It even works with the `native` asset!
-soroban contract asset deploy --asset native
+stellar contract asset deploy --asset native
 ```
 
 It should be noted that enabling an asset's smart contract will work exactly one
@@ -280,17 +280,16 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[asset-contract]: https://soroban.stellar.org/docs/tutorials/stellar-asset-contract
-[token-interface]: https://soroban.stellar.org/docs/tokens/token-interface
-[sac-interface]: https://soroban.stellar.org/docs/tokens/token-interface#code
+[asset-contract]: https://developers.stellar.org/docs/tokens/stellar-asset-contract
+[token-interface]: https://developers.stellar.org/docs/tokens/token-interface
+[sac-interface]: https://developers.stellar.org/docs/tokens/token-interface#code
 [cap-46-6]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md
-[docs-assets]: https://developers.stellar.org/docs/fundamentals-and-concepts/stellar-data-structures/assets
-[assets-faq]: https://soroban.stellar.org/docs/faq#can-soroban-contracts-interact-with-stellar-assets
-[lumens]: https://developers.stellar.org/docs/fundamentals-and-concepts/lumens
+[docs-assets]: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets
+[lumens]: https://developers.stellar.org/docs/learn/fundamentals/lumens
 [overcat]: https://github.com/overcat
-[stroop]: https://developers.stellar.org/docs/glossary#stroop
-[timelock]: https://soroban.stellar.org/docs/tutorials/timelock
-[single-offer]: https://soroban.stellar.org/docs/tutorials/single-offer-sale
-[liquidity-pool]: https://soroban.stellar.org/docs/tutorials/liquidity-pool
+[stroop]: https://developers.stellar.org/docs/learn/glossary#stroop
+[timelock]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/timelock
+[single-offer]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/single-offer-sale
+[liquidity-pool]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool
 [sq-learn]: https://quest.stellar.org/learn
 [sdk-ledger]: https://docs.rs/soroban-sdk/latest/soroban_sdk/ledger/struct.Ledger.html
