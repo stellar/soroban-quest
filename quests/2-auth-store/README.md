@@ -90,7 +90,7 @@ Soroban has three types of Storage: `Temporary`, `Persistent`, and `Instance`.
 - The default "lifetime" for temporary storage is **16 ledgers** (with an
   estimated 5 seconds per ledger, that lifetime is roughly 80 seconds).
 - The entry will become "dead" once the lifetime ends (unless the entry's TTL
-  has been extended). Once dead, the ledger entry is **permanently**
+  has been extended). Once dead, the the ledger entry is **permanently**
   deleted.
 - Later on, the entry _can_ be re-created, but it _cannot_ be restored.
 
@@ -190,11 +190,11 @@ contract code immediately extends the TTL of the entry to the maximum lifetime
 when it is created. This is one technique to extend ledger entry lifetimes, but
 certainly not the only method. You can also utilize a
 [`ExtendFootprintTTLOp`][extend-ttl] operation inside a Stellar transaction to
-accomplish the same thing. The `soroban` CLI also has a command to help
+accomplish the same thing. The `stellar` CLI also has a command to help
 facilitate these TTL extension transactions.
 
 ```bash
-soroban contract extend \
+stellar contract extend \
     --id  CARCWZOD26AJQ42VRJ3UYC3MJNGJV5UHO4VFHV5FWLVIKDCJ4CZOJXII \
     --key KeySymbol \
     --durability temporary \
@@ -236,8 +236,8 @@ check out [this section](../../README.md#feeling-lost) in our main README. It's
 got a couple of suggestions for where you might go from here.
 
 [how-to-play]: ../1-hello-world/README.md#how-to-play
-[data-example]: https://soroban.stellar.org/docs/getting-started/storing-data
-[auth-example]: https://soroban.stellar.org/docs/tutorials/auth
-[persist-data]: https://soroban.stellar.org/docs/soroban-internals/persisting-data
-[state-archival]: https://soroban.stellar.org/docs/soroban-internals/state-archival
-[extend-ttl]: https://soroban.stellar.org/docs/soroban-internals/state-archival#extendfootprintttlop
+[data-example]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/storing-data
+[auth-example]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth
+[persist-data]: https://developers.stellar.org/docs/learn/encyclopedia/storage/persisting-data
+[state-archival]: https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival
+[extend-ttl]: https://developers.stellar.org/docs/build/guides/cli/extend-contract-storage

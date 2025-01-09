@@ -155,7 +155,7 @@ commands from within your Testnet terminal.
 # change into the quest directory
 cd quests/1-hello-world
 # build the contract
-soroban contract build
+stellar contract build
 ```
 
 ### Run a Test
@@ -241,9 +241,9 @@ got a couple of suggestions for where you might go from here.
 
 [pq-lib]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/lib.rs
 [pq-test]: https://github.com/stellar/soroban-quest--pioneer/blob/main/quests/0-hello-world/src/test.rs
-[docs-build]: https://soroban.stellar.org/docs/getting-started/hello-world#build
-[docs-deploy]: https://soroban.stellar.org/docs/getting-started/deploy-to-testnet
-[soroban]: https://soroban.stellar.org/docs
+[docs-build]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world#build-the-contract
+[docs-deploy]: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet
+[soroban]: https://developers.stellar.org/
 [cap]: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md
-[tutorials]: https://soroban.stellar.org/docs/tutorials
-[contract-lifecycle]: https://soroban.stellar.org/docs/soroban-internals/contract-lifecycle
+[tutorials]: https://developers.stellar.org/docs/build/smart-contracts/example-contracts
+[contract-lifecycle]: https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-lifecycle
