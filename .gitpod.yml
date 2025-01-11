@@ -19,8 +19,8 @@ tasks:
       npm run start
   - name: CLI - Testnet
     env:
-      SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org:443/"
-      SOROBAN_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
+      STELLAR_RPC_URL: "https://soroban-testnet.stellar.org"
+      STELLAR_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
     init: |
       cargo clean
       cargo fetch

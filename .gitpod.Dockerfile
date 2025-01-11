@@ -1,5 +1,5 @@
-FROM gitpod/workspace-full:2024-02-09-09-43-54
-LABEL version="1.1.24"
+FROM gitpod/workspace-full:latest
+LABEL version="1.1.25"
 
 RUN mkdir -p ~/.local/bin
 RUN curl -L https://github.com/stellar/stellar-cli/releases/download/v22.1.0/stellar-cli-22.1.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C ~/.local/bin
@@ -31,10 +31,10 @@ RUN rustup self uninstall -y
 RUN rm -rf .rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none -y
 
-RUN rustup install 1.76
-RUN rustup target add --toolchain 1.76 wasm32-unknown-unknown
-RUN rustup component add --toolchain 1.76 rust-src
-RUN rustup default 1.76
+RUN rustup install 1.81
+RUN rustup target add --toolchain 1.81 wasm32-unknown-unknown
+RUN rustup component add --toolchain 1.81 rust-src
+RUN rustup default 1.81
 
 RUN sudo apt-get update && sudo apt-get install -y binaryen
 
