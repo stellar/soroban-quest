@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full:2024-02-09-09-43-54
+FROM gitpod/workspace-full:2025-02-10-10-54-28
 LABEL version="1.1.24"
 
 RUN mkdir -p ~/.local/bin
