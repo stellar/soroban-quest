@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use super::*;
+use crate::{HelloContract, HelloContractClient};
 use soroban_sdk::{symbol_short, vec, Env};
 
 // The purpose of this file is to run automated tests on the contract code we've
@@ -13,7 +13,7 @@ fn test() {
     // over the course of many tests. The environment, address, then client
     // pattern is required for most tests we'll create in these quests.
     let env = Env::default();
-    let contract_address = env.register_contract(None, HelloContract);
+    let contract_address = env.register(HelloContract, ());
     let client = HelloContractClient::new(&env, &contract_address);
 
     // Next, we call `client.hello()`, supplying "Dev" as our `to` argument.

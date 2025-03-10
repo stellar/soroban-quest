@@ -1,9 +1,9 @@
 #![cfg(test)]
 extern crate std;
 
-use super::*;
-
+use crate::{DataStoreContract, DataStoreContractClient};
 use soroban_sdk::{
+    bytes, contract, contractimpl,
     testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation},
     Address, Bytes, Env, IntoVal, Symbol,
 };
@@ -23,7 +23,7 @@ fn test_store() {
     // Here we register the DataStore contract in a default Soroban environment,
     // and build a client that can be used to invoke the contract.
     let env = Env::default();
-    let contract_address = env.register_contract(None, DataStoreContract);
+    let contract_address = env.register(DataStoreContract, ());
     let client = DataStoreContractClient::new(&env, &contract_address);
 
     // The `mock_all_auths()` function will treat any further contract
@@ -131,7 +131,7 @@ fn test_store_value_too_short() {
     // Here we register the DataStore contract in a default Soroban
     // environment, and build a client that can be used to invoke the contract.
     let env = Env::default();
-    let contract_address = env.register_contract(None, DataStoreContract);
+    let contract_address = env.register(DataStoreContract, ());
     let client = DataStoreContractClient::new(&env, &contract_address);
 
     // Mock authentication checks. See note in first test for more info.
@@ -192,7 +192,7 @@ fn test_contract_store() {
     // DataStore contract, and build a client to invoke this contract later in
     // the test.
     let env = Env::default();
-    let data_store_contract_address = env.register_contract(None, DataStoreContract);
+    let data_store_contract_address = env.register(DataStoreContract, ());
     let data_store_client = DataStoreContractClient::new(&env, &data_store_contract_address);
 
     // Mock authentication checks. See note in first test for more info.
@@ -202,7 +202,7 @@ fn test_contract_store() {
     // environment we've created, so we can test the cross-contract calls, using
     // its client. Additionally, the Address of the Caller contract will be the
     // "owner" of the stored data.
-    let caller_contract_address = env.register_contract(None, CallerContract);
+    let caller_contract_address = env.register(CallerContract, ());
     let caller_client = CallerContractClient::new(&env, &caller_contract_address);
 
     // We are invoking the DataStore contract's `put` function using our
@@ -233,7 +233,7 @@ fn test_contract_get() {
     // DataStore contract, and build a client to invoke this contract later in
     // the test.
     let env = Env::default();
-    let data_store_contract_address = env.register_contract(None, DataStoreContract);
+    let data_store_contract_address = env.register(DataStoreContract, ());
     let data_store_client = DataStoreContractClient::new(&env, &data_store_contract_address);
 
     // Mock authentication checks. See note in first test for more info.
@@ -242,7 +242,7 @@ fn test_contract_get() {
     // We take an extra step to register our Caller contract in the Soroban
     // environment we've created, so we can test the cross-contract calls, using
     // its client.
-    let caller_contract_address = env.register_contract(None, CallerContract);
+    let caller_contract_address = env.register(CallerContract, ());
     let caller_client = CallerContractClient::new(&env, &caller_contract_address);
 
     // We create an Address, `u1`, so we can invoke the `put` function, and
