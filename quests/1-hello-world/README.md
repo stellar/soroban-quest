@@ -155,7 +155,7 @@ commands from within your Testnet terminal.
 # change into the quest directory
 cd quests/1-hello-world
 # build the contract
-stellar contract build
+stellar contract build --package soroban-hello-world-contract
 ```
 
 ### Run a Test

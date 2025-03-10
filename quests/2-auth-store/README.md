@@ -57,6 +57,18 @@ what the contract is up to.
 your understanding of Soroban, if you read through those files, and take the
 time to understand what's happening.
 
+### Build the Contract
+
+_The build process will compile our Rust code into a binary that is
+purpose-built for the WebAssembly environment that Soroban will provide for it._
+
+```bash
+# change into the quest directory
+cd quests/2-auth-store
+# build the contract
+stellar contract build --package soroban-auth-store-contract
+```
+
 ### State Archival and Storage Types
 
 Do you know what is _incredibly unique_ and _amazingly powerful_ about Soroban?
