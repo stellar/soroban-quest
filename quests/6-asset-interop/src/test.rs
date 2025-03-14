@@ -1,10 +1,9 @@
 #![cfg(test)]
 
-use super::*;
-
+use crate::{AllowanceContract, AllowanceContractClient};
 use soroban_sdk::{
     testutils::{Address as _, Ledger, LedgerInfo},
-    Address, Env,
+    token, Address, Env,
 };
 
 /// The first test function, `test_valid_sequence()`, we test the contract
@@ -17,7 +16,7 @@ fn test_valid_sequence() {
     // contract in a default Soroban environment, and build a client that can be
     // used to invoke the contract.
     let env = Env::default();
-    let contract_address = env.register_contract(None, AllowanceContract);
+    let contract_address = env.register(AllowanceContract, ());
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     // For this contract, we'll need to set some ledger state to test against.
@@ -34,13 +33,13 @@ fn test_valid_sequence() {
     // We register a token contract that we can use to test our allowance and
     // payments. For testing purposes, the specific `token_address` we use for
     // this asset contract doesn't matter.
-    let token_address = env.register_stellar_asset_contract(u1.clone());
+    let token_address = env.register_stellar_asset_contract_v2(u1.clone());
 
     // We create a client that can be used for our token contract and we invoke
     // the `init` function. Again, in tests, the values we supply here are
     // inconsequential.
-    let token_client = token::Client::new(&env, &token_address);
-    let token_admin = token::StellarAssetClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address.address());
+    let token_admin = token::StellarAssetClient::new(&env, &token_address.address());
 
     // Disable checks for authentication. See note in quest 2 tests for details.
     env.mock_all_auths();
@@ -66,10 +65,10 @@ fn test_valid_sequence() {
     // starting arguments. These values result in a weekly allowance of
     // 9,615,384 stroops (== 0.9615384 units). Why, you big spender!
     client.init(
-        &u1,                 // our `Parent` address
-        &u2,                 // our `Child` address
-        &token_address,      // our token contract id
-        &500000000,          // 500000000 stroops == 50 units allowance for the year
+        &u1,                      // our `Parent` address
+        &u2,                      // our `Child` address
+        &token_address.address(), // our token contract id
+        &500000000,               // 500000000 stroops == 50 units allowance for the year
         &(7 * 24 * 60 * 60), // 1 withdraw per week (7 days * 24 hours * 60 minutes * 60 seconds)
     );
 
@@ -122,7 +121,7 @@ fn test_invalid_auth() {
     // Almost everything in this test is identical to the previous one. We'll
     // drop a comment to let you know when things are getting interesting again.
     let env = Env::default();
-    let contract_address = env.register_contract(None, AllowanceContract);
+    let contract_address = env.register(AllowanceContract, ());
     let client = AllowanceContractClient::new(&env, &contract_address);
 
     env.ledger().set(LedgerInfo {
@@ -133,10 +132,10 @@ fn test_invalid_auth() {
     let u1 = Address::generate(&env); // `Parent` address
     let u2 = Address::generate(&env); // `Child` address
 
-    let token_address = env.register_stellar_asset_contract(u1.clone());
+    let token_address = env.register_stellar_asset_contract_v2(u1.clone());
 
-    let token_client = token::Client::new(&env, &token_address);
-    let token_admin = token::StellarAssetClient::new(&env, &token_address);
+    let token_client = token::Client::new(&env, &token_address.address());
+    let token_admin = token::StellarAssetClient::new(&env, &token_address.address());
 
     env.mock_all_auths();
 
@@ -149,7 +148,13 @@ fn test_invalid_auth() {
     );
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
-    client.init(&u1, &u2, &token_address, &500000000, &(7 * 24 * 60 * 60));
+    client.init(
+        &u1,
+        &u2,
+        &token_address.address(),
+        &500000000,
+        &(7 * 24 * 60 * 60),
+    );
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
@@ -181,12 +186,12 @@ fn test_invalid_sequence() {
     let u1 = Address::generate(&env); // `Parent` address
     let u2 = Address::generate(&env); // `Child` address
 
-    let contract_address = env.register_contract(None, AllowanceContract);
+    let contract_address = env.register(AllowanceContract, ());
     let client = AllowanceContractClient::new(&env, &contract_address);
 
-    let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token_client = token::Client::new(&env, &token_address);
-    let token_admin = token::StellarAssetClient::new(&env, &token_address);
+    let token_address = env.register_stellar_asset_contract_v2(u1.clone());
+    let token_client = token::Client::new(&env, &token_address.address());
+    let token_admin = token::StellarAssetClient::new(&env, &token_address.address());
 
     env.mock_all_auths();
 
@@ -200,7 +205,13 @@ fn test_invalid_sequence() {
 
     assert_eq!(token_client.allowance(&u1, &contract_address), 500000000);
 
-    client.init(&u1, &u2, &token_address, &500000000, &(7 * 24 * 60 * 60));
+    client.init(
+        &u1,
+        &u2,
+        &token_address.address(),
+        &500000000,
+        &(7 * 24 * 60 * 60),
+    );
 
     env.ledger().set(LedgerInfo {
         timestamp: (1669726145 + 1),
@@ -249,12 +260,12 @@ fn test_invalid_init() {
     let u1 = Address::generate(&env); // `Parent` address
     let u2 = Address::generate(&env); // `Child` address
 
-    let contract_address = env.register_contract(None, AllowanceContract);
+    let contract_address = env.register(AllowanceContract, ());
     let client = AllowanceContractClient::new(&env, &contract_address);
 
-    let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token_client = token::Client::new(&env, &token_address);
-    let token_admin = token::StellarAssetClient::new(&env, &token_address);
+    let token_address = env.register_stellar_asset_contract_v2(u1.clone());
+    let token_client = token::Client::new(&env, &token_address.address());
+    let token_admin = token::StellarAssetClient::new(&env, &token_address.address());
 
     env.mock_all_auths();
 
@@ -274,11 +285,11 @@ fn test_invalid_init() {
     // shut. Also, dividing by zero is impossible. So, that's an important
     // consideration, too.
     client.init(
-        &u1,            // our `Parent` account
-        &u2,            // our `Child` account
-        &token_address, // our token contract id
-        &500000000,     // 500000000 stroops == 50 units allowance for the year
-        &0,             // 0 withdraw per second (why would you even do this?)
+        &u1,                      // our `Parent` account
+        &u2,                      // our `Child` account
+        &token_address.address(), // our token contract id
+        &500000000,               // 500000000 stroops == 50 units allowance for the year
+        &0,                       // 0 withdraw per second (why would you even do this?)
     );
 
     // Again, there's no need for an assertion here, since this invocation
@@ -305,12 +316,12 @@ fn test_invalid_init_withdrawal() {
     let u1 = Address::generate(&env); // `Parent` address
     let u2 = Address::generate(&env); // `Child` address
 
-    let contract_address = env.register_contract(None, AllowanceContract);
+    let contract_address = env.register(AllowanceContract, ());
     let client = AllowanceContractClient::new(&env, &contract_address);
 
-    let token_address = env.register_stellar_asset_contract(u1.clone());
-    let token_client = token::Client::new(&env, &token_address);
-    let token_admin = token::StellarAssetClient::new(&env, &token_address);
+    let token_address = env.register_stellar_asset_contract_v2(u1.clone());
+    let token_client = token::Client::new(&env, &token_address.address());
+    let token_admin = token::StellarAssetClient::new(&env, &token_address.address());
 
     env.mock_all_auths();
 
@@ -330,11 +341,11 @@ fn test_invalid_init_withdrawal() {
     // with the math so far, that comes out to 3.1709792e-15 **stroops** per
     // withdraw. That's even more precision than Microsoft Excel can handle!
     client.init(
-        &u1,            // our `Parent` account
-        &u2,            // our `Child` account
-        &token_address, // our token contract id
-        &1,             // 1 stroops == 0.0000001 units allowance for the year
-        &1,             // 1 withdraw per second
+        &u1,                      // our `Parent` account
+        &u2,                      // our `Child` account
+        &token_address.address(), // our token contract id
+        &1,                       // 1 stroops == 0.0000001 units allowance for the year
+        &1,                       // 1 withdraw per second
     );
 
     // Again, there's no need for an assertion here, since this invocation

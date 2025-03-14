@@ -11,7 +11,7 @@ fn test_types() {
     // We register the TypesContract contract in a default Soroban environment,
     // and build a client that can be used to invoke the contract.
     let env = Env::default();
-    let contract_address = env.register_contract(None, TypesContract);
+    let contract_address = env.register(TypesContract, ());
     let client = TypesContractClient::new(&env, &contract_address);
 
     // We create a Rectangle `rect` using our custom type and invoke `c_rect`

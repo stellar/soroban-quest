@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-// We declare the we are planning to `use` the listed `crates` in our test
+// We declare we are planning to `use` the listed `crates` in our test
 // (these have been defined in `lib.rs`)
 use crate::{storage_contract, CrossContractCallContract, CrossContractCallContractClient};
 use soroban_sdk::{bytes, testutils::Address as _, Address, Env};
@@ -12,12 +12,12 @@ fn get_cross_call() {
 
     // Here we register the DataStore contract in the Soroban environment, and
     // build a client that can be used to invoke the contract.
-    let storage_contract_address = env.register_contract_wasm(None, storage_contract::WASM);
+    let storage_contract_address = env.register(storage_contract::WASM, ());
     let storage_contract_client = storage_contract::Client::new(&env, &storage_contract_address);
 
     // Here we register the CrossContractCall contract in the Soroban
     // environment, and build a client that can be used to invoke the contract.
-    let cross_call_contract_address = env.register_contract(None, CrossContractCallContract);
+    let cross_call_contract_address = env.register(CrossContractCallContract, ());
     let cross_call_contract_client =
         CrossContractCallContractClient::new(&env, &cross_call_contract_address);
 

@@ -61,6 +61,18 @@ honestly). Sure, reading the code will help you understand the contract. Yes,
 that's what we're trying to do. **But**, it will also answer many of the
 questions you'll come up with as you work on this task.
 
+### Build the Contract
+
+_The build process will compile our Rust code into a binary that is
+purpose-built for the WebAssembly environment that Soroban will provide for it._
+
+```bash
+# change into the quest directory
+cd quests/2-reverse-engineer
+# build the contract
+stellar contract build --package soroban-reverse-engineer-contract
+```
+
 ### Using `stellar` CLI to Decode XDR
 
 A term you may already be familiar with is "XDR" which stands for _e**X**ternal
