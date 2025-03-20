@@ -4,6 +4,8 @@
 
 [![Open in Gitpod][gp-btn]][gitpod]
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badges/blob/main/open-in-codespaces.svg)](https://codespaces.new/stellar/soroban-quest)
+
 ## Table of Contents <!-- omit in toc -->
 
 - [Welcome](#welcome)
@@ -27,7 +29,7 @@ you:
 
 ### Re-Visit the Pioneer Quest
 
-please checkout our [pioneer quest][pioneer]. It covers the basic structure of
+Please checkout our [pioneer quest][pioneer]. It covers the basic structure of
 this repository, all the tools you'll need, and the process of getting
 everything working together.
 
@@ -39,7 +41,7 @@ the most important bits you'll need to know from it:
 - Using the `sq` CLI to login to your Stellar Quest account, play quests, verify
   them, and more.
 - Interacting with a Soroban sandbox, as well as the Futurenet, from within this
-  gitpod workspace.
+  Gitpod workspace.
 
 If you feel lost on any of that, you could probably use a refresher. Go ahead,
 [be a pioneer][pioneer] once more. We don't judge!
