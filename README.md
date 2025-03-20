@@ -2,8 +2,6 @@
 
 ![Stellar-Quest-email][series-5-img]
 
-[![Open in Gitpod][gp-btn]][gitpod]
-
 [![Open in GitHub Codespaces](https://github.com/codespaces/badges/blob/main/open-in-codespaces.svg)](https://codespaces.new/stellar/soroban-quest)
 
 ## Table of Contents <!-- omit in toc -->
