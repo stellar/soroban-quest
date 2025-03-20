@@ -59,7 +59,5 @@ Talk about "straight from the horse's mouth"!!
 [![Open in Gitpod][gp-btn]][gitpod]
 
 [series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
-[gp-btn]: https://gitpod.io/button/open-in-gitpod.svg
-[gitpod]: https://gitpod.io/#ENV=prod/https://github.com/stellar/soroban-quest
-[pioneer]: https://github.com/stellar/soroban-quest--pioneer
+
 [dev-discord]: https://discord.gg/stellardev
