@@ -4,6 +4,9 @@
   "context": "..",
   build: {
   },
+  hostRequirements: {
+    cpus: 4
+  },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015"
@@ -39,7 +42,7 @@
     }
   },
   "onCreateCommand": "brew install stellar-cli",
-  "initializeCommand": ".devcontainer/init.sh",
+  "initializeCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
   "postAttachCommand": "",
