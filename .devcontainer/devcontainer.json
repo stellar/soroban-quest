@@ -46,7 +46,7 @@
       ]
     }
   },
-  "initializeCommand": "brew install stellar-cli",
+  "initializeCommand": "",
   "onCreateCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
