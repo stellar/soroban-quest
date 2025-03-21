@@ -1,0 +1,30 @@
+{
+  "workbench.settings": {
+    "terminal.integrated.profiles.linux": {
+      "warp": {
+        "path": "warp-terminal"
+      }
+    }
+  },
+  "workbench.colorTheme": "Default High Contrast",
+  "window.newWindowProfile": "Default",
+  "makefile.configureOnOpen": true,
+  "explorer.confirmDragAndDrop": false,
+  "vscord.app.id": "1309255291048558632",
+  "vscord.app.name": "Visual Studio Code",
+  "vscord.behaviour.debug": true,
+  "vscord.status.buttons.button1.active.enabled": true,
+  "vscord.behaviour.statusBarAlignment": "Right",
+  "github.codespaces.devcontainerChangedNotificationStyle": "modal",
+  "workbench.startupEditor": "readme",
+  "extensions.experimental.deferredStartupFinishedActivation": true,
+  "problems.showCurrentInStatus": true,
+  "github.codespaces.showPerformanceExplorer": true,
+  "workbench.editor.alwaysShowEditorActions": true,
+  "vscode.commands.executeCommand": true,
+  "terminal.explorerKind": "external",
+  "dev.containers.defaultFeatures": {},
+  "terminal.external.linuxExec": "warp-terminal",
+  "terminal.external.osxExec": "warp-terminal",
+  "workbench.settings.editor": "json"
+}

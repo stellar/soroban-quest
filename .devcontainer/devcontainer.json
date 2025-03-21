@@ -32,6 +32,7 @@
             "path": "warp-terminal",
           }
         },
+        "workbench.settings.editor": "json",
         "terminal.integrated.shell.linux": "/bin/bash",
         "terminal.integrated.defaultProfile.linux": "warp",
         "workbench.startupEditor": "readme",
@@ -46,10 +47,15 @@
       ]
     }
   },
-  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh  && chmod +x .devcontainer/warpTerm.sh",
+  "initializeCommand": [
+    "chmod +x .devcontainer/init.sh",
+    "chmod +x .devcontainer/onCreate.sh",
+    "chmod +x .devcontainer/postAttach.sh",
+    "chmod +x client/"
+  ],
   "onCreateCommand": ".devcontainer/onCreate.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
-  "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
-  "postAttachCommand": ".devcontainer/warpTerm.sh",
-  "updateContentCommand": "stellar contract build",
+  "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts && pnpm install",
+  "postAttachCommand": ".devcontainer/postAttach.sh",
+  "updateContentCommand": "stellar contract build && ls $HOME/.config/Code/User/settings.json",
 }
