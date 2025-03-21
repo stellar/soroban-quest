@@ -47,11 +47,12 @@
       ]
     }
   },
-
-  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh && chmod +x .devcontainer/postAttach.sh",
+  "initializeCommand": {
+    "perms": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh && chmod +x .devcontainer/postAttach.sh"
+  },
   "onCreateCommand": ".devcontainer/onCreate.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts && pnpm install",
   "postAttachCommand": ".devcontainer/postAttach.sh",
-  "updateContentCommand": "stellar contract build && ls $HOME/.config/Code/User/settings.json",
+  "updateContentCommand": "stellar contract build",
 }
