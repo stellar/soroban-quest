@@ -3,13 +3,15 @@
   "dockerFile": "Dockerfile",
   "context": "..",
   "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "vscord.app.id": "1309255291048558632",
+    "vscord.app.name": "Visual Studio Code"
   },
   "extensions": [
     "rust-lang.rust-analyzer",
     "ms-python.python",
     "LeonardSSH.vscord"
   ],
-  "postCreateCommand": "rust up",
+  "postCreateCommand": "code --list-extensions",
   "remoteUser": "vscode"
 }
