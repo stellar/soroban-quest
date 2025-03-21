@@ -2,6 +2,12 @@
   "name": "Soroban Quest Dev Container",
   "dockerFile": "Dockerfile",
   "context": "..",
+  build: {
+  },
+  "containerEnv": {
+    "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
+    "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015"
+  },
   "features": {
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
@@ -27,13 +33,14 @@
       "extensions": [
         "streetsidesoftware.code-spell-checker",
         "rust-lang.rust-analyzer",
-        "LeonardSSH.vscord"
+        "LeonardSSH.vscord",
+        "vadimcn.vscode-lldb"
       ]
     }
   },
   "onCreateCommand": "brew install stellar-cli",
-  "initializeCommand": "",
-  "postCreateCommand": "rustup",
+  "initializeCommand": ".devcontainer/init.sh",
+  "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
   "postAttachCommand": "",
   "remoteUser": "vscode",
