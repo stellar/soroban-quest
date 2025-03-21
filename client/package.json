@@ -13,9 +13,11 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.9.0",
     "@stellar/stellar-sdk": "^13.1.0",
     "@types/node": "^22.13.11",
     "dotenv": "^16.4.7",
+    "ts-node": "^10.9.2",
     "tslib": "^2.8.1"
   }
 }

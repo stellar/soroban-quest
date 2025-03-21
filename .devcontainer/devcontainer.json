@@ -13,11 +13,14 @@
     "DISCORD_SERVER_ID": "897514728459468821"
   },
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers-extra/features/autoenv:1": {},
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
     "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers-extra/features/dnote:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -48,11 +51,15 @@
     }
   },
   "initializeCommand": {
-    "perms": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh && chmod +x .devcontainer/postAttach.sh"
+    "init": "chmod +x .devcontainer/init.sh",
+    "onCreate": "chmod +x .devcontainer/onCreate.sh",
+    "postAttach": "chmod +x .devcontainer/postAttach.sh",
+    "postCreate": "chmod +x .devcontainer/postCreate.sh",
+    "initScript": ".devcontainer/init.sh"
   },
   "onCreateCommand": ".devcontainer/onCreate.sh",
-  "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
-  "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts && pnpm install",
+  "postCreateCommand": ".devcontainer/postCreate.sh",
+  "postStartCommand": "",
   "postAttachCommand": ".devcontainer/postAttach.sh",
   "updateContentCommand": "stellar contract build",
 }

@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "warp",
+      "label": "test",
       "type": "shell",
-      "command": "devcontainer run-user-commands warp-terminal"
+      "command": "cd client | ts-node test.ts"
     }
   ]
 }
