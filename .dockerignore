@@ -1,0 +1,16 @@
+# Basic ignores
+**/target/*
+**/build/*
+**/.git
+**/.github
+**/.vscode
+**/.DS_Store
+**/node_modules
+**/dist
+
+# Rust specific ignores
+Cargo.lock
+
+# Editor specific
+.idea
+
