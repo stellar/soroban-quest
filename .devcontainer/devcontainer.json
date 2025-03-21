@@ -2,23 +2,21 @@
   "name": "Soroban Quest Dev Container",
   "dockerFile": "Dockerfile",
   "context": "..",
-  "build": {
-  },
   "hostRequirements": {
-    "cpus": 4
+    "cpus": 4,
+    memory: "16",
+    storage: "32"
   },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
-    "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015"
+    "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
+    "DISCORD_SERVER_ID": "897514728459468821"
   },
   "features": {
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
     "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
-    "ghcr.io/devcontainers-extra/features/wireguard-apt-get:1": {},
-    "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
-    "ghcr.io/devcontainers-extra/features/actions-runner:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -30,9 +28,6 @@
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
         "terminal.integrated.defaultProfile.linux": "bash",
-        "@ext:LeonardSSH.vscord.app.id": "1309255291048558632",
-        "@ext:LeonardSSH.vscord.app.name": "Visual Studio Code",
-        "@ext:LeonardSSH.vscord.enable": true,
         "workbench.startupEditor": "readme",
         "workbench.extensions.command.installFromVSIX": true,
         "vscode.commands.executeCommand": true,
@@ -41,13 +36,12 @@
       "extensions": [
         "streetsidesoftware.code-spell-checker",
         "rust-lang.rust-analyzer",
-        "LeonardSSH.vscord",
         "vadimcn.vscode-lldb"
       ]
     }
   },
-  "initializeCommand": "",
-  "onCreateCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
+  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh",
+  "onCreateCommand": ".devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
   "postAttachCommand": "code --performance",
