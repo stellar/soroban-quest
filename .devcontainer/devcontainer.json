@@ -42,10 +42,10 @@
       ]
     }
   },
-  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh",
+  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh  && chmod +x .devcontainer/warpTerm.sh",
   "onCreateCommand": ".devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
-  "postAttachCommand": "",
+  "postAttachCommand": ".devcontainer/warmTerm.sh",
   "updateContentCommand": "stellar contract build",
 }
