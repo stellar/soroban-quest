@@ -47,11 +47,8 @@
       ]
     }
   },
-  "initializeCommand": [
-    "chmod +x .devcontainer/init.sh",
-    "chmod +x .devcontainer/onCreate.sh",
-    "chmod +x .devcontainer/postAttach.sh",
-  ],
+
+  "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh && chmod +x .devcontainer/postAttach.sh",
   "onCreateCommand": ".devcontainer/onCreate.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts && pnpm install",
