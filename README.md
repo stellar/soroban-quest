@@ -2,13 +2,11 @@
 
 ![Stellar-Quest-email][series-5-img]
 
-
-
 ## Table of Contents <!-- omit in toc -->
 
 - [Welcome](#welcome)
 - [Feeling Lost?](#feeling-lost)
-  - [Re-Visit the Pioneer Quest](#re-visit-the-pioneer-quest)
+    - [Re-Visit the Pioneer Quest](#re-visit-the-pioneer-quest)
 - [Join us on Discord](#join-us-on-discord)
 
 ## Welcome
@@ -51,15 +49,39 @@ active, and helpful community! We have recently announced a $100M Soroban
 Adoption Fund, which SDF created to support the growth and development of the
 Soroban ecosystem. We'll be sharing more about additional programs on the
 Stellar Dev Discord in the not-too-distant future, so make sure to join today to
-be the among the first to hear those announcements. This is yet another way for
-you to **Tinker and Earn** XLM with Soroban! Many of the people who are
-_creating_ the Soroban platform are there, and willing to answer questions, too!
-Talk about "straight from the horse's mouth"!!
+be the among the first to hear those announcements.
 
-[![Open in Gitpod][gp-btn]][gitpod]
+VPN
+
+```
+wg --help
+```
+
+Tunnel
+
+```
+cloudflared
+cloudflared tunnel -hello-world
+```
+
+OAuth CLI
+
+```
+oauth2c https://discord.com \
+  --client-id 1309255291048558632 \
+  --client-secret  \
+  --response-types code \
+  --response-mode query \
+  --grant-type authorization_code \
+  --auth-method client_secret_basic \
+  --scopes identity \
+  --redirect-url https://fluffy-sniffle-5rj7v4pv97f4qwq-20241.app.github.dev:20241 \
+  --callback-tls-cert https://raw.githubusercontent.com/cloudentity/oauth2c/master/data/cert.pem \
+  --callback-tls-key https://raw.githubusercontent.com/cloudentity/oauth2c/master/data/key.pem
+```
 
 [series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
+
 [gp-btn]: https://gitpod.io/button/open-in-gitpod.svg
-[gitpod]: https://gitpod.io/#ENV=prod/https://github.com/stellar/soroban-quest
-[pioneer]: https://github.com/stellar/soroban-quest--pioneer
+
 [dev-discord]: https://discord.gg/stellardev

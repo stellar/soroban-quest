@@ -1,5 +1,6 @@
 {
   "name": "Soroban Quest Dev Container",
+  "remoteUser": "vscode",
   "dockerFile": "Dockerfile",
   "context": "..",
   "hostRequirements": {
@@ -17,6 +18,7 @@
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
     "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
+    "ghcr.io/devcontainers/features/node:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -43,8 +45,7 @@
   "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh",
   "onCreateCommand": ".devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
-  "postStartCommand": "",
-  "postAttachCommand": "code --performance",
-  "updateContentCommand": "",
-  "remoteUser": "vscode",
+  "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
+  "postAttachCommand": "",
+  "updateContentCommand": "stellar contract build",
 }
