@@ -3,7 +3,9 @@
   "dockerFile": "Dockerfile",
   "context": "..",
   "features": {
-    "ghcr.io/devcontainers/features/rust": 1
+    "ghcr.io/devcontainers/features/rust": 1,
+    "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -25,12 +27,14 @@
       "extensions": [
         "streetsidesoftware.code-spell-checker",
         "rust-lang.rust-analyzer",
-        "ms-python.python",
         "LeonardSSH.vscord"
       ]
     }
   },
+  "onCreateCommand": "brew install stellar-cli",
+  "initializeCommand": "",
   "postCreateCommand": "rustup",
+  "postStartCommand": "",
+  "postAttachCommand": "",
   "remoteUser": "vscode",
-  userEnvProbe: "loginShell"
 }
