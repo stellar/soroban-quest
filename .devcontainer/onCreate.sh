@@ -13,3 +13,4 @@ sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] ht
 rm warpdotdev.gpg
 sudo apt update && sudo apt install warp-terminal
 
+chmod +x client/test.ts

@@ -51,7 +51,6 @@
     "chmod +x .devcontainer/init.sh",
     "chmod +x .devcontainer/onCreate.sh",
     "chmod +x .devcontainer/postAttach.sh",
-    "chmod +x client/test.ts"
   ],
   "onCreateCommand": ".devcontainer/onCreate.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
