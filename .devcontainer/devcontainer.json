@@ -2,20 +2,26 @@
   "name": "Soroban Quest Dev Container",
   "dockerFile": "Dockerfile",
   "context": "..",
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "vscord.app.id": "1309255291048558632",
-    "vscord.app.name": "Visual Studio Code",
-    "vscord.enable": true,
-    "workbench.startupEditor": "readme",
-    "vscode.commands.executeCommand": true,
-    "github.codespaces.devcontainerChangedNotificationStyle": "modal"
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "@ext:LeonardSSH.vscord.app.id": "1309255291048558632",
+        "@ext:LeonardSSH.vscord.app.name": "Visual Studio Code - Soroban Quest",
+        "@ext:LeonardSSH.vscord.enable": true,
+        "workbench.startupEditor": "readme",
+        "vscode.commands.executeCommand": true,
+        "github.codespaces.devcontainerChangedNotificationStyle": "modal"
+      },
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "rust-lang.rust-analyzer",
+        "ms-python.python",
+        "LeonardSSH.vscord"
+      ]
+    }
   },
-  "extensions": [
-    "rust-lang.rust-analyzer",
-    "ms-python.python",
-    "LeonardSSH.vscord"
-  ],
-  "postCreateCommand": "code --list-extensions",
+  "postCreateCommand": "rustup",
   "remoteUser": "vscode"
 }
