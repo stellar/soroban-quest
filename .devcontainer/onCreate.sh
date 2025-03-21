@@ -1,5 +1,11 @@
 #!/bin/bash
 
+brew install stellar-cli
+echo "source <(stellar completion --shell bash)" >> ~/.bashrc
+echo "Enabled Stellar CLI auto-completion"
+
+stellar keys generate --global alice --network testnet --fund
+
 # Install warp terminal
 wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
 sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
