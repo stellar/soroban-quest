@@ -2,10 +2,10 @@
   "name": "Soroban Quest Dev Container",
   "dockerFile": "Dockerfile",
   "context": "..",
-  build: {
+  "build": {
   },
-  hostRequirements: {
-    cpus: 4
+  "hostRequirements": {
+    "cpus": 4
   },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
