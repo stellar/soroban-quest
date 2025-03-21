@@ -45,10 +45,11 @@
       ]
     }
   },
-  "onCreateCommand": "brew install stellar-cli",
-  "initializeCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
+  "initializeCommand": "brew install stellar-cli && brew install --cask warp",
+  "onCreateCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
   "postAttachCommand": "code --performance",
+  "updateContentCommand": "",
   "remoteUser": "vscode",
 }
