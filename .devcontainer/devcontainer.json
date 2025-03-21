@@ -14,12 +14,15 @@
   "features": {
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {}
+    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
+    "ghcr.io/devcontainers-extra/features/wireguard-apt-get:1": {},
+    "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/cloudflared:1": {}
   },
   "customizations": {
     "codespaces": {
       "openFiles": [
-        "README.md",
+        "quests/1-hello-world/README.md",
       ]
     },
     "vscode": {
@@ -30,6 +33,7 @@
         "@ext:LeonardSSH.vscord.app.name": "Visual Studio Code",
         "@ext:LeonardSSH.vscord.enable": true,
         "workbench.startupEditor": "readme",
+        "workbench.extensions.command.installFromVSIX": true,
         "vscode.commands.executeCommand": true,
         "github.codespaces.devcontainerChangedNotificationStyle": "modal"
       },
@@ -45,6 +49,6 @@
   "initializeCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
-  "postAttachCommand": "",
+  "postAttachCommand": "code --performance",
   "remoteUser": "vscode",
 }
