@@ -2,13 +2,21 @@
   "name": "Soroban Quest Dev Container",
   "dockerFile": "Dockerfile",
   "context": "..",
+  "features": {
+    "ghcr.io/devcontainers/features/rust": 1
+  },
   "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+      ]
+    },
     "vscode": {
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
         "terminal.integrated.defaultProfile.linux": "bash",
         "@ext:LeonardSSH.vscord.app.id": "1309255291048558632",
-        "@ext:LeonardSSH.vscord.app.name": "Visual Studio Code - Soroban Quest",
+        "@ext:LeonardSSH.vscord.app.name": "Visual Studio Code",
         "@ext:LeonardSSH.vscord.enable": true,
         "workbench.startupEditor": "readme",
         "vscode.commands.executeCommand": true,
@@ -23,5 +31,6 @@
     }
   },
   "postCreateCommand": "rustup",
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  userEnvProbe: "loginShell"
 }
