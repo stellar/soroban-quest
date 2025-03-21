@@ -14,3 +14,31 @@ Cargo.lock
 # Editor specific
 .idea
 
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+dist
+.git
+.gitignore
+.github
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+
+# Editor directories and files
+.vscode/
+*.code-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+

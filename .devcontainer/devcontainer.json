@@ -1,0 +1,15 @@
+{
+  "name": "Soroban Quest Dev Container",
+  "dockerFile": "Dockerfile",
+  "context": "..",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "rust-lang.rust-analyzer",
+    "ms-python.python",
+    "LeonardSSH.vscord"
+  ],
+  "postCreateCommand": "rust up",
+  "remoteUser": "vscode"
+}
