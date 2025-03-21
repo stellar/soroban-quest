@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "warp",
+      "type": "shell",
+      "command": "devcontainer run-user-commands warp-terminal"
+    }
+  ]
+}

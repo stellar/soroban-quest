@@ -1,8 +1,7 @@
 {
   "name": "Soroban Quest Dev Container",
   "remoteUser": "vscode",
-  "dockerFile": "Dockerfile",
-  "context": "..",
+  image: "mcr.microsoft.com/devcontainers/rust:bullseye",
   "hostRequirements": {
     "cpus": 4,
     memory: "16",
@@ -28,8 +27,13 @@
     },
     "vscode": {
       "settings": {
+        "terminal.integrated.profiles.linux": {
+          "warp": {
+            "path": "warp-terminal",
+          }
+        },
         "terminal.integrated.shell.linux": "/bin/bash",
-        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.defaultProfile.linux": "warp",
         "workbench.startupEditor": "readme",
         "workbench.extensions.command.installFromVSIX": true,
         "vscode.commands.executeCommand": true,
@@ -43,9 +47,9 @@
     }
   },
   "initializeCommand": "chmod +x .devcontainer/init.sh && chmod +x .devcontainer/onCreate.sh  && chmod +x .devcontainer/warpTerm.sh",
-  "onCreateCommand": ".devcontainer/init.sh",
+  "onCreateCommand": ".devcontainer/onCreate.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
-  "postAttachCommand": ".devcontainer/warmTerm.sh",
+  "postAttachCommand": ".devcontainer/warpTerm.sh",
   "updateContentCommand": "stellar contract build",
 }

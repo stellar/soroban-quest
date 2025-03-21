@@ -11,5 +11,11 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^13.1.0",
+    "@types/node": "^22.13.11",
+    "dotenv": "^16.4.7",
+    "tslib": "^2.8.1"
   }
 }
