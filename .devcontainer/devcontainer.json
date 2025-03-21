@@ -17,7 +17,8 @@
     "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
     "ghcr.io/devcontainers-extra/features/wireguard-apt-get:1": {},
     "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/cloudflared:1": {}
+    "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
+    "ghcr.io/devcontainers-extra/features/actions-runner:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -45,7 +46,7 @@
       ]
     }
   },
-  "initializeCommand": "brew install stellar-cli && brew install --cask warp",
+  "initializeCommand": "brew install stellar-cli",
   "onCreateCommand": "chmod +x .devcontainer/init.sh && .devcontainer/init.sh",
   "postCreateCommand": "stellar keys generate --global alice --network testnet --fund",
   "postStartCommand": "",
