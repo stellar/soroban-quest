@@ -5,7 +5,11 @@
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",
     "vscord.app.id": "1309255291048558632",
-    "vscord.app.name": "Visual Studio Code"
+    "vscord.app.name": "Visual Studio Code",
+    "vscord.enable": true,
+    "workbench.startupEditor": "readme",
+    "vscode.commands.executeCommand": true,
+    "github.codespaces.devcontainerChangedNotificationStyle": "modal"
   },
   "extensions": [
     "rust-lang.rust-analyzer",

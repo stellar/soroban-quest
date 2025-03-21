@@ -2,7 +2,7 @@
 
 ![Stellar-Quest-email][series-5-img]
 
-[![Open in Gitpod][gp-btn]][gitpod]
+
 
 ## Table of Contents <!-- omit in toc -->
 
