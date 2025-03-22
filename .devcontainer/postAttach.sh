@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Terminal style
 apt-get install fonts-powerline

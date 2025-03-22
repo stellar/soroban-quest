@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 brew install stellar-cli
 echo "source <(stellar completion --shell bash)" >>~/.bashrc
