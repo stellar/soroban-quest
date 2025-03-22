@@ -1,4 +1,10 @@
 #!/bin/bash
 set -e
 
-chmod +x client/test.ts && chmod +x client/auth.ts
+if [ -e client/invite.ts ]; then
+  chmod +x client/invite.ts
+fi
+
+if [ -e client/auth.ts ]; then
+chmod +x client/auth.ts
+fi

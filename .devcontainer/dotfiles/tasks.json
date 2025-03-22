@@ -33,6 +33,11 @@
       "command": "workbench.action.terminal.runSelectedText"
     },
     {
+      "label": "",
+      "command": "workbench.action.terminal.changeIcon",
+      "args": [""]
+    },
+    {
       "label": "journal",
       "dependsOrder": "sequence",
       "dependsOn": [
@@ -41,7 +46,9 @@
         "display-journal-entries"
       ],
       "command": "workbench.action.terminal.renameWithArg",
-      "args": ["Quest Journal"]
+      "args": [
+        "Quest Journal"
+      ]
     }
   ],
   "inputs": [
