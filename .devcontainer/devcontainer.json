@@ -35,29 +35,22 @@
       ]
     },
     "vscode": {
-      "settings": {
-        "terminal.integrated.profiles.linux": {
-          "warp": {
-            "path": "warp-terminal",
-          }
-        },
-        "workbench.settings.editor": "json",
-        "terminal.integrated.shell.linux": "/bin/bash",
-        "terminal.integrated.defaultProfile.linux": "warp",
-        "workbench.startupEditor": "readme",
-        "workbench.extensions.command.installFromVSIX": true,
-        "vscode.commands.executeCommand": true,
-        "github.codespaces.devcontainerChangedNotificationStyle": "modal",
-        "terminal.integrated.allowChords": true,
-        "terminal.integrated.shellIntegration.showCommandGuide": true,
-        "terminal.integrated.shellIntegration.history": true
-      },
-      "extensions": [
-        "streetsidesoftware.code-spell-checker",
-        "rust-lang.rust-analyzer",
-        "vadimcn.vscode-lldb"
-      ]
-    }
+      "workbench.settings.editor": "json",
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "terminal.integrated.defaultProfile.linux": "zsh",
+      "workbench.startupEditor": "readme",
+      "workbench.extensions.command.installFromVSIX": true,
+      "vscode.commands.executeCommand": true,
+      "github.codespaces.devcontainerChangedNotificationStyle": "modal",
+      "terminal.integrated.allowChords": true,
+      "terminal.integrated.shellIntegration.showCommandGuide": true,
+      "terminal.integrated.shellIntegration.history": true
+    },
+    "extensions": [
+      "streetsidesoftware.code-spell-checker",
+      "rust-lang.rust-analyzer",
+      "vadimcn.vscode-lldb"
+    ]
   },
   "initializeCommand": {
     "init": "chmod +x .devcontainer/init.sh",
@@ -70,5 +63,5 @@
   "postCreateCommand": ".devcontainer/postCreate.sh",
   "postStartCommand": "",
   "postAttachCommand": ".devcontainer/postAttach.sh",
-  "updateContentCommand": "stellar contract build",
+  "updateContentCommand": "",
 }

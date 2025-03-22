@@ -5,6 +5,11 @@
       "label": "test",
       "type": "shell",
       "command": "cd client | ts-node test.ts"
+    },
+    {
+      "label": "auth",
+      "type": "shell",
+      "command": "cd client | ts-node auth.ts"
     }
   ]
 }
