@@ -10,7 +10,8 @@
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
-    "DISCORD_SERVER_ID": "897514728459468821"
+    "DISCORD_SERVER_ID": "897514728459468821",
+    "DISCORD_CHANNEL_ID": "897514728459468821"
   },
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {},
@@ -20,12 +21,16 @@
     "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers-extra/features/dnote:1": {}
+    "ghcr.io/devcontainers-extra/features/dnote:1": {},
+    "ghcr.io/devcontainers-extra/features/npm-packages:1": {
+      "@devcontainers/cli": "@devcontainers/cli"
+    }
   },
   "customizations": {
     "codespaces": {
       "openFiles": [
         "quests/1-hello-world/README.md",
+        "quests/1-hello-world/STORY.md"
       ]
     },
     "vscode": {
@@ -41,7 +46,10 @@
         "workbench.startupEditor": "readme",
         "workbench.extensions.command.installFromVSIX": true,
         "vscode.commands.executeCommand": true,
-        "github.codespaces.devcontainerChangedNotificationStyle": "modal"
+        "github.codespaces.devcontainerChangedNotificationStyle": "modal",
+        "terminal.integrated.allowChords": true,
+        "terminal.integrated.shellIntegration.showCommandGuide": true,
+        "terminal.integrated.shellIntegration.history": true
       },
       "extensions": [
         "streetsidesoftware.code-spell-checker",

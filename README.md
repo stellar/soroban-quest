@@ -11,11 +11,9 @@
 
 ## Welcome
 
-Welcome to our Soroban Quest! We are beyond excited you've joined us. We've
-worked hard to make this a productive, interesting, and above all fun learning
-experience for you!
+Soroban Quest has been updated! 
 
-So let's have some fun!
+It's a faster, more curated, guided developer journey through Stellar Smart Contracts.
 
 ## Feeling Lost?
 
@@ -80,8 +78,12 @@ oauth2c https://discord.com \
   --callback-tls-key https://raw.githubusercontent.com/cloudentity/oauth2c/master/data/key.pem
 ```
 
-[series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
+DNote
 
-[gp-btn]: https://gitpod.io/button/open-in-gitpod.svg
+```
+https://github.com/dnote/dnote/wiki/Dnote-CLI#commands
+```
+
+[series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
 
 [dev-discord]: https://discord.gg/stellardev
