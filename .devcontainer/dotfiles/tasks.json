@@ -16,6 +16,13 @@
       "label": "test",
       "type": "npm",
       "command": "cd client | ts-node test.ts"
+    },
+    {
+      "group": {
+        "kind": "build"
+      },
+      "label": "layout",
+      "command": ""
     }
   ],
   "inputs": [
