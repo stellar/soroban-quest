@@ -14,7 +14,9 @@
     "DISCORD_CHANNEL_ID": "897514728459468821"
   },
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    },
     "ghcr.io/devcontainers-extra/features/autoenv:1": {},
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
