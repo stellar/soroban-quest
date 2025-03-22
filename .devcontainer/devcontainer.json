@@ -15,15 +15,13 @@
     "DISCORD_CLIENT_ID": "1309255291048558632"
   },
   "features": {
+    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
       "configureZshAsDefaultShell": true
     },
     "ghcr.io/devcontainers-extra/features/autoenv:1": {},
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {
-      "version": "latest"
-    },
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
@@ -55,6 +53,14 @@
       "streetsidesoftware.code-spell-checker",
       "rust-lang.rust-analyzer",
       "vadimcn.vscode-lldb",
+      "aaron-bond.better-comments",
+      "ms-vscode.live-server",
+      "Gruntfuggly.todo-tree",
+      "adpyke.codesnap",
+      "Equinusocio.vsc-material-theme-icons",
+      "enkia.tokyo-night",
+      "IBM.output-colorizer",
+      "mintlify.document",
     ]
   },
   "initializeCommand": {
