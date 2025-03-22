@@ -25,10 +25,9 @@
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
-    "ghcr.io/devcontainers-extra/features/starship-homebrew:1": {},
+    "ghcr.io/devcontainers-extra/features/starship:1": {},
     "ghcr.io/devcontainers-extra/features/npm-packages:1": {
       "@devcontainers/cli": "@devcontainers/cli",
-      "ts-node": "ts-node"
     }
   },
   "customizations": {
@@ -54,7 +53,6 @@
       "streetsidesoftware.code-spell-checker",
       "rust-lang.rust-analyzer",
       "vadimcn.vscode-lldb",
-      "ms-vscode.vscode-typescript-next"
     ]
   },
   "initializeCommand": {
@@ -69,4 +67,5 @@
   "postStartCommand": "",
   "postAttachCommand": ".devcontainer/postAttach.sh",
   "updateContentCommand": "",
+  appPort: 3000
 }

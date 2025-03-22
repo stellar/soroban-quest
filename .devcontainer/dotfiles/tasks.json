@@ -1,59 +1,54 @@
 {
-  "version": "2.0.0",
+  "inputs": [],
   "tasks": [
     {
+      "isBackground": true,
       "label": "auth",
-      "type": "npm",
-      "command": "cd client | ts-node auth.ts",
       "presentation": {
         "clear": true,
         "focus": true,
         "showReuseMessage": false
       },
-      "isBackground": true
+      "script": "cd client | ts-node auth.ts",
+      "type": "npm"
     },
     {
       "label": "test",
-      "type": "npm",
-      "command": "cd client | ts-node test.ts"
+      "script": "cd client | ts-node test.ts",
+      "type": "npm"
     },
     {
+      "command": "workbench.action.createTerminalEditorSide",
       "label": "open-journal-window",
-      "command": "workbench.action.createTerminalEditorSide"
+      "type": "process"
     },
     {
-      "label": "enter-journal-cmd",
-      "command": "workbench.action.terminal.writeDataToTerminal",
       "args": [
         "dnote view"
-      ]
+      ],
+      "command": "workbench.action.terminal.writeDataToTerminal",
+      "label": "enter-journal-cmd",
+      "type": "process"
     },
     {
+      "command": "workbench.action.terminal.runSelectedText",
       "label": "display-journal-entries",
-      "command": "workbench.action.terminal.runSelectedText"
+      "type": "process"
     },
     {
-      "label": "",
-      "command": "workbench.action.terminal.changeIcon",
-      "args": [""]
-    },
-    {
-      "label": "journal",
-      "dependsOrder": "sequence",
+      "args": [
+        "Quest Journal"
+      ],
+      "command": "workbench.action.terminal.renameWithArg",
       "dependsOn": [
         "open-journal-window",
         "enter-journal-cmd",
         "display-journal-entries"
       ],
-      "command": "workbench.action.terminal.renameWithArg",
-      "args": [
-        "Quest Journal"
-      ]
+      "dependsOrder": "sequence",
+      "label": "journal",
+      "type": "process"
     }
   ],
-  "inputs": [
-    {
-      "id": "token"
-    }
-  ]
+  "version": "2.0.0"
 }
