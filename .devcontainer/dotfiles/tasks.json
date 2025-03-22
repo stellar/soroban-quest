@@ -2,14 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "test",
-      "type": "shell",
-      "command": "cd client | ts-node test.ts"
+      "label": "auth",
+      "type": "npm",
+      "command": "cd client | ts-node auth.ts",
+      "presentation": {
+        "clear": true,
+        "focus": true,
+        "showReuseMessage": false
+      },
+      "isBackground": true
     },
     {
-      "label": "auth",
-      "type": "shell",
-      "command": "cd client | ts-node auth.ts"
+      "label": "test",
+      "type": "npm",
+      "command": "cd client | ts-node test.ts"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "token"
     }
   ]
 }

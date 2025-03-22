@@ -32,9 +32,12 @@ wg --help
 
 Tunnel
 
+CloudFlare [Tunnels]: https://github.com/cloudflare/cloudflared
+
 ```
 cloudflared
 cloudflared tunnel -hello-world
+cloudflared tunnel --url http://localhost:8080
 ```
 
 OAuth CLI

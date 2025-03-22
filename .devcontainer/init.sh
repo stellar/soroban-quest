@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Populate dotfiles
-mkdir ./.vscode
+mkdir -p .vscode/
 mv .devcontainer/dotfiles/settings.json .vscode/
 mv .devcontainer/dotfiles/tasks.json .vscode/
 
