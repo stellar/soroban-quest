@@ -18,11 +18,30 @@
       "command": "cd client | ts-node test.ts"
     },
     {
-      "group": {
-        "kind": "build"
-      },
-      "label": "layout",
-      "command": ""
+      "label": "open-journal-window",
+      "command": "workbench.action.createTerminalEditorSide"
+    },
+    {
+      "label": "enter-journal-cmd",
+      "command": "workbench.action.terminal.writeDataToTerminal",
+      "args": [
+        "dnote view"
+      ]
+    },
+    {
+      "label": "display-journal-entries",
+      "command": "workbench.action.terminal.runSelectedText"
+    },
+    {
+      "label": "journal",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "open-journal-window",
+        "enter-journal-cmd",
+        "display-journal-entries"
+      ],
+      "command": "workbench.action.terminal.renameWithArg",
+      "args": ["Quest Journal"]
     }
   ],
   "inputs": [
