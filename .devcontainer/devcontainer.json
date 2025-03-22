@@ -21,7 +21,9 @@
     "ghcr.io/devcontainers-extra/features/autoenv:1": {},
     "ghcr.io/devcontainers/features/rust": 1,
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {},
+    "ghcr.io/devcontainers-extra/features/curl-homebrew:1": {
+      "version": "latest"
+    },
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
