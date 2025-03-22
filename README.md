@@ -11,34 +11,9 @@
 
 ## Welcome
 
-Soroban Quest has been updated! 
+Soroban Quest has been updated!
 
 It's a faster, more curated, guided developer journey through Stellar Smart Contracts.
-
-## Feeling Lost?
-
-There's a lot going on here! If you're feeling confused, or you're not sure how
-this whole thing is supposed to work, don't fret. We have a couple options for
-you:
-
-### Re-Visit the Pioneer Quest
-
-please checkout our [pioneer quest][pioneer]. It covers the basic structure of
-this repository, all the tools you'll need, and the process of getting
-everything working together.
-
-It's an important resource to keep handy during all these live quests. Some of
-the most important bits you'll need to know from it:
-
-- Understanding what a "Gitpod workspace" even is, and how we've set it up for
-  you to successfully complete these quests.
-- Using the `sq` CLI to login to your Stellar Quest account, play quests, verify
-  them, and more.
-- Interacting with a Soroban sandbox, as well as the Futurenet, from within this
-  gitpod workspace.
-
-If you feel lost on any of that, you could probably use a refresher. Go ahead,
-[be a pioneer][pioneer] once more. We don't judge!
 
 ## Join us on Discord
 
@@ -83,7 +58,5 @@ DNote
 ```
 https://github.com/dnote/dnote/wiki/Dnote-CLI#commands
 ```
-
-[series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
 
 [dev-discord]: https://discord.gg/stellardev

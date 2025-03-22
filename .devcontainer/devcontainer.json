@@ -1,11 +1,11 @@
 {
   "name": "Soroban Quest Dev Container",
   "remoteUser": "vscode",
-  image: "mcr.microsoft.com/devcontainers/rust:bullseye",
+  "image": "mcr.microsoft.com/devcontainers/rust:bullseye",
   "hostRequirements": {
     "cpus": 4,
-    memory: "16",
-    storage: "32"
+    "memory": "16",
+    "storage": "32"
   },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
@@ -22,6 +22,7 @@
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
+    "ghcr.io/devcontainers-extra/features/starship:1": {},
     "ghcr.io/devcontainers-extra/features/npm-packages:1": {
       "@devcontainers/cli": "@devcontainers/cli"
     }
