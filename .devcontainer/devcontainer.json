@@ -10,6 +10,15 @@
   capAdd: [
     "SYS_PTRACE"
   ],
+  "appPort": 3000,
+  "forwardPorts": [
+    "discord-client:3000"
+  ],
+  otherPortsAttributes: {
+    elevateIfNeeded: true,
+    onAutoForward: "openBrowser",
+    requireLocalPort: true,
+  },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
@@ -22,7 +31,9 @@
       "configureZshAsDefaultShell": true,
       "username": "vscode"
     },
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {
+      "shallowClone": false
+    },
     "ghcr.io/devcontainers-extra/features/homebrew-package:1": {
       "package": "stellar-cli"
     },
@@ -38,9 +49,7 @@
     "ghcr.io/devcontainers-extra/features/npm-package:1": {
       "package": "vscode/dev-container-cli"
     },
-    "ghcr.io/devcontainers-extra/features/npm-package:1": {
-      "package": "hyperupcall/autoenv"
-    }
+    "ghcr.io/devcontainers-extra/features/autoenv:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -89,13 +98,4 @@
   "postStartCommand": "",
   "postAttachCommand": ".devcontainer/postAttach.sh",
   "updateContentCommand": "",
-  "appPort": 3000,
-  "forwardPorts": [
-    "discord-client:3000"
-  ],
-  otherPortsAttributes: {
-    elevateIfNeeded: true,
-    onAutoForward: "openBrowser",
-    requireLocalPort: true,
-  }
 }
