@@ -31,13 +31,8 @@
       "configureZshAsDefaultShell": true,
       "username": "vscode"
     },
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {
-      "shallowClone": false
-    },
-    "ghcr.io/devcontainers-extra/features/homebrew-package:1": {
-      "package": "stellar-cli"
-    },
-    "ghcr.io/devcontainers-extra/features/starship:1": {},
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/devcontainers-extra/features/autoenv:1": {},
     "ghcr.io/devcontainers/features/rust:1": {
       "targets": "wasm32-unknown-unknown",
       "profile": "default"
@@ -47,9 +42,16 @@
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers-extra/features/npm-package:1": {
-      "package": "vscode/dev-container-cli"
+      "package": "vscode/dev-container-cli",
+      "version": "0.292.0"
     },
-    "ghcr.io/devcontainers-extra/features/autoenv:1": {}
+    "ghcr.io/devcontainers-extra/features/starship-homebrew:1": {
+      "version": "1.22.1"
+    },
+    "ghcr.io/devcontainers-extra/features/homebrew-package:1": {
+      "package": "stellar-cli",
+      "version": "22.6.0"
+    }
   },
   "customizations": {
     "codespaces": {
