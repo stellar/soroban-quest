@@ -28,7 +28,6 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
-      "configureZshAsDefaultShell": true,
       "username": "vscode"
     },
     "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
@@ -48,10 +47,6 @@
     "ghcr.io/devcontainers-extra/features/starship-homebrew:1": {
       "version": "1.22.1"
     },
-    "ghcr.io/devcontainers-extra/features/homebrew-package:1": {
-      "package": "stellar-cli",
-      "version": "22.6.0"
-    }
   },
   "customizations": {
     "codespaces": {
@@ -85,7 +80,15 @@
         "enkia.tokyo-night",
         "IBM.output-colorizer",
         "mintlify.document",
-      ]
+      ],
+      "settings": {
+        "files.watcherExclude": {
+          "**/target/**": true
+        },
+        "files.watcherExclude": {
+          "**/target/**": true
+        }
+      }
     },
   },
   "initializeCommand": {

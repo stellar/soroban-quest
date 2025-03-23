@@ -9,3 +9,5 @@ cd client/embedded-discord || exit | pnpm i
 
 # Create tunnel
 cloudflared tunnel --url http://localhost:3000
+
+brew install stellar-cli
