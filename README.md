@@ -68,6 +68,9 @@ Install github and setup auth token for API
 ```
 brew install gh
 
+gh codespace list
+
+gh codespace create --repo anataliocs/soroban-quest -b migrate-to-dev-containers --status --web -l WestUs2
 
 ```
 

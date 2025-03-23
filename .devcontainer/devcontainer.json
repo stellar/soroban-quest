@@ -7,6 +7,9 @@
     "memory": "16",
     "storage": "32"
   },
+  capAdd: [
+    "SYS_PTRACE"
+  ],
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
@@ -32,8 +35,11 @@
     "ghcr.io/devcontainers-extra/features/cloudflared:1": {},
     "ghcr.io/devcontainers-extra/features/dnote:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers-extra/features/npm-packages:1": {
-      "packages": "vscode/dev-container-cli@0.292.0, hyperupcall/autoenv@0.3.0"
+    "ghcr.io/devcontainers-extra/features/npm-package:1": {
+      "package": "vscode/dev-container-cli"
+    },
+    "ghcr.io/devcontainers-extra/features/npm-package:1": {
+      "package": "hyperupcall/autoenv"
     }
   },
   "customizations": {
