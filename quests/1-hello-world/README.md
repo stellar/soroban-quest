@@ -2,6 +2,8 @@
 
 ## TL;DR
 
+#QUEST 1 
+
 I know you're in a hurry. There are badges on the line! Here's the quick-n-dirty
 version of what you need to do to get that awesome SQ badge.
 
@@ -30,17 +32,16 @@ version of what you need to do to get that awesome SQ badge.
 
 ## How to Play
 
+#TASK 1
+
 Before we can get you questing, we need to make sure you are actually _ready_ to
 quest! So, do this before you move on to anything else!
 
-**Note:** You will be required to follow this basic procedure for each of the
-quests during this series. Please take a moment to review the following
-instructions and make yourself familiar with them. You'll be thankful you did!
-
 ### Authenticate with Discord
 
-In one of your `bash` shells in the bottom panel of your Gitpod Workspace, run
-the following command.
+#TASK 2
+
+Open up your terinal
 
 ```bash
 sq user

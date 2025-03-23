@@ -1,5 +1,7 @@
 # Chapter 1
 
+#TASK
+
 Squaktahune Temple towered over Blossom Bernice Breydenblach and Roscoe as they
 stepped toward the vast stone door blocking their way. They had been traveling
 for just over five hours, and Roscoe's feet were starting to ache. Luckily the

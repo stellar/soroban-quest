@@ -6,9 +6,6 @@
     "memory": "16",
     "storage": "32"
   },
-  "capAdd": [
-    "SYS_PTRACE"
-  ],
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
@@ -57,13 +54,20 @@
         "workbench.settings.editor": "json",
         "workbench.startupEditor": "readme",
         "workbench.extensions.command.installFromVSIX": true,
-        "vscode.commands.executeCommand": true,
         "github.codespaces.devcontainerChangedNotificationStyle": "modal",
         "terminal.integrated.allowChords": true,
         "terminal.integrated.shellIntegration.showCommandGuide": true,
         "terminal.integrated.shellIntegration.history": true,
-        "http.proxyStrictSSL": false,
-        "security.workspace.trust.untrustedFiles": "open"
+        "security.workspace.trust.untrustedFiles": "open",
+        "todo-tree.general.statusBar": "total",
+        "todo-tree.general.showActivityBarBadge": true,
+        "todo-tree.general.showIconsInsteadOfTagsInStatusBar": true,
+        "todo-tree.general.tags": [
+          "QUEST",
+          "TASK",
+          "CODE",
+        ],
+        "todo-tree.tree.expanded": true
       }
     },
   },

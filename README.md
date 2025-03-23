@@ -11,8 +11,6 @@
 
 ## Welcome
 
-#QUEST 1
-
 Soroban Quest has been updated!
 
 It's a faster, more curated, guided developer journey through Stellar Smart Contracts.
