@@ -62,4 +62,13 @@ DNote
 https://github.com/dnote/dnote/wiki/Dnote-CLI#commands
 ```
 
+Launch Codespace from Github CLI
+
+Install github and setup auth token for API
+```
+brew install gh
+
+
+```
+
 [dev-discord]: https://discord.gg/stellardev

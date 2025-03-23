@@ -29,7 +29,6 @@ router.get('/', async function (req, res, next) {
         response_type: 'code',
         state: '',
         prompt: 'none',
-        // More info on scopes here: https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
         scope: [
             'applications.commands',
             'identify',
@@ -39,7 +38,7 @@ router.get('/', async function (req, res, next) {
 
     console.log(code);
 
-    res.send('respond with a resource');
+    res.send(`auth success`);
 });
 
 module.exports = router;
