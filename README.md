@@ -11,6 +11,8 @@
 
 ## Welcome
 
+#QUEST 1
+
 Soroban Quest has been updated!
 
 It's a faster, more curated, guided developer journey through Stellar Smart Contracts.
@@ -28,6 +30,8 @@ VPN
 
 ```
 wg --help
+
+@devcontainers/cli 0.75.0. Node.js v22.14.0. linux 6.8.0-1021-azure x64.
 ```
 
 Tunnel
@@ -72,6 +76,17 @@ gh codespace list
 
 gh codespace create --repo anataliocs/soroban-quest -b migrate-to-dev-containers --status --web -l WestUs2
 
+```
+
+
+Logs
+```
+[ViewCreationLog V] container folder path: "/workspaces/.codespaces/.persistedshare"
+[ViewCreationLog V] shared folder path: "/workspaces/.codespaces/shared/postCreateOutput.json"
+[ViewCreationLog V] shared file path: "/workspaces/.codespaces/shared/postCreateOutput.json"
+
+
+/workspaces/.codespaces/shared/
 ```
 
 [dev-discord]: https://discord.gg/stellardev

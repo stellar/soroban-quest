@@ -6,18 +6,9 @@
     "memory": "16",
     "storage": "32"
   },
-  capAdd: [
+  "capAdd": [
     "SYS_PTRACE"
   ],
-  "appPort": 3000,
-  "forwardPorts": [
-    "discord-client:3000"
-  ],
-  otherPortsAttributes: {
-    elevateIfNeeded: true,
-    onAutoForward: "openBrowser",
-    requireLocalPort: true,
-  },
   "containerEnv": {
     "SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
     "SOROBAN_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
@@ -47,18 +38,6 @@
       ]
     },
     "vscode": {
-      "workbench.settings.editor": "json",
-      "terminal.integrated.shell.linux": "/bin/bash",
-      "terminal.integrated.defaultProfile.linux": "zsh",
-      "workbench.startupEditor": "readme",
-      "workbench.extensions.command.installFromVSIX": true,
-      "vscode.commands.executeCommand": true,
-      "github.codespaces.devcontainerChangedNotificationStyle": "modal",
-      "terminal.integrated.allowChords": true,
-      "terminal.integrated.shellIntegration.showCommandGuide": true,
-      "terminal.integrated.shellIntegration.history": true,
-      "http.proxyStrictSSL": false,
-      "security.workspace.trust.untrustedFiles": "open",
       "extensions": [
         "streetsidesoftware.code-spell-checker",
         "rust-lang.rust-analyzer",
@@ -73,9 +52,18 @@
         "mintlify.document",
       ],
       "settings": {
-        "files.watcherExclude": {
-          "**/target/**": true
-        },
+        "workbench.colorTheme": "Tokyo Night Storm",
+        "workbench.iconTheme": "eq-material-theme-icons-darker",
+        "workbench.settings.editor": "json",
+        "workbench.startupEditor": "readme",
+        "workbench.extensions.command.installFromVSIX": true,
+        "vscode.commands.executeCommand": true,
+        "github.codespaces.devcontainerChangedNotificationStyle": "modal",
+        "terminal.integrated.allowChords": true,
+        "terminal.integrated.shellIntegration.showCommandGuide": true,
+        "terminal.integrated.shellIntegration.history": true,
+        "http.proxyStrictSSL": false,
+        "security.workspace.trust.untrustedFiles": "open"
       }
     },
   },
@@ -90,5 +78,5 @@
   "postCreateCommand": ".devcontainer/postCreate.sh",
   "postStartCommand": "",
   "postAttachCommand": ".devcontainer/postAttach.sh",
-  "updateContentCommand": "",
+  "updateContentCommand": ".devcontainer/update.sh",
 }
