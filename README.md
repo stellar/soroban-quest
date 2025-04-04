@@ -27,7 +27,7 @@ you:
 
 ### Re-Visit the Pioneer Quest
 
-Please checkout our [pioneer quest][pioneer]. It covers the basic structure of
+Please checkout our [pioneer quest](https://github.com/stellar/soroban-quest--pioneer). It covers the basic structure of
 this repository, all the tools you'll need, and the process of getting
 everything working together.
 
