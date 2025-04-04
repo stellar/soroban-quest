@@ -42,7 +42,7 @@ the most important bits you'll need to know from it:
   Gitpod workspace.
 
 If you feel lost on any of that, you could probably use a refresher. Go ahead,
-[be a pioneer][pioneer] once more. We don't judge!
+[be a pioneer](https://github.com/stellar/soroban-quest--pioneer) once more. We don't judge!
 
 ## Join us on Discord
 
