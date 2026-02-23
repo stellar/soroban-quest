@@ -61,3 +61,7 @@ Talk about "straight from the horse's mouth"!!
 [series-5-img]: https://user-images.githubusercontent.com/4383610/200077219-de8e1f20-9878-4705-bec6-ced9a3904694.jpg
 
 [dev-discord]: https://discord.gg/stellardev
+
+---
+
+> **Note:** This repository is not in scope for the Stellar Development Foundation bug bounty program. Vulnerabilities found in this repo are not eligible for rewards.
